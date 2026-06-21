@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Experiment artifacts
+outputs/
+smoke_test_outputs*/
+temp/
+temp_output/
+*.log
+
+# Website
+website/node_modules/
+website/dist/
+website/.vite/
+website/vite-dev*.log
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+

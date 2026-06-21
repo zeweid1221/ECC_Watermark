@@ -6,7 +6,7 @@ from typing import List
 
 import pandas as pd
 
-from watermark_project.config import ModelConfig, PromptConfig, RunConfig, SegmentBaselineConfig
+from watermark_project.config import ModelConfig, PromptConfig, RunConfig
 from watermark_project.experiment import run_experiment
 from watermark_project.io_utils import ensure_dir
 
@@ -25,21 +25,6 @@ def parse_csv_floats(value: str) -> List[float]:
 
 def parse_csv_ints(value: str) -> List[int]:
     return [int(x.strip()) for x in value.split(",") if x.strip()]
-
-
-def parse_tolerance_map(value: str) -> dict:
-    out = {}
-    if not value:
-        return out
-    for item in value.split(","):
-        item = item.strip()
-        if not item:
-            continue
-        if ":" not in item:
-            raise ValueError("Tolerance map entries must use logit_bias:tolerance format, e.g. 2:0,5:1")
-        bias_s, tol_s = item.split(":", 1)
-        out[float(bias_s.strip())] = int(tol_s.strip())
-    return out
 
 
 def parse_csv_strs(value: str) -> List[str]:
@@ -91,9 +76,6 @@ def main() -> None:
     parser.add_argument("--schemes", type=str, default="ecc,kgw")
     parser.add_argument("--watermark-modes", type=str, default="hard,soft")
     parser.add_argument("--ecc-adaptive-modes", type=str, default="true,false")
-    parser.add_argument("--ecc-logit-bias-values", type=str, default=None)
-    parser.add_argument("--kgw-logit-bias", type=float, default=None)
-    parser.add_argument("--kgw-logit-bias-values", type=str, default=None)
     parser.add_argument("--edit-rates", type=str, default="0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8")
     parser.add_argument("--target-blocks", type=int, default=8)
     parser.add_argument("--max-new-tokens", type=int, default=160)
@@ -101,10 +83,6 @@ def main() -> None:
     parser.add_argument("--attack-max-edits-per-block", type=int, default=1)
     parser.add_argument("--attack-max-edits-per-blocks", type=str, default=None)
     parser.add_argument("--decoder-max-edits-per-block", type=int, default=3)
-    parser.add_argument("--ecc-tolerance-by-logit-bias", type=str, default="")
-    parser.add_argument("--segment-methods", type=str, default=None)
-    parser.add_argument("--segment-aol-backend", type=str, choices=["simple", "aligator"], default="simple")
-    parser.add_argument("--segment-aol-aligator-source", type=str, default="llm-watermark-location-main")
     parser.add_argument("--smoke-test", action="store_true")
     args = parser.parse_args()
 
@@ -119,14 +97,8 @@ def main() -> None:
         )
     else:
         adaptive_modes = [x.strip().lower() == "true" for x in args.ecc_adaptive_modes.split(",") if x.strip()]
-        inline_prompts = ()
-        if args.backend == "mock" and not args.prompt_file:
-            inline_prompts = tuple(
-                SMOKE_PROMPTS[i % len(SMOKE_PROMPTS)]
-                for i in range(max(1, args.prompt_count))
-            )
         prompt_cfg = PromptConfig(
-            inline_prompts=inline_prompts,
+            inline_prompts=tuple(SMOKE_PROMPTS if args.backend == "mock" and not args.prompt_file else ()),
             prompt_text_file=args.prompt_file,
             prompt_count=args.prompt_count,
             prompt_seed=42,
@@ -145,9 +117,6 @@ def main() -> None:
             schemes=parse_csv_strs(args.schemes),
             watermark_modes=parse_csv_strs(args.watermark_modes),
             ecc_adaptive_modes=adaptive_modes or [True, False],
-            ecc_logit_bias_values=parse_csv_floats(args.ecc_logit_bias_values) if args.ecc_logit_bias_values else [],
-            kgw_logit_bias=args.kgw_logit_bias,
-            kgw_logit_bias_values=parse_csv_floats(args.kgw_logit_bias_values) if args.kgw_logit_bias_values else [],
             edit_rates=parse_csv_floats(args.edit_rates),
             target_blocks=args.target_blocks,
             max_new_tokens=args.max_new_tokens,
@@ -158,18 +127,7 @@ def main() -> None:
                 else [args.attack_max_edits_per_block]
             ),
             decoder_max_edits_per_block=args.decoder_max_edits_per_block,
-            ecc_tolerance_by_logit_bias=parse_tolerance_map(args.ecc_tolerance_by_logit_bias),
-            segment_baselines=SegmentBaselineConfig(
-                methods=tuple(parse_csv_strs(args.segment_methods)) if args.segment_methods else ("zhao_aol", "waterseeker"),
-                aol_backend=args.segment_aol_backend,
-                aol_aligator_source=args.segment_aol_aligator_source,
-            ),
         )
-
-    cfg.segment_baselines.aol_backend = args.segment_aol_backend
-    cfg.segment_baselines.aol_aligator_source = args.segment_aol_aligator_source
-    if args.segment_methods:
-        cfg.segment_baselines.methods = tuple(parse_csv_strs(args.segment_methods))
 
     result = run_experiment(cfg)
     summary_df: pd.DataFrame = result["summary_df"]
@@ -189,20 +147,13 @@ def main() -> None:
             handle.write(f"schemes={cfg.schemes}\n")
             handle.write(f"watermark_modes={cfg.watermark_modes}\n")
             handle.write(f"ecc_adaptive_modes={cfg.ecc_adaptive_modes}\n")
-            handle.write(f"ecc_logit_bias_values={cfg.ecc_logit_bias_values}\n")
-            handle.write(f"kgw_logit_bias={cfg.kgw_logit_bias}\n")
-            handle.write(f"kgw_logit_bias_values={cfg.kgw_logit_bias_values}\n")
             handle.write(f"edit_rates={cfg.edit_rates}\n")
             handle.write(f"target_blocks={cfg.target_blocks}\n")
             handle.write(f"max_new_tokens={cfg.max_new_tokens}\n")
             handle.write(f"attack_max_edits_per_block={cfg.attack_max_edits_per_block}\n")
             handle.write(f"attack_max_edits_per_blocks={cfg.attack_max_edits_per_blocks}\n")
             handle.write(f"decoder_max_edits_per_block={cfg.decoder_max_edits_per_block}\n")
-            handle.write(f"ecc_tolerance_by_logit_bias={cfg.ecc_tolerance_by_logit_bias}\n")
             handle.write(f"prompts={len(result['prompts'])}\n")
-            handle.write(f"segment_methods={cfg.segment_baselines.methods}\n")
-            handle.write(f"segment_aol_backend={cfg.segment_baselines.aol_backend}\n")
-            handle.write(f"segment_aol_aligator_source={cfg.segment_baselines.aol_aligator_source}\n")
         print(f"\nSmoke test note saved to: {smoke_note_path}")
 
 
