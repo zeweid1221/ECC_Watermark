@@ -107,14 +107,32 @@ def decode_clean_structural_sequence(structural_seq: Sequence[int], codebook: Ec
 def split_by_boundary_with_meta(seq: Sequence[int], boundary_symbol: int) -> List[Dict[str, Any]]:
     raw_segments = []
     cur: List[int] = []
-    for token in seq:
+    segment_start = 0
+    for index, token in enumerate(seq):
         if int(token) == int(boundary_symbol):
-            raw_segments.append({"tokens": cur, "ended_with_boundary": True})
+            raw_segments.append(
+                {
+                    "tokens": cur,
+                    "ended_with_boundary": True,
+                    "token_start": int(segment_start),
+                    "token_end_exclusive": int(index),
+                    "boundary_index": int(index),
+                }
+            )
             cur = []
+            segment_start = int(index) + 1
         else:
             cur.append(int(token))
     if cur or (len(seq) > 0 and int(seq[-1]) != int(boundary_symbol)):
-        raw_segments.append({"tokens": cur, "ended_with_boundary": False})
+        raw_segments.append(
+            {
+                "tokens": cur,
+                "ended_with_boundary": False,
+                "token_start": int(segment_start),
+                "token_end_exclusive": int(len(seq)),
+                "boundary_index": None,
+            }
+        )
     return raw_segments
 
 
@@ -408,7 +426,13 @@ def detect_sequence_multiple(
                     etype="invalid",
                     candidates=[],
                     decoded_codeword=None,
-                    info={"mode": "empty_segment_multiple", "ended_with_boundary": ended_with_boundary},
+                    info={
+                        "mode": "empty_segment_multiple",
+                        "ended_with_boundary": ended_with_boundary,
+                        "observed_span_start": int(seg_meta["token_start"]),
+                        "observed_span_end_exclusive": int(seg_meta["token_end_exclusive"]),
+                        "observed_boundary_index": seg_meta["boundary_index"],
+                    },
                 )
             )
             continue
@@ -421,13 +445,38 @@ def detect_sequence_multiple(
                     etype="invalid",
                     candidates=[],
                     decoded_codeword=None,
-                    info={"mode": "segment_parse_failed_multiple", "ended_with_boundary": ended_with_boundary},
+                    info={
+                        "mode": "segment_parse_failed_multiple",
+                        "ended_with_boundary": ended_with_boundary,
+                        "observed_span_start": int(seg_meta["token_start"]),
+                        "observed_span_end_exclusive": int(seg_meta["token_end_exclusive"]),
+                        "observed_boundary_index": seg_meta["boundary_index"],
+                    },
                 )
             )
             continue
-        for pb in local:
-            pb.info = {**pb.info, "segment_mode": "multiple_parse", "ended_with_boundary": ended_with_boundary}
+        local_consumed = 0
+        for local_index, pb in enumerate(local):
+            consumed = int(pb.info.get("consumed", len(pb.block_tokens)))
+            span_start = int(seg_meta["token_start"]) + local_consumed
+            span_end = min(
+                int(seg_meta["token_end_exclusive"]),
+                span_start + max(0, consumed),
+            )
+            pb.info = {
+                **pb.info,
+                "segment_mode": "multiple_parse",
+                "ended_with_boundary": ended_with_boundary,
+                "observed_span_start": int(span_start),
+                "observed_span_end_exclusive": int(span_end),
+                "observed_boundary_index": (
+                    seg_meta["boundary_index"]
+                    if local_index == len(local) - 1 and ended_with_boundary
+                    else None
+                ),
+            }
             parsed_blocks.append(pb)
+            local_consumed += max(0, consumed)
     return parsed_blocks
 
 
@@ -523,6 +572,191 @@ def evaluate_predictions_multiple(
         "event_total_delete": by_type_event_total["delete"],
         "mean_candidate_size": cand_size_sum / cand_size_n if cand_size_n > 0 else 0.0,
         "candidate_size_hist": dict(sorted(cand_size_counter.items())),
+    }
+
+
+def evaluate_predictions_with_provenance(
+    original_payload_blocks: Sequence[Sequence[int]],
+    gt_events_per_block: Sequence[Sequence[EditEvent]],
+    pred_blocks: Sequence[ParsedBlock],
+    observed_provenance: Sequence[Dict[str, Any]],
+    tolerance: int = 0,
+    codebook: Optional[EccCodebook] = None,
+) -> Dict[str, Any]:
+    """Evaluate parsed spans against source blocks without assuming one parse per block.
+
+    Detector parsing is completed before this function is called. Provenance is
+    used only to merge parsed structural spans back to the fixed source-block
+    evaluation units and never to influence decoding.
+    """
+
+    num_gt_blocks = len(gt_events_per_block)
+    block_len = len(original_payload_blocks[0]) if original_payload_blocks else 7
+    source_pred_flags = [False] * num_gt_blocks
+    source_candidates: List[Set[Tuple[str, int]]] = [set() for _ in range(num_gt_blocks)]
+    source_decoded_codewords: List[Set[Tuple[int, ...]]] = [set() for _ in range(num_gt_blocks)]
+    parsed_to_source_blocks: List[List[int]] = []
+    unassigned_suspicious_parses = 0
+
+    def provenance_indices_for_pred(pred: ParsedBlock) -> List[int]:
+        start = pred.info.get("observed_span_start")
+        end = pred.info.get("observed_span_end_exclusive")
+        indices: List[int] = []
+        if start is not None and end is not None:
+            indices.extend(
+                range(
+                    max(0, int(start)),
+                    min(len(observed_provenance), max(int(start), int(end))),
+                )
+            )
+        boundary_index = pred.info.get("observed_boundary_index")
+        if boundary_index is not None and 0 <= int(boundary_index) < len(observed_provenance):
+            indices.append(int(boundary_index))
+        return sorted(set(indices))
+
+    def source_blocks_for_indices(indices: Sequence[int]) -> List[int]:
+        return sorted(
+            {
+                int(observed_provenance[index]["original_block_id"])
+                for index in indices
+                if observed_provenance[index].get("original_block_id") is not None
+                and 0 <= int(observed_provenance[index]["original_block_id"]) < num_gt_blocks
+            }
+        )
+
+    def candidate_source_locations(
+        pred: ParsedBlock,
+    ) -> List[Tuple[int, Tuple[str, int]]]:
+        start = pred.info.get("observed_span_start")
+        end = pred.info.get("observed_span_end_exclusive")
+        if start is None or end is None:
+            return []
+        start = int(start)
+        end = int(end)
+        mapped: Set[Tuple[int, Tuple[str, int]]] = set()
+        for kind, raw_pos in pred.candidates:
+            pos = int(raw_pos)
+            observed_index: Optional[int]
+            if kind == "boundary":
+                boundary_index = pred.info.get("observed_boundary_index")
+                observed_index = int(boundary_index) if boundary_index is not None else end - 1
+            elif kind == "payload":
+                observed_index = start + pos
+            elif kind == "gap":
+                observed_index = start if pos <= 0 else start + pos - 1
+            else:
+                continue
+            if observed_index < 0 or observed_index >= len(observed_provenance):
+                continue
+            provenance = observed_provenance[observed_index]
+            block_id = provenance.get("original_block_id")
+            original_structural_index = provenance.get("original_structural_index")
+            if block_id is None or original_structural_index is None:
+                continue
+            block_id = int(block_id)
+            if not 0 <= block_id < num_gt_blocks:
+                continue
+            local_position = int(original_structural_index) % (block_len + 1)
+            if kind == "gap":
+                mapped_loc = ("gap", min(block_len, local_position + (1 if pos > 0 else 0)))
+            elif kind == "boundary" or local_position == block_len:
+                mapped_loc = ("boundary", block_len)
+            else:
+                mapped_loc = ("payload", min(block_len - 1, local_position))
+            mapped.add((block_id, mapped_loc))
+        return sorted(mapped, key=lambda item: (item[0], _loc_sort_key(item[1])))
+
+    for pred in pred_blocks:
+        observed_indices = provenance_indices_for_pred(pred)
+        source_blocks = source_blocks_for_indices(observed_indices)
+        parsed_to_source_blocks.append(source_blocks)
+        pred_edited = parsed_block_exceeds_tolerance(
+            pred,
+            tolerance=tolerance,
+            codebook=codebook,
+        )
+        if pred_edited and not source_blocks:
+            unassigned_suspicious_parses += 1
+        for block_id in source_blocks:
+            source_pred_flags[block_id] = source_pred_flags[block_id] or pred_edited
+            if pred.decoded_codeword is not None:
+                source_decoded_codewords[block_id].add(tuple(int(x) for x in pred.decoded_codeword))
+            for candidate in pred.info.get("best_codewords", []):
+                source_decoded_codewords[block_id].add(tuple(int(x) for x in candidate))
+        for block_id, location in candidate_source_locations(pred):
+            source_candidates[block_id].add(location)
+
+    tp = fp = fn = tn = 0
+    event_loc_total = event_loc_hit = 0
+    block_loc_total = block_loc_hit = 0
+    codeword_rec_total = codeword_rec_hit = 0
+    by_type_event_total = Counter()
+    by_type_event_hit = Counter()
+    cand_size_counter = Counter()
+    candidate_sizes: List[int] = []
+    for block_id, gt_events in enumerate(gt_events_per_block):
+        gt_edited = bool(gt_events)
+        pred_edited = bool(source_pred_flags[block_id])
+        if gt_edited and pred_edited:
+            tp += 1
+        elif gt_edited:
+            fn += 1
+        elif pred_edited:
+            fp += 1
+        else:
+            tn += 1
+        if not gt_edited:
+            continue
+        codeword_rec_total += 1
+        if tuple(int(x) for x in original_payload_blocks[block_id]) in source_decoded_codewords[block_id]:
+            codeword_rec_hit += 1
+        block_loc_total += 1
+        if all(ev.loc in source_candidates[block_id] for ev in gt_events):
+            block_loc_hit += 1
+        for event in gt_events:
+            event_loc_total += 1
+            by_type_event_total[event.etype] += 1
+            if event.loc in source_candidates[block_id]:
+                event_loc_hit += 1
+                by_type_event_hit[event.etype] += 1
+        candidate_size = len(source_candidates[block_id])
+        candidate_sizes.append(candidate_size)
+        cand_size_counter[candidate_size] += 1
+
+    return {
+        "num_gt_blocks": num_gt_blocks,
+        "num_pred_blocks": len(pred_blocks),
+        "block_count_match": num_gt_blocks == len(pred_blocks),
+        "TP": tp,
+        "FP": fp,
+        "FN": fn,
+        "TN": tn,
+        "block_tpr": tp / (tp + fn) if (tp + fn) > 0 else 0.0,
+        "block_far": fp / (fp + tn) if (fp + tn) > 0 else 0.0,
+        "codeword_recovery_hit": codeword_rec_hit,
+        "codeword_recovery_total": codeword_rec_total,
+        "codeword_recovery_acc": codeword_rec_hit / codeword_rec_total if codeword_rec_total else 0.0,
+        "block_loc_hit": block_loc_hit,
+        "localization_acc_overall": block_loc_hit / block_loc_total if block_loc_total else 0.0,
+        "loc_total_overall": block_loc_total,
+        "event_loc_hit": event_loc_hit,
+        "event_coverage_overall": event_loc_hit / event_loc_total if event_loc_total else 0.0,
+        "event_coverage_sub": by_type_event_hit["sub"] / by_type_event_total["sub"] if by_type_event_total["sub"] else 0.0,
+        "event_coverage_insert": by_type_event_hit["insert"] / by_type_event_total["insert"] if by_type_event_total["insert"] else 0.0,
+        "event_coverage_delete": by_type_event_hit["delete"] / by_type_event_total["delete"] if by_type_event_total["delete"] else 0.0,
+        "event_total_overall": event_loc_total,
+        "event_total_sub": by_type_event_total["sub"],
+        "event_total_insert": by_type_event_total["insert"],
+        "event_total_delete": by_type_event_total["delete"],
+        "mean_candidate_size": sum(candidate_sizes) / len(candidate_sizes) if candidate_sizes else 0.0,
+        "candidate_size_hist": dict(sorted(cand_size_counter.items())),
+        "source_pred_flags": [int(x) for x in source_pred_flags],
+        "source_candidate_locations": [
+            [[kind, int(index)] for kind, index in sorted(locations, key=_loc_sort_key)]
+            for locations in source_candidates
+        ],
+        "parsed_to_source_blocks": parsed_to_source_blocks,
+        "unassigned_suspicious_parses": int(unassigned_suspicious_parses),
     }
 
 

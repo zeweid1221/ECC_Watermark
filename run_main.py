@@ -6,9 +6,10 @@ from typing import List
 
 import pandas as pd
 
-from watermark_project.config import ModelConfig, PromptConfig, RunConfig, SegmentBaselineConfig
+from watermark_project.config import GenerationProtocolConfig, ModelConfig, PromptConfig, RunConfig, SegmentBaselineConfig
 from watermark_project.experiment import run_experiment
 from watermark_project.io_utils import ensure_dir
+from watermark_project.model_profiles import MODEL_PROFILES, get_model_profile
 
 
 SMOKE_PROMPTS = [
@@ -84,10 +85,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Unified ECC/KGW watermark experiment runner.")
     parser.add_argument("--output-dir", type=str, default="outputs/main_run")
     parser.add_argument("--backend", type=str, choices=["mock", "hf"], default="mock")
-    parser.add_argument("--model-name", type=str, default="mock-lm")
+    parser.add_argument("--model-profile", choices=sorted(MODEL_PROFILES), default=None)
+    parser.add_argument("--model-name", type=str, default=None)
     parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument("--use-4bit", action="store_true")
     parser.add_argument("--prompt-file", type=str, default=None)
+    parser.add_argument("--partition-dir", type=str, default=None)
     parser.add_argument("--schemes", type=str, default="ecc,kgw")
     parser.add_argument("--watermark-modes", type=str, default="hard,soft")
     parser.add_argument("--ecc-adaptive-modes", type=str, default="true,false")
@@ -97,6 +100,23 @@ def main() -> None:
     parser.add_argument("--edit-rates", type=str, default="0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8")
     parser.add_argument("--target-blocks", type=int, default=8)
     parser.add_argument("--max-new-tokens", type=int, default=160)
+    parser.add_argument("--max-prompt-tokens", type=int, default=256)
+    parser.add_argument("--stop-after", choices=["closed_blocks", "feasible_blocks"], default="closed_blocks")
+    parser.add_argument("--sampling", choices=["sample", "greedy"], default="sample")
+    parser.add_argument("--temperature", type=float, default=0.75)
+    parser.add_argument("--top-k", type=int, default=40)
+    parser.add_argument("--top-p", type=float, default=0.9)
+    parser.add_argument("--repetition-penalty", type=float, default=1.2)
+    parser.add_argument("--prompt-style", choices=["qa", "plain"], default="qa")
+    parser.add_argument("--use-chat-template", action=argparse.BooleanOptionalAction, default=None)
+    parser.add_argument("--enable-thinking", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--ascii-token-filter", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument(
+        "--require-semantic-partition",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Reject partition artifacts that were not built from model embeddings.",
+    )
     parser.add_argument("--prompt-count", type=int, default=8)
     parser.add_argument("--attack-max-edits-per-block", type=int, default=1)
     parser.add_argument("--attack-max-edits-per-blocks", type=str, default=None)
@@ -105,8 +125,28 @@ def main() -> None:
     parser.add_argument("--segment-methods", type=str, default=None)
     parser.add_argument("--segment-aol-backend", type=str, choices=["simple", "aligator"], default="simple")
     parser.add_argument("--segment-aol-aligator-source", type=str, default="llm-watermark-location-main")
+    parser.add_argument("--disable-segment-baselines", action="store_true")
     parser.add_argument("--smoke-test", action="store_true")
     args = parser.parse_args()
+    profile = get_model_profile(args.model_profile) if args.model_profile else None
+    if profile and args.model_name and args.model_name != profile.model_name:
+        parser.error(
+            f"--model-profile {profile.key} requires --model-name {profile.model_name!r}, "
+            f"not {args.model_name!r}."
+        )
+    model_name = args.model_name or (profile.model_name if profile else "mock-lm")
+    use_chat_template = (
+        args.use_chat_template
+        if args.use_chat_template is not None
+        else (profile.use_chat_template if profile else True)
+    )
+    prompt_style = profile.prompt_style if profile else args.prompt_style
+    enable_thinking = profile.enable_thinking if profile else args.enable_thinking
+    require_semantic_partition = (
+        args.require_semantic_partition
+        if args.require_semantic_partition is not None
+        else bool(profile and args.backend == "hf")
+    )
 
     ensure_dir(args.output_dir)
     if args.smoke_test:
@@ -114,7 +154,7 @@ def main() -> None:
             args.output_dir,
             device=args.device,
             backend=args.backend,
-            model_name=args.model_name,
+            model_name=model_name,
             use_4bit=args.use_4bit,
         )
     else:
@@ -133,15 +173,30 @@ def main() -> None:
         )
         cfg = RunConfig(
             output_dir=args.output_dir,
+            partition_dir=args.partition_dir,
+            require_semantic_partition=require_semantic_partition,
             model=ModelConfig(
                 backend=args.backend,
-                model_name=args.model_name,
+                model_name=model_name,
+                model_profile=args.model_profile,
                 device=args.device,
-                max_prompt_tokens=96,
+                max_prompt_tokens=args.max_prompt_tokens,
                 mock_vocab_size=220,
                 use_4bit=args.use_4bit,
             ),
             prompts=prompt_cfg,
+            generation_protocol=GenerationProtocolConfig(
+                stop_after=args.stop_after,
+                sampling=args.sampling,
+                temperature=args.temperature,
+                top_k=args.top_k,
+                top_p=args.top_p,
+                repetition_penalty=args.repetition_penalty,
+                prompt_style=prompt_style,
+                use_chat_template=use_chat_template,
+                enable_thinking=enable_thinking,
+                ascii_token_filter=args.ascii_token_filter,
+            ),
             schemes=parse_csv_strs(args.schemes),
             watermark_modes=parse_csv_strs(args.watermark_modes),
             ecc_adaptive_modes=adaptive_modes or [True, False],
@@ -160,12 +215,14 @@ def main() -> None:
             decoder_max_edits_per_block=args.decoder_max_edits_per_block,
             ecc_tolerance_by_logit_bias=parse_tolerance_map(args.ecc_tolerance_by_logit_bias),
             segment_baselines=SegmentBaselineConfig(
+                enabled=not args.disable_segment_baselines,
                 methods=tuple(parse_csv_strs(args.segment_methods)) if args.segment_methods else ("zhao_aol", "waterseeker"),
                 aol_backend=args.segment_aol_backend,
                 aol_aligator_source=args.segment_aol_aligator_source,
             ),
         )
 
+    cfg.segment_baselines.enabled = not args.disable_segment_baselines
     cfg.segment_baselines.aol_backend = args.segment_aol_backend
     cfg.segment_baselines.aol_aligator_source = args.segment_aol_aligator_source
     if args.segment_methods:

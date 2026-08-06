@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import json
+import hashlib
+from pathlib import Path
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Sequence, Set, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 import numpy as np
 
 from .config import ECCConfig
-from .modeling import BaseLanguageModel, clean_text
+from .modeling import BaseLanguageModel, clean_text, stable_hash_int
 
 import re
 
@@ -53,6 +56,11 @@ class VocabularyPartition:
     boundary_ids: List[int]
     banned_ids: List[int]
     boundary_report: List[Dict[str, object]]
+    metadata: Dict[str, Any] = None
+
+    def __post_init__(self) -> None:
+        if self.metadata is None:
+            self.metadata = {}
 
 
 def normalize_surface(text: str) -> str:
@@ -146,7 +154,7 @@ def assign_semantic_groups(embedding_matrix: Optional[np.ndarray], candidate_ids
     groups: Dict[int, List[int]] = {}
     if embedding_matrix is None or len(candidate_ids) == 0:
         for token_id in candidate_ids:
-            key = abs(hash((token_id, token_id % 17))) % max(1, 2**min(8, lsh_bits))
+            key = stable_hash_int((token_id, token_id % 17), modulo=max(1, 2**min(8, lsh_bits)))
             groups.setdefault(key, []).append(int(token_id))
         return groups
 
@@ -166,6 +174,7 @@ def build_payload_buckets(
     freq: np.ndarray,
     boundary_ids: Sequence[int],
     config: ECCConfig,
+    embedding_matrix: Optional[np.ndarray] = None,
 ) -> Tuple[List[int], List[int]]:
     boundary_set = set(int(x) for x in boundary_ids)
     special_ids = set(model.all_special_ids)
@@ -174,7 +183,7 @@ def build_payload_buckets(
         for token_id in range(model.vocab_size)
         if token_id not in boundary_set and token_id not in special_ids
     ]
-    groups = assign_semantic_groups(model.embedding_matrix(), candidate_ids, config.lsh_bits)
+    groups = assign_semantic_groups(embedding_matrix, candidate_ids, config.lsh_bits)
     bucket0: List[int] = []
     bucket1: List[int] = []
     count0 = count1 = 0
@@ -223,11 +232,13 @@ def build_vocabulary_partition(
         freq=freq,
         target_size=effective_boundary_pool,
     )
+    embedding_matrix = model.embedding_matrix()
     bucket0_ids, bucket1_ids = build_payload_buckets(
         model=model,
         freq=freq,
         boundary_ids=boundary_ids,
         config=config,
+        embedding_matrix=embedding_matrix,
     )
     token_to_bucket = np.full(model.vocab_size, fill_value=-1, dtype=np.int16)
     token_to_bucket[np.array(bucket0_ids, dtype=np.int64)] = 0
@@ -241,4 +252,212 @@ def build_vocabulary_partition(
         boundary_ids=boundary_ids,
         banned_ids=banned_ids,
         boundary_report=boundary_report,
+        metadata={
+            **model_partition_identity(model),
+            "payload_split_source": (
+                "embedding_lsh" if embedding_matrix is not None else "deterministic_hash_fallback_no_lm_weights"
+            ),
+            "lsh_bits": int(config.lsh_bits),
+        },
     )
+
+
+def build_vocabulary_partition_from_boundary_ids(
+    model: BaseLanguageModel,
+    texts_for_frequency: Sequence[str],
+    config: ECCConfig,
+    boundary_ids: Sequence[int],
+    boundary_report: Optional[List[Dict[str, object]]] = None,
+) -> VocabularyPartition:
+    """Build bucket0/1 around an externally fixed bucket2 boundary set."""
+    freq = build_token_frequency(model, texts_for_frequency)
+    boundary_ids = [int(x) for x in boundary_ids]
+    embedding_matrix = model.embedding_matrix()
+    bucket0_ids, bucket1_ids = build_payload_buckets(
+        model=model,
+        freq=freq,
+        boundary_ids=boundary_ids,
+        config=config,
+        embedding_matrix=embedding_matrix,
+    )
+    token_to_bucket = np.full(model.vocab_size, fill_value=-1, dtype=np.int16)
+    token_to_bucket[np.array(bucket0_ids, dtype=np.int64)] = 0
+    token_to_bucket[np.array(bucket1_ids, dtype=np.int64)] = 1
+    token_to_bucket[np.array(boundary_ids, dtype=np.int64)] = 2
+    banned_ids = sorted(set(int(x) for x in model.all_special_ids))
+    return VocabularyPartition(
+        token_to_bucket=token_to_bucket,
+        bucket0_ids=bucket0_ids,
+        bucket1_ids=bucket1_ids,
+        boundary_ids=boundary_ids,
+        banned_ids=banned_ids,
+        boundary_report=boundary_report or [],
+        metadata={
+            **model_partition_identity(model),
+            "payload_split_source": (
+                "embedding_lsh" if embedding_matrix is not None else "deterministic_hash_fallback_no_lm_weights"
+            ),
+            "lsh_bits": int(config.lsh_bits),
+        },
+    )
+
+
+def model_partition_identity(model: BaseLanguageModel) -> Dict[str, Any]:
+    tokenizer = getattr(model, "tokenizer", None)
+    config = getattr(model, "config", None)
+    model_name = getattr(config, "model_name", None) or getattr(tokenizer, "name_or_path", model.__class__.__name__)
+    tokenizer_digest = hashlib.sha256()
+    if tokenizer is not None and hasattr(tokenizer, "get_vocab"):
+        vocab_items = sorted(
+            ((int(token_id), str(token)) for token, token_id in tokenizer.get_vocab().items()),
+            key=lambda item: (item[0], item[1]),
+        )
+    elif hasattr(model, "id_to_token"):
+        vocab_items = [(index, str(token)) for index, token in enumerate(model.id_to_token)]
+    else:
+        vocab_items = [
+            (token_id, str(model.token_surface(token_id)))
+            for token_id in range(int(model.vocab_size))
+        ]
+    for token_id, token in vocab_items:
+        tokenizer_digest.update(int(token_id).to_bytes(8, byteorder="little", signed=False))
+        tokenizer_digest.update(token.encode("utf-8", errors="surrogatepass"))
+        tokenizer_digest.update(b"\0")
+    return {
+        "model_name": str(model_name),
+        "tokenizer_name_or_path": str(getattr(tokenizer, "name_or_path", model_name)),
+        "tokenizer_class": tokenizer.__class__.__name__ if tokenizer is not None else model.__class__.__name__,
+        "tokenizer_vocab_size": int(model.vocab_size),
+        "tokenizer_vocab_sha256": tokenizer_digest.hexdigest(),
+    }
+
+
+def partition_checksum(partition: VocabularyPartition) -> str:
+    digest = hashlib.sha256()
+    for values in (
+        np.asarray(partition.token_to_bucket, dtype=np.int16),
+        np.asarray(partition.bucket0_ids, dtype=np.int32),
+        np.asarray(partition.bucket1_ids, dtype=np.int32),
+        np.asarray(partition.boundary_ids, dtype=np.int32),
+        np.asarray(partition.banned_ids, dtype=np.int32),
+    ):
+        digest.update(values.tobytes(order="C"))
+    return digest.hexdigest()
+
+
+def validate_vocabulary_partition(
+    partition: VocabularyPartition,
+    model: BaseLanguageModel,
+    *,
+    require_semantic_split: bool = False,
+) -> None:
+    model_vocab_size = int(model.vocab_size)
+    if len(partition.token_to_bucket) != model_vocab_size:
+        raise ValueError(
+            "Loaded vocabulary partition does not match the model vocabulary size: "
+            f"partition={len(partition.token_to_bucket)} model={model_vocab_size}."
+        )
+    active_identity = model_partition_identity(model)
+    expected_name = str(active_identity["model_name"])
+    saved_name = partition.metadata.get("model_name")
+    if saved_name and str(saved_name) != expected_name:
+        raise ValueError(
+            "Loaded vocabulary partition was built for a different model: "
+            f"partition={saved_name!r} requested={expected_name!r}."
+        )
+    saved_vocab_size = partition.metadata.get("tokenizer_vocab_size")
+    if saved_vocab_size is not None and int(saved_vocab_size) != model_vocab_size:
+        raise ValueError(
+            "Loaded vocabulary partition tokenizer size does not match the active tokenizer: "
+            f"partition={saved_vocab_size} tokenizer={model_vocab_size}."
+        )
+    saved_vocab_hash = partition.metadata.get("tokenizer_vocab_sha256")
+    active_vocab_hash = active_identity["tokenizer_vocab_sha256"]
+    if saved_vocab_hash and str(saved_vocab_hash) != active_vocab_hash:
+        raise ValueError(
+            "Loaded vocabulary partition tokenizer vocabulary/order does not match the active tokenizer."
+        )
+    split_source = partition.metadata.get("payload_split_source")
+    if require_semantic_split and split_source != "embedding_lsh":
+        raise ValueError(
+            "This run requires an embedding-based semantic partition, but the loaded artifact "
+            f"records payload_split_source={split_source!r}."
+        )
+
+    bucket_sets = [
+        set(int(x) for x in partition.bucket0_ids),
+        set(int(x) for x in partition.bucket1_ids),
+        set(int(x) for x in partition.boundary_ids),
+    ]
+    if bucket_sets[0] & bucket_sets[1] or bucket_sets[0] & bucket_sets[2] or bucket_sets[1] & bucket_sets[2]:
+        raise ValueError("Vocabulary partition buckets overlap.")
+    for bucket_id, token_ids in enumerate(bucket_sets):
+        for token_id in token_ids:
+            if token_id < 0 or token_id >= model_vocab_size:
+                raise ValueError(f"Vocabulary partition contains out-of-range token id {token_id}.")
+            if int(partition.token_to_bucket[token_id]) != bucket_id:
+                raise ValueError(
+                    f"token_to_bucket disagrees with bucket{bucket_id}_ids for token {token_id}."
+                )
+
+
+def save_vocabulary_partition(
+    partition: VocabularyPartition,
+    output_dir: str | Path,
+    metadata: Optional[Dict[str, Any]] = None,
+) -> None:
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    np.save(output_path / "token_to_bucket.npy", partition.token_to_bucket.astype(np.int16))
+    np.save(output_path / "bucket0_ids.npy", np.array(partition.bucket0_ids, dtype=np.int32))
+    np.save(output_path / "bucket1_ids.npy", np.array(partition.bucket1_ids, dtype=np.int32))
+    np.save(output_path / "bucket2_ids.npy", np.array(partition.boundary_ids, dtype=np.int32))
+    np.save(output_path / "banned_ids.npy", np.array(partition.banned_ids, dtype=np.int32))
+    with open(output_path / "boundary_report.json", "w", encoding="utf-8") as handle:
+        json.dump(partition.boundary_report, handle, ensure_ascii=False, indent=2)
+    combined_metadata = {**partition.metadata, **(metadata or {})}
+    combined_metadata["partition_checksum_sha256"] = partition_checksum(partition)
+    config_payload = {
+        "num_bucket0": len(partition.bucket0_ids),
+        "num_bucket1": len(partition.bucket1_ids),
+        "num_bucket2": len(partition.boundary_ids),
+        "num_banned": len(partition.banned_ids),
+        "metadata": combined_metadata,
+    }
+    with open(output_path / "partition_config.json", "w", encoding="utf-8") as handle:
+        json.dump(config_payload, handle, ensure_ascii=False, indent=2)
+
+
+def load_vocabulary_partition(partition_dir: str | Path) -> VocabularyPartition:
+    partition_path = Path(partition_dir)
+    token_to_bucket = np.load(partition_path / "token_to_bucket.npy", allow_pickle=False).astype(np.int16)
+    bucket0_ids = np.load(partition_path / "bucket0_ids.npy", allow_pickle=False).astype(np.int64).tolist()
+    bucket1_ids = np.load(partition_path / "bucket1_ids.npy", allow_pickle=False).astype(np.int64).tolist()
+    boundary_ids = np.load(partition_path / "bucket2_ids.npy", allow_pickle=False).astype(np.int64).tolist()
+    banned_path = partition_path / "banned_ids.npy"
+    banned_ids = np.load(banned_path, allow_pickle=False).astype(np.int64).tolist() if banned_path.exists() else []
+    report_path = partition_path / "boundary_report.json"
+    if report_path.exists():
+        with open(report_path, "r", encoding="utf-8") as handle:
+            boundary_report = json.load(handle)
+    else:
+        boundary_report = []
+    config_path = partition_path / "partition_config.json"
+    if config_path.exists():
+        with open(config_path, "r", encoding="utf-8") as handle:
+            metadata = dict(json.load(handle).get("metadata") or {})
+    else:
+        metadata = {}
+    partition = VocabularyPartition(
+        token_to_bucket=token_to_bucket,
+        bucket0_ids=[int(x) for x in bucket0_ids],
+        bucket1_ids=[int(x) for x in bucket1_ids],
+        boundary_ids=[int(x) for x in boundary_ids],
+        banned_ids=[int(x) for x in banned_ids],
+        boundary_report=boundary_report,
+        metadata=metadata,
+    )
+    expected_checksum = metadata.get("partition_checksum_sha256")
+    if expected_checksum and str(expected_checksum) != partition_checksum(partition):
+        raise ValueError(f"Vocabulary partition checksum mismatch in {partition_path}.")
+    return partition

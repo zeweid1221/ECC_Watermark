@@ -1,0 +1,148 @@
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from build_qwen3_fixed_partition import (  # noqa: E402
+    DEFAULT_CANDIDATE_FILE,
+    load_candidate_words,
+    validate_boundary_candidates,
+    write_boundary_report_csv,
+)
+from preview_watermarked_generation_quality import load_prompt_lines  # noqa: E402
+from watermark_project.config import ECCConfig, ModelConfig  # noqa: E402
+from watermark_project.model_profiles import MODEL_PROFILES, get_model_profile  # noqa: E402
+from watermark_project.modeling import build_language_model  # noqa: E402
+from watermark_project.partitioning import (  # noqa: E402
+    build_token_frequency,
+    build_vocabulary_partition_from_boundary_ids,
+    partition_checksum,
+    save_vocabulary_partition,
+    validate_vocabulary_partition,
+)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Build one model-specific ECC partition using the active model embeddings."
+    )
+    parser.add_argument("--model-profile", choices=sorted(MODEL_PROFILES), required=True)
+    parser.add_argument("--model-name", default=None)
+    parser.add_argument("--backend", choices=["hf", "mock"], default="hf")
+    parser.add_argument("--device", default="cuda")
+    parser.add_argument("--use-4bit", action="store_true")
+    parser.add_argument("--prompt-file", required=True)
+    parser.add_argument("--candidate-file", default=str(DEFAULT_CANDIDATE_FILE))
+    parser.add_argument("--output-dir", required=True)
+    parser.add_argument("--target-boundary-size", type=int, default=150)
+    parser.add_argument("--max-boundary-frequency", type=int, default=50)
+    parser.add_argument("--min-surface-len", type=int, default=3)
+    parser.add_argument("--block-len", type=int, default=7)
+    parser.add_argument("--vt-a", type=int, default=6)
+    parser.add_argument("--lsh-bits", type=int, default=12)
+    parser.add_argument("--allow-hash-fallback", action="store_true")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    profile = get_model_profile(args.model_profile)
+    model_name = args.model_name or profile.model_name
+    if model_name != profile.model_name:
+        raise ValueError(
+            f"Profile {profile.key!r} is tied to {profile.model_name!r}, not {model_name!r}."
+        )
+    prompt_texts = load_prompt_lines(args.prompt_file)
+    if not prompt_texts:
+        raise RuntimeError(f"No prompts loaded from {args.prompt_file}")
+    candidate_words = load_candidate_words(args.candidate_file)
+    if not candidate_words:
+        raise RuntimeError(f"No boundary candidates loaded from {args.candidate_file}")
+
+    model = build_language_model(
+        ModelConfig(
+            backend=args.backend,
+            model_name=model_name,
+            model_profile=profile.key,
+            device=args.device,
+            use_4bit=args.use_4bit,
+            max_prompt_tokens=256,
+        ),
+        corpus_texts=prompt_texts,
+    )
+    ecc_config = ECCConfig(
+        block_len=args.block_len,
+        vt_a=args.vt_a,
+        target_boundary_pool=args.target_boundary_size,
+        lsh_bits=args.lsh_bits,
+    )
+    freq = build_token_frequency(model, prompt_texts)
+    boundary_ids, boundary_report = validate_boundary_candidates(
+        model=model,
+        candidate_words=candidate_words,
+        freq=freq,
+        target_size=args.target_boundary_size,
+        max_boundary_frequency=args.max_boundary_frequency,
+        min_surface_len=args.min_surface_len,
+    )
+    partition = build_vocabulary_partition_from_boundary_ids(
+        model=model,
+        texts_for_frequency=prompt_texts,
+        config=ecc_config,
+        boundary_ids=boundary_ids,
+        boundary_report=boundary_report,
+    )
+    if (
+        partition.metadata.get("payload_split_source") != "embedding_lsh"
+        and not args.allow_hash_fallback
+    ):
+        raise RuntimeError(
+            "The active model did not expose input embeddings. Refusing to save a non-semantic "
+            "partition without --allow-hash-fallback."
+        )
+    validate_vocabulary_partition(
+        partition,
+        model,
+        require_semantic_split=not args.allow_hash_fallback,
+    )
+
+    output_dir = Path(args.output_dir)
+    metadata = {
+        "partition_version": "model_specific_semantic_v1",
+        "model_profile": profile.key,
+        "model_name": model_name,
+        "prompt_file": str(Path(args.prompt_file)),
+        "candidate_file": str(Path(args.candidate_file)),
+        "num_partition_texts": len(prompt_texts),
+        "target_boundary_size": args.target_boundary_size,
+        "block_len": args.block_len,
+        "vt_a": args.vt_a,
+        "lsh_bits": args.lsh_bits,
+        "max_boundary_frequency": args.max_boundary_frequency,
+        "min_surface_len": args.min_surface_len,
+    }
+    save_vocabulary_partition(partition, output_dir, metadata=metadata)
+    write_boundary_report_csv(boundary_report, output_dir / "boundary_report.csv")
+    summary = {
+        **partition.metadata,
+        **metadata,
+        "partition_checksum_sha256": partition_checksum(partition),
+        "num_bucket0": len(partition.bucket0_ids),
+        "num_bucket1": len(partition.bucket1_ids),
+        "num_bucket2": len(partition.boundary_ids),
+        "num_banned": len(partition.banned_ids),
+    }
+    with open(output_dir / "bucket_summary.json", "w", encoding="utf-8") as handle:
+        json.dump(summary, handle, ensure_ascii=False, indent=2)
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

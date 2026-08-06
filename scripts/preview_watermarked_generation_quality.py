@@ -20,19 +20,22 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from watermark_project.config import ECCConfig, GenerationSetting, ModelConfig  # noqa: E402
+from watermark_project.config import ECCConfig, GenerationProtocolConfig, GenerationSetting, ModelConfig  # noqa: E402
 from watermark_project.ecc_detector import decode_clean_structural_sequence  # noqa: E402
 from watermark_project.ecc_generator import EccGenerationResult, EccGenerator, EccRuntimeState  # noqa: E402
-from watermark_project.modeling import HfGenerationSession, HfLanguageModel, MockLanguageModel, build_language_model, clean_text  # noqa: E402
-from watermark_project.partitioning import build_vocabulary_partition  # noqa: E402
+from watermark_project.modeling import HfGenerationSession, HfLanguageModel, MockLanguageModel, build_language_model, clean_text, stable_hash_int  # noqa: E402
+from watermark_project.model_profiles import MODEL_PROFILES, get_model_profile  # noqa: E402
+from watermark_project.partitioning import build_vocabulary_partition, load_vocabulary_partition, save_vocabulary_partition, validate_vocabulary_partition  # noqa: E402
+from watermark_project.ppl import compute_generation_perplexities  # noqa: E402
 
 try:  # noqa: E402
     import torch
-    from transformers import AutoModelForCausalLM, BitsAndBytesConfig
+    from transformers import AutoModelForCausalLM, BitsAndBytesConfig, __version__ as transformers_version
 except Exception:  # pragma: no cover
     torch = None
     AutoModelForCausalLM = None
     BitsAndBytesConfig = None
+    transformers_version = "0"
 
 
 DEFAULT_PROMPTS = [
@@ -71,9 +74,12 @@ class PreviewSingleGpu4BitHfLanguageModel(HfLanguageModel):
                 bnb_4bit_compute_dtype=torch.float16,
             )
             quant_kwargs["device_map"] = {"": 0}
+            quant_kwargs["max_memory"] = {0: "7GiB", "cpu": "6GiB"}
+            quant_kwargs["offload_state_dict"] = True
             quant_kwargs["local_files_only"] = bool(os.environ.get("HF_HUB_OFFLINE") or os.environ.get("TRANSFORMERS_OFFLINE"))
             quant_kwargs.pop("torch_dtype", None)
-            quant_kwargs["dtype"] = torch.float16
+            dtype_key = "dtype" if int(transformers_version.split(".", 1)[0]) >= 5 else "torch_dtype"
+            quant_kwargs[dtype_key] = torch.float16
             model = AutoModelForCausalLM.from_pretrained(config.model_name, **quant_kwargs)
             self._quantization_mode = "4bit"
             print(f"[info] Loaded {config.model_name} with single-GPU 4-bit quantization on {self.device}.")
@@ -89,12 +95,15 @@ def parse_args() -> argparse.Namespace:
         )
     )
     parser.add_argument("--backend", choices=["mock", "hf"], default="mock")
-    parser.add_argument("--model-name", default="mock-lm")
+    parser.add_argument("--model-profile", choices=sorted(MODEL_PROFILES), default=None)
+    parser.add_argument("--model-name", default=None)
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--use-4bit", action="store_true")
     parser.add_argument("--use-8bit", action="store_true")
     parser.add_argument("--prompt-file", default=None)
     parser.add_argument("--partition-prompt-file", default=None)
+    parser.add_argument("--partition-dir", default=None)
+    parser.add_argument("--require-semantic-partition", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--output-dir", default="outputs/text_quality_preview")
     parser.add_argument("--num-samples", type=int, default=4)
     parser.add_argument("--prompt-style", choices=["qa", "plain"], default="qa")
@@ -127,7 +136,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=20260607)
     parser.add_argument("--include-unwatermarked", action="store_true")
     parser.add_argument("--print-samples", type=int, default=4)
-    return parser.parse_args()
+    args = parser.parse_args()
+    profile = get_model_profile(args.model_profile) if args.model_profile else None
+    if profile and args.model_name and args.model_name != profile.model_name:
+        parser.error(
+            f"--model-profile {profile.key} requires --model-name {profile.model_name!r}."
+        )
+    args.model_name = args.model_name or (profile.model_name if profile else "mock-lm")
+    if profile and not args.use_chat_template:
+        args.use_chat_template = profile.use_chat_template
+    return args
 
 
 def load_prompt_lines(path: Optional[str]) -> List[str]:
@@ -290,93 +308,23 @@ def generate_watermarked_preview(
     setting: GenerationSetting,
     args: argparse.Namespace,
 ) -> EccGenerationResult:
-    adaptive = bool(setting.adaptive)
-    py_rng = random.Random(setting.seed ^ abs(hash(rendered_prompt)))
-    np_rng = np.random.default_rng((setting.seed + abs(hash(rendered_prompt))) % (2**32))
-    session = start_preview_session(generator.model, rendered_prompt, prompt_mode)
-    state = EccRuntimeState()
-    generated_ids: List[int] = []
-    generated_buckets: List[int] = []
-    raw_top_trace: List[Dict[str, Any]] = []
-    english_ban_mask = getattr(generator, "preview_english_ban_mask", None)
-    steps = 0
-
-    def reached_target() -> bool:
-        if args.stop_after == "feasible_blocks":
-            return state.completed_blocks >= setting.target_blocks
-        return len(state.block_summaries) >= setting.target_blocks
-
-    while not reached_target() and steps < setting.max_new_tokens:
-        raw_logits = session.next_logits()
-        if not adaptive and state.current_codeword is None and len(state.current_bits) == 0:
-            state.current_codeword = generator.choose_fixed_codeword(raw_logits, py_rng)
-            state.chosen_codewords.append(state.current_codeword.copy())
-
-        allowed_bits = generator.allowed_next_bits(state.current_bits, adaptive, state.current_codeword)
-        if not allowed_bits and len(state.current_bits) < generator.config.block_len:
-            allowed_bits = {0, 1}
-
-        if setting.watermark_mode == "hard":
-            adjusted_logits = generator.apply_hard_control(
-                logits=raw_logits,
-                state=state,
-                allowed_bits=allowed_bits,
-                boundary_bonus=generator.config.boundary_bonus,
-            )
-        else:
-            adjusted_logits = generator.apply_soft_control(
-                logits=raw_logits,
-                state=state,
-                allowed_bits=allowed_bits,
-                logit_bias=setting.resolved_logit_bias(),
-                boundary_bonus=generator.config.boundary_bonus,
-            )
-
-        if english_ban_mask is not None:
-            candidate_logits = adjusted_logits.copy()
-            candidate_logits[english_ban_mask] = -1e9
-            if np.any(np.isfinite(candidate_logits) & (candidate_logits > -1e8)):
-                adjusted_logits = candidate_logits
-        adjusted_logits = apply_repetition_penalty(adjusted_logits, generated_ids, args.repetition_penalty)
-        raw_top_id = int(np.argmax(raw_logits))
-        next_id = sample_token(
-            adjusted_logits,
-            rng=np_rng,
-            sampling=args.sampling,
-            temperature=args.temperature,
-            top_k=args.top_k,
-            top_p=args.top_p,
-        )
-        next_bucket = int(generator.partition.token_to_bucket[next_id]) if next_id < len(generator.partition.token_to_bucket) else -1
-        session.append(next_id)
-        generated_ids.append(next_id)
-        generated_buckets.append(next_bucket)
-        raw_top_trace.append(
-            {
-                "step": steps,
-                "raw_top_id": raw_top_id,
-                "chosen_id": next_id,
-                "chosen_bucket": next_bucket,
-                "payload_len_before_step": len(state.current_bits),
-            }
-        )
-        generator.update_runtime_state(state, next_bucket)
-        steps += 1
-
-    full_token_ids = session.prompt_ids + generated_ids
-    structural_seq = [bucket for bucket in generated_buckets if bucket in (0, 1, 2)]
-    decoded_clean = decode_clean_structural_sequence(structural_seq, generator.codebook)
-    return EccGenerationResult(
-        prompt=raw_prompt,
-        full_text=generator.model.decode(full_token_ids, skip_special_tokens=True),
-        suffix_text=generator.model.decode(generated_ids, skip_special_tokens=True),
-        generated_token_ids=generated_ids,
-        generated_bucket_seq=generated_buckets,
-        structural_seq=structural_seq,
-        decoded_clean=decoded_clean,
-        runtime_state=state,
-        raw_top_trace=raw_top_trace,
+    protocol = GenerationProtocolConfig(
+        stop_after=args.stop_after,
+        sampling=args.sampling,
+        temperature=args.temperature,
+        top_k=args.top_k,
+        top_p=args.top_p,
+        repetition_penalty=args.repetition_penalty,
+        prompt_style=args.prompt_style,
+        use_chat_template=args.use_chat_template,
+        enable_thinking=args.enable_thinking,
+        system_prompt=args.system_prompt,
+        ascii_token_filter=args.english_token_filter,
     )
+    result = generator.generate_one(raw_prompt, setting, protocol=protocol)
+    if result.rendered_prompt != rendered_prompt or result.prompt_mode != prompt_mode:
+        raise RuntimeError("Preview prompt rendering diverged from the shared core generation protocol.")
+    return result
 
 
 def generate_unwatermarked_preview(
@@ -385,18 +333,18 @@ def generate_unwatermarked_preview(
     prompt_mode: str,
     args: argparse.Namespace,
     sample_seed: int,
-) -> str:
+    target_new_tokens: int,
+) -> Tuple[str, List[int]]:
     rng = np.random.default_rng(sample_seed % (2**32))
     session = start_preview_session(model, rendered_prompt, prompt_mode)
     generated_ids: List[int] = []
     special_ids = set(int(x) for x in model.all_special_ids)
     english_ban_mask = build_english_ban_mask(model, args.english_token_filter)
-    eos_id = int(model.eos_token_id)
-    for _ in range(args.max_new_tokens):
+    for _ in range(int(target_new_tokens)):
         logits = session.next_logits()
         adjusted = apply_repetition_penalty(logits, generated_ids, args.repetition_penalty)
         for token_id in special_ids:
-            if token_id != eos_id and 0 <= token_id < adjusted.size:
+            if 0 <= token_id < adjusted.size:
                 adjusted[token_id] = -1e9
         if args.english_token_filter:
             candidate = adjusted.copy()
@@ -404,11 +352,9 @@ def generate_unwatermarked_preview(
             if np.any(np.isfinite(candidate) & (candidate > -1e8)):
                 adjusted = candidate
         next_id = sample_token(adjusted, rng, args.sampling, args.temperature, args.top_k, args.top_p)
-        if next_id == eos_id:
-            break
         session.append(next_id)
         generated_ids.append(next_id)
-    return model.decode(generated_ids, skip_special_tokens=True)
+    return model.decode(generated_ids, skip_special_tokens=True), generated_ids
 
 
 def result_to_row(
@@ -457,6 +403,7 @@ def result_to_row(
         "num_structural_symbols": len(result.structural_seq),
         "completed_blocks": result.runtime_state.completed_blocks,
         "runtime_block_summaries": len(result.runtime_state.block_summaries),
+        "stop_reason": result.stop_reason,
         "clean_valid_blocks": result.decoded_clean.get("valid_blocks"),
         "generated_token_ids": json.dumps(result.generated_token_ids),
         "generated_token_surfaces": json.dumps(token_surfaces),
@@ -479,10 +426,14 @@ def main() -> None:
     partition_texts = load_prompt_lines(args.partition_prompt_file) if args.partition_prompt_file else prompt_lines
     if not partition_texts:
         partition_texts = prompt_lines
+    with open(output_dir / "partition_texts.txt", "w", encoding="utf-8") as handle:
+        for text in partition_texts:
+            handle.write(clean_text(text) + "\n")
 
     model_config = ModelConfig(
         backend=args.backend,
         model_name=args.model_name,
+        model_profile=args.model_profile,
         device=args.device,
         max_prompt_tokens=args.max_prompt_tokens,
         mock_vocab_size=256,
@@ -491,9 +442,26 @@ def main() -> None:
     )
     model = build_preview_language_model(model_config, corpus_texts=partition_texts)
     ecc_config = ECCConfig(block_len=args.block_len, vt_a=args.vt_a)
-    partition = build_vocabulary_partition(model, partition_texts, ecc_config)
+    if args.partition_dir:
+        partition = load_vocabulary_partition(args.partition_dir)
+        validate_vocabulary_partition(
+            partition,
+            model,
+            require_semantic_split=args.require_semantic_partition,
+        )
+        partition_source = "partition_dir"
+    else:
+        partition = build_vocabulary_partition(model, partition_texts, ecc_config)
+        partition_source = "partition_prompt_file" if args.partition_prompt_file else "preview_prompts"
+        save_vocabulary_partition(
+            partition,
+            output_dir / "partition",
+            metadata={
+                "partition_source": partition_source,
+                "num_partition_texts": len(partition_texts),
+            },
+        )
     generator = EccGenerator(model, partition, ecc_config)
-    generator.preview_english_ban_mask = build_english_ban_mask(model, args.english_token_filter)
 
     setting = GenerationSetting(
         scheme="ecc",
@@ -507,6 +475,8 @@ def main() -> None:
 
     rows: List[Dict[str, Any]] = []
     detailed: List[Dict[str, Any]] = []
+    wm_results: List[EccGenerationResult] = []
+    unwatermarked_token_ids: List[List[int]] = []
     for idx, raw_prompt in enumerate(prompt_lines):
         user_prompt = build_user_prompt(raw_prompt, args.prompt_style)
         rendered_prompt, prompt_mode = render_prompt_for_model(
@@ -517,15 +487,20 @@ def main() -> None:
             enable_thinking=args.enable_thinking,
         )
         wm_result = generate_watermarked_preview(generator, raw_prompt, rendered_prompt, prompt_mode, setting, args)
+        wm_results.append(wm_result)
         row = result_to_row(idx, raw_prompt, user_prompt, rendered_prompt, prompt_mode, wm_result, model)
         if args.include_unwatermarked:
-            row["unwatermarked_text"] = generate_unwatermarked_preview(
+            unwatermarked_text, unwatermarked_ids = generate_unwatermarked_preview(
                 model=model,
                 rendered_prompt=rendered_prompt,
                 prompt_mode=prompt_mode,
                 args=args,
                 sample_seed=args.seed + 9000 + idx,
+                target_new_tokens=len(wm_result.generated_token_ids),
             )
+            row["unwatermarked_text"] = unwatermarked_text
+            row["unwatermarked_generated_token_ids"] = json.dumps(unwatermarked_ids)
+            unwatermarked_token_ids.append(unwatermarked_ids)
         rows.append(row)
         detailed.append(
             {
@@ -536,6 +511,24 @@ def main() -> None:
                 "setting": asdict(setting),
             }
         )
+
+    wm_ppl = compute_generation_perplexities(
+        model,
+        prompt_token_ids=[result.prompt_token_ids for result in wm_results],
+        generated_token_ids=[result.generated_token_ids for result in wm_results],
+    )
+    for row_index, row in enumerate(rows):
+        row.update({f"watermarked_{key}": value for key, value in wm_ppl.items()})
+        detailed[row_index].update({f"watermarked_{key}": value for key, value in wm_ppl.items()})
+    if args.include_unwatermarked:
+        unwatermarked_ppl = compute_generation_perplexities(
+            model,
+            prompt_token_ids=[result.prompt_token_ids for result in wm_results],
+            generated_token_ids=unwatermarked_token_ids,
+        )
+        for row_index, row in enumerate(rows):
+            row.update({f"unwatermarked_{key}": value for key, value in unwatermarked_ppl.items()})
+            detailed[row_index].update({f"unwatermarked_{key}": value for key, value in unwatermarked_ppl.items()})
 
     csv_path = output_dir / "preview_generations.csv"
     json_path = output_dir / "preview_generations.json"
@@ -555,13 +548,14 @@ def main() -> None:
                 "quantization_mode": getattr(model, "quantization_mode", "none"),
                 "num_partition_texts": len(partition_texts),
                 "partition_prompt_file": args.partition_prompt_file,
-                "partition_source": "partition_prompt_file" if args.partition_prompt_file else "preview_prompts",
+                "partition_dir": args.partition_dir,
+                "partition_source": partition_source,
                 "num_bucket0": len(partition.bucket0_ids),
                 "num_bucket1": len(partition.bucket1_ids),
                 "num_boundary": len(partition.boundary_ids),
                 "english_token_filter": bool(args.english_token_filter),
                 "stop_after": args.stop_after,
-                "num_english_filter_banned": int(np.sum(generator.preview_english_ban_mask)),
+                "num_english_filter_banned": int(np.sum(build_english_ban_mask(model, args.english_token_filter))),
             },
             handle,
             ensure_ascii=False,

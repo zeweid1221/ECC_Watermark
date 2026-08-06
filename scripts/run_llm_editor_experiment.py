@@ -26,11 +26,24 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from watermark_project.config import ECCConfig, ModelConfig
-from watermark_project.ecc_detector import EccCodebook, EccDecoderConfig, detect_sequence_multiple, evaluate_predictions_multiple, parsed_block_exceeds_tolerance
+from watermark_project.ecc_detector import (
+    EccCodebook,
+    EccDecoderConfig,
+    detect_sequence_multiple,
+    evaluate_predictions_with_provenance,
+    parsed_block_exceeds_tolerance,
+)
 from watermark_project.edits import EditEvent
 from watermark_project.io_utils import ensure_dir, save_dataframe, to_jsonable, write_json
-from watermark_project.modeling import HfLanguageModel, build_language_model, clean_text
-from watermark_project.partitioning import VocabularyPartition, build_vocabulary_partition
+from watermark_project.modeling import HfLanguageModel, build_language_model, clean_text, stable_hash_int
+from watermark_project.model_profiles import MODEL_PROFILES, get_model_profile
+from watermark_project.partitioning import (
+    VocabularyPartition,
+    build_vocabulary_partition,
+    load_vocabulary_partition,
+    save_vocabulary_partition,
+    validate_vocabulary_partition,
+)
 
 
 BENIGN_MOTIVATIONS = {"grammar_polish", "clarity_improvement", "style_softening"}
@@ -53,6 +66,8 @@ class EditorSingleGpu4BitHfLanguageModel(HfLanguageModel):
                 bnb_4bit_compute_dtype=torch.float16,
             )
             quant_kwargs["device_map"] = {"": 0}
+            quant_kwargs["max_memory"] = {0: "7GiB", "cpu": "6GiB"}
+            quant_kwargs["offload_state_dict"] = True
             quant_kwargs["local_files_only"] = bool(os.environ.get("HF_HUB_OFFLINE") or os.environ.get("TRANSFORMERS_OFFLINE"))
             quant_kwargs.pop("torch_dtype", None)
             quant_kwargs["dtype"] = torch.float16
@@ -85,7 +100,7 @@ class ValidatedInstruction:
     new_content: str
     reason: str
     tokenized_new_ids: List[int]
-    mapped_new_bits: List[int]
+    mapped_new_buckets: List[int]
     affected_blocks: List[int]
     block_events: Dict[int, List[EditEvent]]
     structural_anchor: Dict[str, Any]
@@ -429,9 +444,9 @@ def build_edited_token_bucket_ids(
     dels_at: set[int] = set()
     for item in validated:
         if item.op == "insert" and item.gap_after is not None:
-            inserts_after.setdefault(int(item.gap_after), []).extend(int(x) for x in item.mapped_new_bits)
+            inserts_after.setdefault(int(item.gap_after), []).extend(int(x) for x in item.mapped_new_buckets)
         elif item.op == "substitute" and item.original_index is not None:
-            subs_at[int(item.original_index)] = [int(x) for x in item.mapped_new_bits]
+            subs_at[int(item.original_index)] = [int(x) for x in item.mapped_new_buckets]
         elif item.op == "delete" and item.original_index is not None:
             dels_at.add(int(item.original_index))
 
@@ -543,90 +558,37 @@ def build_detector_block_details(
     codebook: EccCodebook,
     boundary_symbol: int = 2,
 ) -> List[Dict[str, Any]]:
-    segments = split_structural_seq_with_positions(observed_sequence, boundary_symbol=boundary_symbol)
     details: List[Dict[str, Any]] = []
-    pred_idx = 0
-    for seg_idx, seg in enumerate(segments):
-        seg_tokens = [int(x) for x in seg["tokens"]]
-        if pred_idx >= len(pred_blocks):
-            break
-        if not seg_tokens:
-            pb = pred_blocks[pred_idx]
-            details.append(
-                {
-                    "parsed_block_index": int(pred_idx),
-                    "segment_index": int(seg_idx),
-                    "exceeds_tolerance": bool(parsed_block_exceeds_tolerance(pb, tolerance=tolerance, codebook=codebook)),
-                    "observed_structural_span": {"start": int(seg["token_start"]), "end_exclusive": int(seg["token_end_exclusive"])},
-                    "observed_structural_segment": [],
-                    "observed_payload_tokens": [int(x) for x in pb.block_tokens],
-                    "decoded_codeword": [int(x) for x in pb.decoded_codeword] if pb.decoded_codeword is not None else None,
-                    "candidate_edit_locations": [[str(loc[0]), int(loc[1])] for loc in pb.candidates],
-                    "is_boundary_edited": bool(pb.is_boundary_edited),
-                    "boundary_edit_type": pb.boundary_edit_type,
-                    "ended_with_boundary": bool(seg["ended_with_boundary"]),
-                    "actual_boundary_following_index": seg["boundary_index"],
-                    "payload_distance": pb.info.get("payload_distance"),
-                    "total_distance": pb.info.get("total_distance"),
-                    "boundary_state": pb.info.get("boundary_state"),
-                    "info": to_jsonable(pb.info),
-                }
-            )
-            pred_idx += 1
-            continue
-
-        local_consumed = 0
-        while pred_idx < len(pred_blocks) and local_consumed < len(seg_tokens):
-            pb = pred_blocks[pred_idx]
-            consumed = int(pb.info.get("consumed", len(pb.block_tokens)))
-            start = int(seg["token_start"] + local_consumed)
-            end = int(min(seg["token_start"] + local_consumed + consumed, seg["token_end_exclusive"]))
-            details.append(
-                {
-                    "parsed_block_index": int(pred_idx),
-                    "segment_index": int(seg_idx),
-                    "exceeds_tolerance": bool(parsed_block_exceeds_tolerance(pb, tolerance=tolerance, codebook=codebook)),
-                    "observed_structural_span": {"start": start, "end_exclusive": end},
-                    "observed_structural_segment": [int(x) for x in observed_sequence[start:end]],
-                    "observed_payload_tokens": [int(x) for x in pb.block_tokens],
-                    "decoded_codeword": [int(x) for x in pb.decoded_codeword] if pb.decoded_codeword is not None else None,
-                    "candidate_edit_locations": [[str(loc[0]), int(loc[1])] for loc in pb.candidates],
-                    "is_boundary_edited": bool(pb.is_boundary_edited),
-                    "boundary_edit_type": pb.boundary_edit_type,
-                    "ended_with_boundary": bool(seg["ended_with_boundary"]),
-                    "actual_boundary_following_index": int(seg["boundary_index"]) if (end == int(seg["token_end_exclusive"]) and seg["boundary_index"] is not None) else None,
-                    "payload_distance": pb.info.get("payload_distance"),
-                    "total_distance": pb.info.get("total_distance"),
-                    "boundary_state": pb.info.get("boundary_state"),
-                    "info": to_jsonable(pb.info),
-                }
-            )
-            local_consumed += consumed
-            pred_idx += 1
-
-    while pred_idx < len(pred_blocks):
-        pb = pred_blocks[pred_idx]
+    for pred_idx, pb in enumerate(pred_blocks):
+        start = pb.info.get("observed_span_start")
+        end = pb.info.get("observed_span_end_exclusive")
+        span = None
+        observed_segment = [int(x) for x in pb.block_tokens]
+        if start is not None and end is not None:
+            start = max(0, int(start))
+            end = max(start, min(int(end), len(observed_sequence)))
+            span = {"start": start, "end_exclusive": end}
+            observed_segment = [int(x) for x in observed_sequence[start:end]]
         details.append(
             {
                 "parsed_block_index": int(pred_idx),
                 "segment_index": None,
                 "exceeds_tolerance": bool(parsed_block_exceeds_tolerance(pb, tolerance=tolerance, codebook=codebook)),
-                "observed_structural_span": None,
-                "observed_structural_segment": [int(x) for x in pb.block_tokens],
+                "observed_structural_span": span,
+                "observed_structural_segment": observed_segment,
                 "observed_payload_tokens": [int(x) for x in pb.block_tokens],
                 "decoded_codeword": [int(x) for x in pb.decoded_codeword] if pb.decoded_codeword is not None else None,
                 "candidate_edit_locations": [[str(loc[0]), int(loc[1])] for loc in pb.candidates],
                 "is_boundary_edited": bool(pb.is_boundary_edited),
                 "boundary_edit_type": pb.boundary_edit_type,
-                "ended_with_boundary": None,
-                "actual_boundary_following_index": None,
+                "ended_with_boundary": pb.info.get("ended_with_boundary"),
+                "actual_boundary_following_index": pb.info.get("observed_boundary_index"),
                 "payload_distance": pb.info.get("payload_distance"),
                 "total_distance": pb.info.get("total_distance"),
                 "boundary_state": pb.info.get("boundary_state"),
                 "info": to_jsonable(pb.info),
             }
         )
-        pred_idx += 1
     return details
 
 
@@ -684,18 +646,39 @@ def build_editor_prompt(
     intent_label: str,
     units: Sequence[TextUnit],
     max_edited_blocks: int,
+    min_edit_instructions: int = 1,
+    max_edit_instructions: int = 2,
+    aggressive_malicious_edits: bool = False,
     question_aware: bool = False,
+    retry_feedback: Optional[str] = None,
 ) -> str:
     question_aware_block = ""
     if question_aware:
+        if intent_label == "malicious" and aggressive_malicious_edits:
+            malicious_guidance = (
+                "- For malicious motivations, act as a worst-case adversarial editor. Use local edits to make the answer materially misleading while keeping it plausible and not rewriting the whole answer.\n"
+                "- Prefer high-impact manipulations: reverse or weaken important factual claims; change quantities, dates, named entities, technical terms, causal relations, safety/risk implications, stance, certainty, or source authority.\n"
+                "- Avoid trivial spelling-only, formatting-only, or surface-artifact edits unless they materially change meaning.\n"
+            )
+        else:
+            malicious_guidance = (
+                "- For malicious motivations, do not fix surface artifacts; target how the answer responds to the question by altering certainty, attribution, stance, quantities, definitions, causal claims, or source credibility when appropriate.\n"
+                "- Keep the edit subtle and local, so the final answer remains mostly fluent and plausible.\n"
+            )
         question_aware_block = (
             "Question-aware editing objective:\n"
             "- Treat the source prompt as the question and the source suffix text as its answer.\n"
             "- Make sparse local edits to the answer, not a full rewrite.\n"
             "- The source answer may contain watermark-induced spacing, spelling, or glued-word artifacts; ignore those artifacts unless the motivation explicitly asks for grammar polish.\n"
-            "- For benign motivations, improve local wording while preserving how the answer responds to the question.\n"
-            "- For malicious motivations, do not fix surface artifacts; target how the answer responds to the question by altering certainty, attribution, stance, quantities, definitions, causal claims, or source credibility when appropriate.\n"
-            "- Keep the edit subtle and local, so the final answer remains mostly fluent and plausible.\n\n"
+            "- For benign motivations, improve local wording while preserving factual claims, quantities, entities, causal relations, certainty, stance, risk implications, source attribution, and how the answer responds to the question.\n"
+            f"{malicious_guidance}\n"
+        )
+    retry_block = ""
+    if retry_feedback:
+        retry_block = (
+            "Correction required after an invalid previous attempt:\n"
+            f"- {retry_feedback}\n"
+            "- Return a complete replacement JSON object, not a patch or explanation.\n\n"
         )
     return (
         "You are a sparse text editor for watermark robustness experiments.\n"
@@ -703,11 +686,16 @@ def build_editor_prompt(
         f"Motivation: {motivation}\n"
         f"Intent label: {intent_label}\n"
         "Allowed ops: substitute, delete, insert.\n"
-        f"Return 1 or 2 edit objects, and keep the total affected blocks below {max_edited_blocks}.\n"
-        "For substitute/delete, choose an index from a table row whose bucket_id is 0 or 1, and copy original_text exactly from that row's token_surface; do not write the full word if the table shows only a subword token.\n"
+        f"Return between {min_edit_instructions} and {max_edit_instructions} edit objects whenever possible, and keep the total affected blocks below {max_edited_blocks}.\n"
+        f"Do not stop after only a few edits unless fewer than {min_edit_instructions} valid local edit opportunities exist in the table.\n"
+        "For substitute/delete, choose an index from a table row whose bucket_id is 0, 1, or 2, and copy original_text exactly from that row's token_surface; do not write the full word if the table shows only a subword token.\n"
+        "STRICT NO-OP RULE: every substitute must change the selected token. After trimming and normalizing whitespace, new_content must not equal original_text.\n"
+        "Before returning JSON, compare every substitute's original_text and new_content. If they are identical, choose a genuinely different replacement, choose another token index, or use delete/insert instead.\n"
+        "A single unchanged substitute makes the entire response invalid; never use a substitute merely to reach the requested edit count.\n"
         "For insert, use gap_after from the table index after which the new content should be inserted.\n"
         "Never use blank-only new_content such as a single space; new_content must contain meaningful English words or punctuation plus words.\n"
         "Do not produce commentary outside JSON.\n\n"
+        f"{retry_block}"
         f"{question_aware_block}"
         "Source prompt:\n"
         f"{prompt}\n\n"
@@ -726,6 +714,57 @@ def build_editor_prompt(
         "  ]\n"
         "}\n"
     )
+
+
+def retry_feedback_for_error(error: str) -> str:
+    messages = {
+        "substitute_no_text_change": (
+            "At least one substitute used the same normalized text as the selected "
+            "original token. Replace it with different content or choose a different "
+            "operation/index."
+        ),
+        "invalid_json": (
+            "The response was not valid parseable JSON. Return exactly one JSON object "
+            "with no prose or Markdown fences."
+        ),
+        "original_text_mismatch": (
+            "At least one original_text value did not exactly copy the token_surface "
+            "from its selected table row. Copy the displayed token surface verbatim."
+        ),
+        "too_many_edit_instructions": (
+            "The edits list exceeded max_edit_instructions. Return no more than the "
+            "allowed maximum."
+        ),
+        "substitute_missing_new_content": (
+            "At least one substitute omitted meaningful new_content."
+        ),
+    }
+    return messages.get(error, f"The previous response failed validation: {error}.")
+
+
+def prepare_resume_records(
+    detail_rows: Sequence[Dict[str, Any]],
+    instruction_records: Sequence[Dict[str, Any]],
+    retry_skipped: bool,
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], set]:
+    if retry_skipped:
+        retained_details = [
+            dict(item)
+            for item in detail_rows
+            if str(item.get("used", "")).strip().lower() in {"true", "1"}
+        ]
+    else:
+        retained_details = [dict(item) for item in detail_rows]
+    completed_keys = {
+        (int(item["sequence_index"]), str(item["motivation"]))
+        for item in retained_details
+    }
+    retained_instructions = [
+        dict(item)
+        for item in instruction_records
+        if (int(item["sequence_index"]), str(item["motivation"])) in completed_keys
+    ]
+    return retained_details, retained_instructions, completed_keys
 
 
 def choose_surface_from_bucket(model, partition: VocabularyPartition, bucket_id: int, fallback: str) -> str:
@@ -832,15 +871,22 @@ def tokenize_new_content(model, text: str) -> List[int]:
     return [int(x) for x in model.encode(clean_text(text), add_special_tokens=False)]
 
 
-def map_token_ids_to_payload_bits(token_ids: Sequence[int], partition: VocabularyPartition) -> List[int]:
-    bits: List[int] = []
+def map_token_ids_to_structural_symbols(
+    token_ids: Sequence[int],
+    partition: VocabularyPartition,
+) -> List[int]:
+    symbols: List[int] = []
     for token_id in token_ids:
-        bucket = int(partition.token_to_bucket[int(token_id)]) if int(token_id) < len(partition.token_to_bucket) else -1
-        if bucket in (0, 1):
-            bits.append(int(bucket))
-        else:
-            bits.append(abs(hash(("fallback_payload_bit", int(token_id)))) % 2)
-    return bits
+        token_id = int(token_id)
+        bucket = (
+            int(partition.token_to_bucket[token_id])
+            if 0 <= token_id < len(partition.token_to_bucket)
+            else -1
+        )
+        if bucket not in (0, 1, 2):
+            raise ValueError(f"Token id {token_id} is excluded from the structural partition.")
+        symbols.append(bucket)
+    return symbols
 
 
 def local_window_for_index(text_token_ids: Sequence[int], model, index: int, radius: int = 1) -> str:
@@ -875,6 +921,46 @@ def build_exact_reconstruction_info(
     }
 
 
+def validate_saved_bucket_sequence_against_partition(
+    *,
+    token_ids: Sequence[int],
+    saved_bucket_sequence: Sequence[int],
+    partition: VocabularyPartition,
+    sequence_index: int,
+) -> Dict[str, Any]:
+    """Ensure a seed row's saved bucket sequence came from the loaded partition."""
+    loaded_buckets = [
+        int(partition.token_to_bucket[int(token_id)]) if int(token_id) < len(partition.token_to_bucket) else -1
+        for token_id in token_ids
+    ]
+    saved = [int(x) for x in saved_bucket_sequence]
+    compare_len = min(len(saved), len(loaded_buckets))
+    mismatches = [
+        {
+            "position": int(i),
+            "token_id": int(token_ids[i]),
+            "saved_bucket": int(saved[i]),
+            "loaded_bucket": int(loaded_buckets[i]),
+        }
+        for i in range(compare_len)
+        if int(saved[i]) != int(loaded_buckets[i])
+    ]
+    length_match = len(saved) == len(loaded_buckets)
+    if mismatches or not length_match:
+        preview = mismatches[:10]
+        raise RuntimeError(
+            "Seed token/bucket sequence is inconsistent with --partition-dir. "
+            f"sequence_index={sequence_index} saved_len={len(saved)} token_len={len(loaded_buckets)} "
+            f"mismatch_count={len(mismatches)} first_mismatches={preview}. "
+            "Regenerate the source text with this exact partition before running the editor."
+        )
+    return {
+        "partition_bucket_exact_match": True,
+        "partition_bucket_compare_len": int(compare_len),
+        "partition_bucket_mismatch_count": 0,
+    }
+
+
 def validate_and_translate_instructions(
     parsed_json: Dict[str, Any],
     motivation: str,
@@ -885,12 +971,19 @@ def validate_and_translate_instructions(
     partition: VocabularyPartition,
     model,
     max_edited_blocks: int,
+    min_edit_instructions: int = 1,
+    max_edit_instructions: int = 2,
+    max_block_edit_rate: float = 0.5,
 ) -> Tuple[List[ValidatedInstruction], Optional[str]]:
     if not isinstance(parsed_json, dict):
         return [], "json_not_dict"
     edits = parsed_json.get("edits")
     if not isinstance(edits, list) or len(edits) == 0:
         return [], "missing_or_empty_edits"
+    if len(edits) < int(min_edit_instructions):
+        return [], "too_few_edit_instructions"
+    if len(edits) > int(max_edit_instructions):
+        return [], "too_many_edit_instructions"
     if not units:
         return [], "no_text_units"
 
@@ -915,8 +1008,17 @@ def validate_and_translate_instructions(
         new_content = str(raw_edit.get("new_content", "") or "")
         if op in {"substitute", "insert"} and not str(new_content).strip():
             return [], f"{op}_missing_new_content"
+        if op == "substitute" and normalize_text_match(original_text) == normalize_text_match(new_content):
+            return [], "substitute_no_text_change"
         tokenized_new_ids = tokenize_new_content(model, new_content) if op in {"substitute", "insert"} else []
-        mapped_new_bits = map_token_ids_to_payload_bits(tokenized_new_ids, partition) if op in {"substitute", "insert"} else []
+        try:
+            mapped_new_buckets = (
+                map_token_ids_to_structural_symbols(tokenized_new_ids, partition)
+                if op in {"substitute", "insert"}
+                else []
+            )
+        except ValueError:
+            return [], "new_content_contains_excluded_token"
 
         if op in {"substitute", "delete"}:
             if "index" not in raw_edit:
@@ -930,46 +1032,70 @@ def validate_and_translate_instructions(
             local_window = local_window_for_index(text_token_ids, model, idx)
             if not approx_text_match(original_text, unit.surface, local_window):
                 return [], "original_text_mismatch"
-            if not unit.is_payload_token or int(unit.approx_bucket_id) not in (0, 1):
-                return [], "nonpayload_token_edit_unsupported"
-            payload_pos = int(unit.payload_index)
-            if payload_pos in payload_pos_anchors:
-                return [], "duplicate_payload_position"
-            payload_pos_anchors.add(payload_pos)
             text_pos_anchors.add(idx)
-            block_id, payload_offset = global_payload_pos_to_block_offset(payload_pos, block_len)
-            if op == "substitute":
-                if not tokenized_new_ids or not mapped_new_bits:
-                    return [], "substitute_missing_new_content"
-                original_bit = int(original_payload_blocks[block_id][payload_offset])
-                replacement_bits = [int(x) for x in mapped_new_bits]
-                block_events = {
-                    block_id: [EditEvent("sub", ("payload", payload_offset), value_before=original_bit, value_after=replacement_bits[0])]
-                }
-                if len(replacement_bits) > 1:
-                    block_events[block_id].extend(
-                        EditEvent("insert", ("gap", min(block_len, payload_offset + 1)), value_after=int(bit))
-                        for bit in replacement_bits[1:]
-                    )
-                affected_blocks = [block_id]
+            block_id = int(unit.block_id)
+            if unit.is_payload_token and int(unit.approx_bucket_id) in (0, 1):
+                payload_pos = int(unit.payload_index)
+                if payload_pos in payload_pos_anchors:
+                    return [], "duplicate_payload_position"
+                payload_pos_anchors.add(payload_pos)
+                block_id, payload_offset = global_payload_pos_to_block_offset(payload_pos, block_len)
+                event_loc = ("payload", payload_offset)
+                anchor_type = "payload_position"
                 structural_anchor = {
-                    "type": "payload_position",
+                    "type": anchor_type,
                     "global_payload_index": payload_pos,
                     "block_id": block_id,
                     "payload_offset": payload_offset,
+                    "structural_index": unit.structural_index,
                 }
             else:
-                original_bit = int(original_payload_blocks[block_id][payload_offset])
+                payload_offset = block_len
+                event_loc = ("boundary", block_len)
+                anchor_type = "boundary_position"
+                structural_anchor = {
+                    "type": anchor_type,
+                    "block_id": block_id,
+                    "payload_offset": block_len,
+                    "structural_index": unit.structural_index,
+                }
+
+            if op == "substitute":
+                if not tokenized_new_ids or not mapped_new_buckets:
+                    return [], "substitute_missing_new_content"
+                original_symbol = int(unit.approx_bucket_id)
+                replacement_symbols = [int(x) for x in mapped_new_buckets]
                 block_events = {
-                    block_id: [EditEvent("delete", ("payload", payload_offset), value_before=original_bit)]
+                    block_id: [
+                        EditEvent(
+                            "sub",
+                            event_loc,
+                            value_before=original_symbol,
+                            value_after=replacement_symbols[0],
+                        )
+                    ]
+                }
+                if len(replacement_symbols) > 1:
+                    block_events[block_id].extend(
+                        EditEvent(
+                            "insert",
+                            ("gap", min(block_len, payload_offset + 1)),
+                            value_after=int(symbol),
+                        )
+                        for symbol in replacement_symbols[1:]
+                    )
+                affected_blocks = [block_id]
+            else:
+                block_events = {
+                    block_id: [
+                        EditEvent(
+                            "delete",
+                            event_loc,
+                            value_before=int(unit.approx_bucket_id),
+                        )
+                    ]
                 }
                 affected_blocks = [block_id]
-                structural_anchor = {
-                    "type": "payload_position",
-                    "global_payload_index": payload_pos,
-                    "block_id": block_id,
-                    "payload_offset": payload_offset,
-                }
             validated.append(
                 ValidatedInstruction(
                     op=op,
@@ -979,7 +1105,7 @@ def validate_and_translate_instructions(
                     new_content=new_content,
                     reason=reason,
                     tokenized_new_ids=tokenized_new_ids,
-                    mapped_new_bits=mapped_new_bits,
+                    mapped_new_buckets=mapped_new_buckets,
                     affected_blocks=affected_blocks,
                     block_events=block_events,
                     structural_anchor=structural_anchor,
@@ -993,7 +1119,7 @@ def validate_and_translate_instructions(
                 return [], "gap_after_out_of_range"
             if gap_after in text_gap_anchors:
                 return [], "duplicate_text_gap"
-            if not tokenized_new_ids or not mapped_new_bits:
+            if not tokenized_new_ids or not mapped_new_buckets:
                 return [], "insert_missing_new_content"
             if gap_after < 0:
                 gap_global = 0
@@ -1007,7 +1133,10 @@ def validate_and_translate_instructions(
             payload_gap_anchors.add(payload_gap_key)
             text_gap_anchors.add(gap_after)
             block_events = {
-                block_id: [EditEvent("insert", ("gap", gap_offset), value_after=int(bit)) for bit in mapped_new_bits]
+                block_id: [
+                    EditEvent("insert", ("gap", gap_offset), value_after=int(symbol))
+                    for symbol in mapped_new_buckets
+                ]
             }
             affected_blocks = [block_id]
             validated.append(
@@ -1019,7 +1148,7 @@ def validate_and_translate_instructions(
                     new_content=new_content,
                     reason=reason,
                     tokenized_new_ids=tokenized_new_ids,
-                    mapped_new_bits=mapped_new_bits,
+                    mapped_new_buckets=mapped_new_buckets,
                     affected_blocks=affected_blocks,
                     block_events=block_events,
                     structural_anchor={
@@ -1027,6 +1156,9 @@ def validate_and_translate_instructions(
                         "global_gap_index": gap_global,
                         "block_id": block_id,
                         "gap_offset": gap_offset,
+                        "structural_index": (
+                            index_to_unit[gap_after].structural_index if gap_after >= 0 else -1
+                        ),
                     },
                 )
             )
@@ -1037,7 +1169,7 @@ def validate_and_translate_instructions(
     block_edit_rate = len(all_affected_blocks) / max(1, len(original_payload_blocks))
     if len(all_affected_blocks) > int(max_edited_blocks):
         return [], "too_many_edited_blocks"
-    if block_edit_rate >= 0.5:
+    if block_edit_rate >= float(max_block_edit_rate):
         return [], "block_edit_rate_too_high"
     return validated, None
 
@@ -1110,6 +1242,92 @@ def apply_validated_text_edits(
             edited.append(int(token_id))
         edited.extend(inserts_after.get(idx, []))
     return edited
+
+
+def build_gt_events_from_validated(
+    validated: Sequence[ValidatedInstruction],
+    num_blocks: int,
+) -> List[List[EditEvent]]:
+    gt_events_per_block: List[List[EditEvent]] = [[] for _ in range(int(num_blocks))]
+    for item in validated:
+        for block_id, events in item.block_events.items():
+            if 0 <= int(block_id) < len(gt_events_per_block):
+                gt_events_per_block[int(block_id)].extend(events)
+    return gt_events_per_block
+
+
+def apply_validated_token_edits_with_provenance(
+    original_text_token_ids: Sequence[int],
+    units: Sequence[TextUnit],
+    validated: Sequence[ValidatedInstruction],
+    partition: VocabularyPartition,
+) -> Tuple[List[int], List[int], List[Dict[str, Any]]]:
+    unit_by_index = {int(unit.index): unit for unit in units}
+    inserts_after: Dict[int, List[ValidatedInstruction]] = {}
+    substitutes_at: Dict[int, ValidatedInstruction] = {}
+    deletes_at: set[int] = set()
+    for item in validated:
+        if item.op == "insert" and item.gap_after is not None:
+            inserts_after.setdefault(int(item.gap_after), []).append(item)
+        elif item.op == "substitute" and item.original_index is not None:
+            substitutes_at[int(item.original_index)] = item
+        elif item.op == "delete" and item.original_index is not None:
+            deletes_at.add(int(item.original_index))
+
+    edited_ids: List[int] = []
+    provenance: List[Dict[str, Any]] = []
+
+    def append_instruction_tokens(item: ValidatedInstruction, origin: str) -> None:
+        block_id = int(item.structural_anchor.get("block_id", 0))
+        anchor_structural_index = item.structural_anchor.get("structural_index")
+        for replacement_offset, token_id in enumerate(item.tokenized_new_ids):
+            edited_ids.append(int(token_id))
+            provenance.append(
+                {
+                    "origin": origin,
+                    "original_token_index": item.original_index,
+                    "gap_after": item.gap_after,
+                    "original_block_id": block_id,
+                    "original_structural_index": anchor_structural_index,
+                    "replacement_offset": int(replacement_offset),
+                }
+            )
+
+    for item in inserts_after.get(-1, []):
+        append_instruction_tokens(item, "insert")
+    for idx, token_id in enumerate(original_text_token_ids):
+        unit = unit_by_index.get(idx)
+        if idx in deletes_at:
+            pass
+        elif idx in substitutes_at:
+            append_instruction_tokens(substitutes_at[idx], "substitute")
+        else:
+            edited_ids.append(int(token_id))
+            provenance.append(
+                {
+                    "origin": "unchanged",
+                    "original_token_index": int(idx),
+                    "gap_after": None,
+                    "original_block_id": int(unit.block_id) if unit is not None else None,
+                    "original_structural_index": (
+                        unit.structural_index if unit is not None else None
+                    ),
+                    "replacement_offset": None,
+                }
+            )
+        for item in inserts_after.get(idx, []):
+            append_instruction_tokens(item, "insert")
+
+    expected_ids = apply_validated_text_edits(original_text_token_ids, validated)
+    if edited_ids != expected_ids:
+        raise RuntimeError("Exact token-edit replay disagrees with apply_validated_text_edits.")
+    structural_symbols = map_token_ids_to_structural_symbols(edited_ids, partition)
+    if len(structural_symbols) != len(provenance):
+        raise RuntimeError("Edited structural sequence and provenance lengths disagree.")
+    for structural_index, (symbol, item) in enumerate(zip(structural_symbols, provenance)):
+        item["edited_structural_index"] = int(structural_index)
+        item["edited_structural_symbol"] = int(symbol)
+    return edited_ids, structural_symbols, provenance
 
 
 def editor_backend_generate(
@@ -1218,6 +1436,10 @@ def write_checkpoint(
 
 def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
     ensure_dir(args.output_dir)
+    if int(args.min_edit_instructions) < 1:
+        raise ValueError("--min-edit-instructions must be at least 1.")
+    if int(args.min_edit_instructions) > int(args.max_edit_instructions):
+        raise ValueError("--min-edit-instructions cannot exceed --max-edit-instructions.")
     seed_df = load_seed_dataframe(args.seed_csv, args.num_samples)
     if seed_df.empty:
         raise RuntimeError("Seed CSV is empty after filtering.")
@@ -1228,19 +1450,24 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
         raise ValueError(f"Unknown motivations: {invalid_motivations}")
 
     partition_texts, partition_source, partition_prompt_file = load_partition_texts(args, seed_df)
-    if not partition_texts:
+    if not args.partition_dir and not partition_texts:
         raise RuntimeError("No partition texts were loaded. Provide a valid --partition-prompt-file or a non-empty seed CSV.")
+    model_corpus_texts = build_partition_texts(seed_df) or partition_texts
+    with open(Path(args.output_dir) / "partition_texts.txt", "w", encoding="utf-8") as handle:
+        for text in partition_texts:
+            handle.write(clean_text(text) + "\n")
 
     base_model = build_editor_language_model(
         ModelConfig(
             backend=args.model_backend,
             model_name=args.model_name,
+            model_profile=args.model_profile,
             device=args.device,
             max_prompt_tokens=args.max_prompt_tokens,
             use_4bit=args.use_4bit,
             low_cpu_mem_usage=True,
         ),
-        corpus_texts=build_partition_texts(seed_df),
+        corpus_texts=model_corpus_texts,
     )
     if args.editor_backend == "hf":
         if args.model_backend != "hf":
@@ -1255,14 +1482,31 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                     use_4bit=args.use_4bit,
                     low_cpu_mem_usage=True,
                 ),
-                corpus_texts=build_partition_texts(seed_df),
+                corpus_texts=model_corpus_texts,
             )
         else:
             editor_model = base_model
     else:
         editor_model = None
 
-    partition = build_vocabulary_partition(base_model, partition_texts, ECCConfig(block_len=args.block_len, vt_a=args.vt_a))
+    if args.partition_dir:
+        partition = load_vocabulary_partition(args.partition_dir)
+        validate_vocabulary_partition(
+            partition,
+            base_model,
+            require_semantic_split=args.require_semantic_partition,
+        )
+        partition_source = "partition_dir"
+    else:
+        partition = build_vocabulary_partition(base_model, partition_texts, ECCConfig(block_len=args.block_len, vt_a=args.vt_a))
+        save_vocabulary_partition(
+            partition,
+            Path(args.output_dir) / "partition",
+            metadata={
+                "partition_source": partition_source,
+                "num_partition_texts": len(partition_texts),
+            },
+        )
     codebook = EccCodebook(block_len=args.block_len, vt_a=args.vt_a)
     decoder_config = EccDecoderConfig(
         decoder_max_edits_per_block=args.decoder_max_edits_per_block,
@@ -1272,6 +1516,49 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
     detail_rows: List[Dict[str, Any]] = []
     instruction_records: List[Dict[str, Any]] = []
     total_expected_rows = len(seed_df) if args.motivation_assignment == "round_robin" else len(seed_df) * len(motivations)
+    completed_keys = set()
+    if args.resume:
+        resume_dir = Path(args.resume_from_output_dir or args.output_dir)
+        detail_checkpoint = resume_dir / "llm_editor_details_checkpoint.csv"
+        detail_final = resume_dir / "llm_editor_details.csv"
+        instruction_checkpoint = resume_dir / "llm_edit_instructions_checkpoint.json"
+        instruction_final = resume_dir / "llm_edit_instructions.json"
+        detail_source = (
+            detail_final
+            if args.retry_skipped and detail_final.exists()
+            else detail_checkpoint
+        )
+        instruction_source = (
+            instruction_final
+            if args.retry_skipped and instruction_final.exists()
+            else instruction_checkpoint
+        )
+        loaded_detail_rows: List[Dict[str, Any]] = []
+        loaded_instruction_records: List[Dict[str, Any]] = []
+        if detail_source.exists():
+            loaded_detail_rows = pd.read_csv(detail_source).to_dict(orient="records")
+        if instruction_source.exists():
+            with open(instruction_source, "r", encoding="utf-8") as handle:
+                loaded_instructions = json.load(handle)
+            if isinstance(loaded_instructions, list):
+                loaded_instruction_records = loaded_instructions
+        detail_rows, instruction_records, completed_keys = prepare_resume_records(
+            loaded_detail_rows,
+            loaded_instruction_records,
+            retry_skipped=args.retry_skipped,
+        )
+        if loaded_detail_rows:
+            retry_count = len(loaded_detail_rows) - len(detail_rows)
+            mode = (
+                f"retained {len(detail_rows)} accepted rows and queued "
+                f"{retry_count} skipped rows"
+                if args.retry_skipped
+                else f"loaded {len(detail_rows)} completed rows"
+            )
+            print(
+                f"[resume] {mode} from {resume_dir}",
+                flush=True,
+            )
 
     for row_idx, row in seed_df.iterrows():
         sequence_index = int(row["sequence_index"])
@@ -1282,6 +1569,15 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
         saved_token_ids = parse_optional_int_list(row.get("generated_token_ids")) if "generated_token_ids" in row.index else []
         recon = build_exact_reconstruction_info(suffix_text, base_model, partition, saved_bucket_seq)
         if saved_token_ids:
+            if args.partition_dir:
+                recon.update(
+                    validate_saved_bucket_sequence_against_partition(
+                        token_ids=saved_token_ids,
+                        saved_bucket_sequence=saved_bucket_seq,
+                        partition=partition,
+                        sequence_index=sequence_index,
+                    )
+                )
             reconstruction_mode = "saved_generated_token_ids"
             text_units, original_text_token_ids, source_token_block_map, source_token_bucket_ids = build_text_units_from_generated_tokens(
                 model=base_model,
@@ -1307,6 +1603,8 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
             row_motivations = motivations
 
         for motivation in row_motivations:
+            if (sequence_index, motivation) in completed_keys:
+                continue
             intent_label = canonical_intent_label(motivation)
             used = False
             skip_reason = None
@@ -1325,7 +1623,33 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
             edited_token_bucket_ids = list(original_token_bucket_ids)
             edited_token_structural_symbols: List[int] = []
             edited_token_structural_indices: List[int] = []
+            unit_by_index = {int(unit.index): unit for unit in text_units}
+            edited_token_provenance: List[Dict[str, Any]] = [
+                {
+                    "origin": "unchanged",
+                    "original_token_index": int(index),
+                    "gap_after": None,
+                    "original_block_id": (
+                        int(unit_by_index[index].block_id) if index in unit_by_index else None
+                    ),
+                    "original_structural_index": (
+                        unit_by_index[index].structural_index if index in unit_by_index else None
+                    ),
+                    "replacement_offset": None,
+                    "edited_structural_index": int(index),
+                    "edited_structural_symbol": (
+                        int(original_token_bucket_ids[index])
+                        if index < len(original_token_bucket_ids)
+                        else -1
+                    ),
+                }
+                for index in range(len(original_text_token_ids))
+            ]
             edited_structural_sequence = flatten_payload_blocks_with_boundaries(original_payload_blocks)
+            ev: Dict[str, Any] = {
+                "parsed_to_source_blocks": [],
+                "source_candidate_locations": [],
+            }
             detector_block_details: List[Dict[str, Any]] = []
             detector_aligned_block_text_spans: Dict[str, str] = {}
             edited_token_block_map_from_detector: List[int] = []
@@ -1336,6 +1660,7 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                 num_blocks=len(original_payload_blocks),
             )
             edited_block_text_spans = dict(original_block_text_spans)
+            retry_feedback: Optional[str] = None
             for attempt in range(args.max_retries + 1):
                 editor_prompt = build_editor_prompt(
                     prompt=prompt,
@@ -1344,7 +1669,11 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                     intent_label=intent_label,
                     units=text_units,
                     max_edited_blocks=args.max_edited_blocks,
+                    min_edit_instructions=args.min_edit_instructions,
+                    max_edit_instructions=args.max_edit_instructions,
+                    aggressive_malicious_edits=args.aggressive_malicious_edits,
                     question_aware=args.question_aware,
+                    retry_feedback=retry_feedback,
                 )
                 raw_output = editor_backend_generate(
                     editor_backend=args.editor_backend,
@@ -1363,6 +1692,7 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                 last_parsed_output = parsed_output
                 if parsed_output is None:
                     skip_reason = "invalid_json"
+                    retry_feedback = retry_feedback_for_error(skip_reason)
                     continue
                 validated, validation_error = validate_and_translate_instructions(
                     parsed_json=parsed_output,
@@ -1374,43 +1704,51 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                     partition=partition,
                     model=base_model,
                     max_edited_blocks=args.max_edited_blocks,
+                    min_edit_instructions=args.min_edit_instructions,
+                    max_edit_instructions=args.max_edit_instructions,
+                    max_block_edit_rate=args.max_block_edit_rate,
                 )
                 if validation_error is not None:
                     skip_reason = validation_error
+                    retry_feedback = retry_feedback_for_error(skip_reason)
                     continue
-                observed_blocks, gt_events_per_block, observed_sequence = apply_validated_structural_edits(
-                    original_payload_blocks=original_payload_blocks,
+                (
+                    edited_text_token_ids,
+                    observed_sequence,
+                    edited_token_provenance,
+                ) = apply_validated_token_edits_with_provenance(
+                    original_text_token_ids=original_text_token_ids,
+                    units=text_units,
                     validated=validated,
+                    partition=partition,
+                )
+                gt_events_per_block = build_gt_events_from_validated(
+                    validated,
+                    num_blocks=len(original_payload_blocks),
                 )
                 pred_blocks = detect_sequence_multiple(
                     observed_sequence,
                     decoder_config=decoder_config,
                     codebook=codebook,
                 )
-                ev = evaluate_predictions_multiple(
+                ev = evaluate_predictions_with_provenance(
                     original_payload_blocks=original_payload_blocks,
                     gt_events_per_block=gt_events_per_block,
                     pred_blocks=pred_blocks,
+                    observed_provenance=edited_token_provenance,
                     tolerance=args.tolerance,
                     codebook=codebook,
                 )
-                edited_text_token_ids = apply_validated_text_edits(original_text_token_ids, validated)
-                edited_token_block_map = build_edited_token_block_map(
-                    original_text_token_ids=original_text_token_ids,
-                    original_token_block_map=original_token_block_map,
-                    validated=validated,
-                )
-                edited_token_bucket_ids = build_edited_token_bucket_ids(
-                    original_token_bucket_ids=original_token_bucket_ids,
-                    validated=validated,
-                )
-                edited_token_structural_symbols, edited_token_structural_indices, edited_structural_sequence = build_edited_token_structural_metadata(
-                    edited_token_ids=edited_text_token_ids,
-                    edited_token_block_map=edited_token_block_map,
-                    edited_token_bucket_ids=edited_token_bucket_ids,
-                    observed_payload_blocks=observed_blocks,
-                    boundary_symbol=codebook.boundary_symbol,
-                )
+                edited_token_block_map = [
+                    int(item["original_block_id"])
+                    if item.get("original_block_id") is not None
+                    else -1
+                    for item in edited_token_provenance
+                ]
+                edited_token_bucket_ids = [int(x) for x in observed_sequence]
+                edited_token_structural_symbols = [int(x) for x in observed_sequence]
+                edited_token_structural_indices = list(range(len(observed_sequence)))
+                edited_structural_sequence = [int(x) for x in observed_sequence]
                 detector_block_details = build_detector_block_details(
                     pred_blocks=pred_blocks,
                     observed_sequence=observed_sequence,
@@ -1432,7 +1770,7 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                 )
                 edited_text = base_model.decode(edited_text_token_ids, skip_special_tokens=True)
                 gt_blocks_flags = [int(len(events) > 0) for events in gt_events_per_block]
-                pred_blocks_flags = [int(parsed_block_exceeds_tolerance(pb, tolerance=args.tolerance, codebook=codebook)) for pb in pred_blocks]
+                pred_blocks_flags = [int(x) for x in ev["source_pred_flags"]]
                 accepted_json = parsed_output
                 accepted_instructions = validated
                 used = True
@@ -1490,9 +1828,12 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                     "edited_token_bucket_ids_json": json.dumps(list(edited_token_bucket_ids)),
                     "edited_token_structural_symbols_json": json.dumps(list(edited_token_structural_symbols)),
                     "edited_token_structural_index_json": json.dumps(list(edited_token_structural_indices)),
+                    "edited_token_provenance_json": json.dumps(edited_token_provenance),
                     "edited_token_block_map_from_detector_json": json.dumps(list(edited_token_block_map_from_detector)),
                     "edited_structural_sequence_json": json.dumps(list(edited_structural_sequence)),
                     "pred_blocks_detailed_json": json.dumps(detector_block_details, ensure_ascii=False),
+                    "parsed_to_source_blocks_json": json.dumps(ev.get("parsed_to_source_blocks", [])),
+                    "source_candidate_locations_json": json.dumps(ev.get("source_candidate_locations", [])),
                     "detector_aligned_block_text_spans_json": json.dumps(detector_aligned_block_text_spans, ensure_ascii=False),
                     "original_block_text_spans_json": json.dumps(original_block_text_spans, ensure_ascii=False),
                     "edited_block_text_spans_json": json.dumps(edited_block_text_spans, ensure_ascii=False),
@@ -1517,7 +1858,7 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                             "new_content": item.new_content,
                             "reason": item.reason,
                             "tokenized_new_ids": item.tokenized_new_ids,
-                            "mapped_new_bits": item.mapped_new_bits,
+                            "mapped_new_buckets": item.mapped_new_buckets,
                             "affected_blocks": item.affected_blocks,
                             "block_events": {
                                 str(block_id): [
@@ -1572,13 +1913,16 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
         {
             "args": vars(args),
             "partition_prompt_file": partition_prompt_file,
+            "partition_dir": args.partition_dir,
             "num_partition_texts": len(partition_texts),
             "partition_source": partition_source,
             "notes": {
-                "authoritative_structural_source": "block_bucket_sequences_json / bucket_id_sequence from seed CSV",
-                "retokenization_reconstruction": "attempted for diagnostics only; exact generated token ids are unavailable in the seed CSV",
+                "authoritative_clean_structural_source": "saved generated_token_ids mapped through the loaded partition when available",
+                "authoritative_edited_detector_source": "edited token ids mapped directly through the same partition; bucket-2 symbols are preserved",
+                "retokenization_reconstruction": "diagnostic fallback only; exact generated token ids are preferred",
                 "fallback_mode": "saved_bucket_sequence_fallback",
                 "candidate_coverage_definition": "true edit location is covered if included in decoder returned candidate set",
+                "parsed_block_pairing": "detector parsed spans are merged to fixed source blocks through token structural provenance",
             },
         },
     )
@@ -1594,10 +1938,17 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed-csv", type=str, required=True)
     parser.add_argument("--output-dir", type=str, default="outputs/llm_editor_delta20_sparse")
     parser.add_argument("--model-backend", type=str, choices=["mock", "hf"], default="mock")
-    parser.add_argument("--model-name", type=str, default="Qwen/Qwen3-8B")
+    parser.add_argument("--model-profile", choices=sorted(MODEL_PROFILES), default=None)
+    parser.add_argument("--model-name", type=str, default=None)
     parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument("--use-4bit", action="store_true")
     parser.add_argument("--partition-prompt-file", type=str, default=None)
+    parser.add_argument("--partition-dir", type=str, default=None)
+    parser.add_argument(
+        "--require-semantic-partition",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
     parser.add_argument("--editor-backend", type=str, choices=["mock", "hf"], default="mock")
     parser.add_argument("--editor-model", type=str, default=None)
     parser.add_argument("--editor-enable-thinking", action="store_true")
@@ -1606,15 +1957,44 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-prompt-tokens", type=int, default=160)
     parser.add_argument("--num-samples", type=int, default=None)
     parser.add_argument("--checkpoint-every", type=int, default=10)
+    parser.add_argument("--resume", action="store_true")
+    parser.add_argument(
+        "--resume-from-output-dir",
+        type=str,
+        default=None,
+        help="Load prior details/instructions from another output directory.",
+    )
+    parser.add_argument(
+        "--retry-skipped",
+        action="store_true",
+        help="With --resume, retain accepted rows and regenerate only skipped rows.",
+    )
     parser.add_argument("--motivations", type=str, default="grammar_polish,clarity_improvement,style_softening,claim_distortion,stance_shift,source_spoofing")
     parser.add_argument("--motivation-assignment", choices=["all", "round_robin"], default="all")
     parser.add_argument("--max-edited-blocks", type=int, default=3)
+    parser.add_argument("--min-edit-instructions", type=int, default=1)
+    parser.add_argument("--max-edit-instructions", type=int, default=2)
+    parser.add_argument("--max-block-edit-rate", type=float, default=0.5)
+    parser.add_argument("--aggressive-malicious-edits", action="store_true")
     parser.add_argument("--max-retries", type=int, default=2)
     parser.add_argument("--decoder-max-edits-per-block", type=int, default=3)
     parser.add_argument("--block-len", type=int, default=7)
     parser.add_argument("--vt-a", type=int, default=6)
     parser.add_argument("--tolerance", type=int, default=0)
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.retry_skipped and not args.resume:
+        parser.error("--retry-skipped requires --resume.")
+    if args.resume_from_output_dir and not args.resume:
+        parser.error("--resume-from-output-dir requires --resume.")
+    profile = get_model_profile(args.model_profile) if args.model_profile else None
+    if profile and args.model_name and args.model_name != profile.model_name:
+        parser.error(
+            f"--model-profile {profile.key} requires --model-name {profile.model_name!r}."
+        )
+    args.model_name = args.model_name or (
+        profile.model_name if profile else "Qwen/Qwen3-8B"
+    )
+    return args
 
 
 def main() -> None:

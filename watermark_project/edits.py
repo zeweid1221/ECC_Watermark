@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import random
 from dataclasses import dataclass
-from typing import Callable, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 
 @dataclass
@@ -57,6 +57,46 @@ def apply_edits_to_payload_blocks(
         gt_events_per_block.append(events)
         observed_full_sequence.extend(serialized)
     return observed_serialized_blocks, gt_events_per_block, observed_full_sequence
+
+
+def apply_edits_to_payload_blocks_with_provenance(
+    payload_blocks: List[List[int]],
+    edit_rate: float,
+    allow_boundary_edit: bool,
+    boundary_edit_modes: Tuple[str, ...],
+    max_edits_per_block: int,
+    edit_count_mode: str,
+    boundary_symbol: int = 2,
+    rng: Optional[random.Random] = None,
+) -> Tuple[List[List[int]], List[List[EditEvent]], List[int], List[Dict[str, Any]]]:
+    observed_blocks, gt_events, observed_sequence = apply_edits_to_payload_blocks(
+        payload_blocks=payload_blocks,
+        edit_rate=edit_rate,
+        allow_boundary_edit=allow_boundary_edit,
+        boundary_edit_modes=boundary_edit_modes,
+        max_edits_per_block=max_edits_per_block,
+        edit_count_mode=edit_count_mode,
+        boundary_symbol=boundary_symbol,
+        rng=rng,
+    )
+    provenance: List[Dict[str, Any]] = []
+    for block_id, observed_block in enumerate(observed_blocks):
+        block_len = len(payload_blocks[block_id])
+        for local_index, symbol in enumerate(observed_block):
+            provenance.append(
+                {
+                    "origin": "synthetic_block_attack",
+                    "original_block_id": int(block_id),
+                    "original_structural_index": int(
+                        block_id * (block_len + 1) + min(local_index, block_len)
+                    ),
+                    "edited_structural_symbol": int(symbol),
+                    "edited_structural_index": len(provenance),
+                }
+            )
+    if len(provenance) != len(observed_sequence):
+        raise RuntimeError("Synthetic edit provenance length does not match observed sequence.")
+    return observed_blocks, gt_events, observed_sequence, provenance
 
 
 def _apply_one_edit_to_serialized_block(

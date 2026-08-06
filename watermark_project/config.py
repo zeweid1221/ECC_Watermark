@@ -6,6 +6,10 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 HARD_LOGIT_BIAS = 1000.0
 SOFT_LOGIT_BIAS = 2.0
+DEFAULT_SYSTEM_PROMPT = (
+    "You are a careful explanatory writing assistant. Answer directly without showing reasoning. "
+    "Write fluent, self-contained English prose in a neutral factual tone."
+)
 
 
 def resolve_logit_bias(watermark_mode: str, logit_bias: Optional[float]) -> float:
@@ -22,6 +26,7 @@ def resolve_logit_bias(watermark_mode: str, logit_bias: Optional[float]) -> floa
 class ModelConfig:
     backend: str = "mock"
     model_name: str = "mock-lm"
+    model_profile: Optional[str] = None
     device: str = "cpu"
     trust_remote_code: bool = True
     max_prompt_tokens: int = 96
@@ -52,6 +57,37 @@ class ECCConfig:
     boundary_bonus: float = 3.5
     lsh_bits: int = 12
     lsh_chunk: int = 2048
+
+
+@dataclass
+class GenerationProtocolConfig:
+    stop_after: str = "closed_blocks"
+    sampling: str = "sample"
+    temperature: float = 0.75
+    top_k: int = 40
+    top_p: float = 0.9
+    repetition_penalty: float = 1.2
+    prompt_style: str = "qa"
+    use_chat_template: bool = True
+    enable_thinking: bool = False
+    system_prompt: str = DEFAULT_SYSTEM_PROMPT
+    ascii_token_filter: bool = True
+
+    def __post_init__(self) -> None:
+        if self.stop_after not in {"closed_blocks", "feasible_blocks"}:
+            raise ValueError("stop_after must be 'closed_blocks' or 'feasible_blocks'.")
+        if self.sampling not in {"sample", "greedy"}:
+            raise ValueError("sampling must be 'sample' or 'greedy'.")
+        if self.prompt_style not in {"qa", "plain"}:
+            raise ValueError("prompt_style must be 'qa' or 'plain'.")
+        if self.temperature <= 0:
+            raise ValueError("temperature must be positive.")
+        if self.top_k < 0:
+            raise ValueError("top_k must be non-negative.")
+        if not 0 < self.top_p <= 1:
+            raise ValueError("top_p must be in (0, 1].")
+        if self.repetition_penalty < 1:
+            raise ValueError("repetition_penalty must be at least 1.")
 
 
 @dataclass
@@ -117,9 +153,12 @@ class DecoderConfig:
 @dataclass
 class RunConfig:
     output_dir: str
+    partition_dir: Optional[str] = None
+    require_semantic_partition: bool = False
     model: ModelConfig = field(default_factory=ModelConfig)
     prompts: PromptConfig = field(default_factory=PromptConfig)
     ecc: ECCConfig = field(default_factory=ECCConfig)
+    generation_protocol: GenerationProtocolConfig = field(default_factory=GenerationProtocolConfig)
     kgw: KGWConfig = field(default_factory=KGWConfig)
     segment_baselines: SegmentBaselineConfig = field(default_factory=SegmentBaselineConfig)
     schemes: List[str] = field(default_factory=lambda: ["ecc", "kgw"])

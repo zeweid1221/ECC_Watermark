@@ -1,16 +1,18 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import math
 import random
 import re
 from abc import ABC, abstractmethod
 from collections import Counter, defaultdict
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Optional, Sequence
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 import numpy as np
 
-from .config import ModelConfig
+from .config import GenerationProtocolConfig, ModelConfig
 
 try:
     import torch
@@ -42,10 +44,121 @@ except Exception:  # pragma: no cover
 
 
 TOKEN_PATTERN = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?|\d+|[^\w\s]")
+BAD_TEXT_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\u007f-\u009f\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af]")
 
 
 def clean_text(text: str) -> str:
     return re.sub(r"\s+", " ", text.replace("\n", " ").replace("\r", " ")).strip()
+
+
+def stable_hash_int(value: Any, modulo: Optional[int] = None) -> int:
+    serialized = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True, default=str)
+    hashed = int.from_bytes(hashlib.sha256(serialized.encode("utf-8")).digest()[:8], byteorder="big")
+    return hashed % int(modulo) if modulo is not None else hashed
+
+
+def build_user_prompt(raw_prompt: str, prompt_style: str) -> str:
+    raw_prompt = clean_text(raw_prompt)
+    if prompt_style == "plain":
+        return raw_prompt
+    return (
+        "Answer the following question in one coherent paragraph of about 120-180 words. "
+        "Do not use bullet points. Keep the tone neutral and factual.\n\n"
+        f"Question:\n{raw_prompt}"
+    )
+
+
+def render_prompt_for_model(
+    model: "BaseLanguageModel",
+    raw_prompt: str,
+    protocol: GenerationProtocolConfig,
+) -> Tuple[str, str, str]:
+    user_prompt = build_user_prompt(raw_prompt, protocol.prompt_style)
+    tokenizer = getattr(model, "tokenizer", None)
+    if protocol.use_chat_template and tokenizer is not None and hasattr(tokenizer, "apply_chat_template"):
+        messages = [
+            {"role": "system", "content": protocol.system_prompt},
+            {"role": "user", "content": user_prompt},
+        ]
+        try:
+            rendered = tokenizer.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=True,
+                enable_thinking=bool(protocol.enable_thinking),
+            )
+        except TypeError:
+            rendered = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        return user_prompt, rendered, "chat_template"
+    if protocol.system_prompt:
+        rendered = f"System: {protocol.system_prompt}\n\nUser: {user_prompt}\n\nAssistant:"
+        return user_prompt, rendered, "manual_instruction"
+    return user_prompt, user_prompt, "raw"
+
+
+def apply_repetition_penalty(logits: np.ndarray, generated_ids: Sequence[int], penalty: float) -> np.ndarray:
+    if penalty <= 1.0 or not generated_ids:
+        return logits
+    adjusted = logits.copy()
+    for token_id in set(int(x) for x in generated_ids):
+        if 0 <= token_id < adjusted.size:
+            adjusted[token_id] = adjusted[token_id] / penalty if adjusted[token_id] > 0 else adjusted[token_id] * penalty
+    return adjusted
+
+
+def sample_token_from_logits(
+    logits: np.ndarray,
+    rng: np.random.Generator,
+    protocol: GenerationProtocolConfig,
+) -> int:
+    finite = np.isfinite(logits) & (logits > -1e8)
+    if not np.any(finite):
+        return int(np.argmax(logits))
+    if protocol.sampling == "greedy":
+        return int(np.argmax(np.where(finite, logits, -1e9)))
+
+    scores = np.where(finite, logits / max(float(protocol.temperature), 1e-6), -np.inf)
+    if protocol.top_k and protocol.top_k < scores.size:
+        keep_ids = np.argpartition(scores, -protocol.top_k)[-protocol.top_k :]
+        keep = np.zeros(scores.size, dtype=bool)
+        keep[keep_ids] = True
+        scores[~keep] = -np.inf
+
+    valid_ids = np.where(np.isfinite(scores))[0]
+    if valid_ids.size == 0:
+        return int(np.argmax(logits))
+    valid_scores = scores[valid_ids] - float(np.max(scores[valid_ids]))
+    probs = np.exp(valid_scores)
+    probs /= float(np.sum(probs))
+    if protocol.top_p < 1.0:
+        order = np.argsort(probs)[::-1]
+        cumulative = np.cumsum(probs[order])
+        cutoff = int(np.searchsorted(cumulative, protocol.top_p, side="left")) + 1
+        keep_order = order[: max(1, cutoff)]
+        valid_ids = valid_ids[keep_order]
+        probs = probs[keep_order]
+        probs /= float(np.sum(probs))
+    return int(rng.choice(valid_ids, p=probs))
+
+
+def build_ascii_token_ban_mask(model: "BaseLanguageModel", enabled: bool) -> np.ndarray:
+    mask = np.zeros(model.vocab_size, dtype=bool)
+    if not enabled:
+        return mask
+    special_ids = set(int(x) for x in model.all_special_ids)
+    for token_id in range(model.vocab_size):
+        if token_id in special_ids:
+            mask[token_id] = True
+            continue
+        surface = model.token_surface(token_id)
+        if not surface or BAD_TEXT_RE.search(surface):
+            mask[token_id] = True
+            continue
+        try:
+            surface.encode("ascii")
+        except UnicodeEncodeError:
+            mask[token_id] = True
+    return mask
 
 
 def sample_prompts_from_config(prompt_config, rng: random.Random) -> List[str]:
@@ -133,7 +246,13 @@ class BaseLanguageModel(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def start_session(self, prompt: str) -> GenerationSession:
+    def start_session(
+        self,
+        prompt: str,
+        *,
+        add_special_tokens: bool = True,
+        clean: bool = True,
+    ) -> GenerationSession:
         raise NotImplementedError
 
     @abstractmethod
@@ -213,7 +332,7 @@ class MockLanguageModel(BaseLanguageModel):
     def _build_embedding_matrix(self) -> np.ndarray:
         emb = np.zeros((len(self.id_to_token), 12), dtype=np.float32)
         for idx, tok in enumerate(self.id_to_token):
-            seed = abs(hash(tok)) % (2**32)
+            seed = stable_hash_int(tok, modulo=2**32)
             rng = np.random.default_rng(seed)
             emb[idx] = rng.standard_normal(12)
         norm = np.linalg.norm(emb, axis=1, keepdims=True)
@@ -292,8 +411,15 @@ class MockLanguageModel(BaseLanguageModel):
         logits[self.pad_token_id] = -1e9
         return logits.astype(np.float64)
 
-    def start_session(self, prompt: str) -> GenerationSession:
-        prompt_ids = self.encode(prompt, add_special_tokens=True, max_length=self.config.max_prompt_tokens)
+    def start_session(
+        self,
+        prompt: str,
+        *,
+        add_special_tokens: bool = True,
+        clean: bool = True,
+    ) -> GenerationSession:
+        text = clean_text(prompt) if clean else prompt
+        prompt_ids = self.encode(text, add_special_tokens=add_special_tokens, max_length=self.config.max_prompt_tokens)
         return MockGenerationSession(self, prompt_ids)
 
     def compute_perplexity(self, texts: Sequence[str], max_length: Optional[int] = None) -> float:
@@ -469,13 +595,19 @@ class HfLanguageModel(BaseLanguageModel):
         norm[norm == 0] = 1.0
         return emb / norm
 
-    def start_session(self, prompt: str) -> GenerationSession:
+    def start_session(
+        self,
+        prompt: str,
+        *,
+        add_special_tokens: bool = True,
+        clean: bool = True,
+    ) -> GenerationSession:
         enc = self.tokenizer(
-            clean_text(prompt),
+            clean_text(prompt) if clean else prompt,
             return_tensors="pt",
             truncation=True,
             max_length=self.config.max_prompt_tokens,
-            add_special_tokens=True,
+            add_special_tokens=add_special_tokens,
         )
         prompt_ids = enc["input_ids"][0].tolist()
         attn = enc["attention_mask"][0].tolist()

@@ -8,9 +8,16 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 import numpy as np
 
-from .config import ECCConfig, GenerationSetting
+from .config import ECCConfig, GenerationProtocolConfig, GenerationSetting
 from .ecc_detector import EccCodebook, decode_clean_structural_sequence
-from .modeling import BaseLanguageModel
+from .modeling import (
+    BaseLanguageModel,
+    apply_repetition_penalty,
+    build_ascii_token_ban_mask,
+    render_prompt_for_model,
+    sample_token_from_logits,
+    stable_hash_int,
+)
 from .partitioning import VocabularyPartition
 
 
@@ -47,6 +54,11 @@ class EccGenerationResult:
     decoded_clean: Dict[str, Any]
     runtime_state: EccRuntimeState
     raw_top_trace: List[Dict[str, Any]]
+    prompt_token_ids: List[int] = field(default_factory=list)
+    user_prompt: str = ""
+    rendered_prompt: str = ""
+    prompt_mode: str = "raw"
+    stop_reason: str = "unknown"
 
 
 class EccGenerator:
@@ -67,6 +79,7 @@ class EccGenerator:
         self.always_ban_mask[np.where(self.partition.token_to_bucket < 0)[0]] = True
         for token_id in self.partition.banned_ids:
             self.always_ban_mask[int(token_id)] = True
+        self._ascii_ban_masks: Dict[bool, np.ndarray] = {}
 
     def allowed_next_bits(self, prefix_bits: Sequence[int], adaptive: bool, fixed_codeword: Optional[Sequence[int]]) -> Set[int]:
         prefix = tuple(int(x) for x in prefix_bits)
@@ -165,18 +178,49 @@ class EccGenerator:
             adjusted[self.bucket_masks[0] | self.bucket_masks[1]] = -1e9
         return adjusted
 
-    def generate_one(self, prompt: str, setting: GenerationSetting) -> EccGenerationResult:
+    def generate_one(
+        self,
+        prompt: str,
+        setting: GenerationSetting,
+        protocol: Optional[GenerationProtocolConfig] = None,
+    ) -> EccGenerationResult:
         if setting.scheme != "ecc":
             raise ValueError("EccGenerator only supports scheme='ecc'.")
+        protocol = protocol or GenerationProtocolConfig()
+        minimum_closed_block_tokens = setting.target_blocks * (self.config.block_len + 1)
+        if setting.max_new_tokens < minimum_closed_block_tokens:
+            raise ValueError(
+                "max_new_tokens is too small for target_blocks closed ECC blocks: "
+                f"need at least {minimum_closed_block_tokens}, got {setting.max_new_tokens}."
+            )
         adaptive = bool(setting.adaptive)
-        rng = random.Random(setting.seed ^ abs(hash(prompt)))
-        session = self.model.start_session(prompt)
+        user_prompt, rendered_prompt, prompt_mode = render_prompt_for_model(self.model, prompt, protocol)
+        prompt_hash = stable_hash_int(rendered_prompt)
+        rng = random.Random(setting.seed ^ prompt_hash)
+        token_rng = np.random.default_rng((setting.seed + prompt_hash) % (2**32))
+        session = self.model.start_session(
+            rendered_prompt,
+            add_special_tokens=prompt_mode != "chat_template",
+            clean=prompt_mode != "chat_template",
+        )
         state = EccRuntimeState()
         generated_ids: List[int] = []
         generated_buckets: List[int] = []
         raw_top_trace: List[Dict[str, Any]] = []
+        if protocol.ascii_token_filter not in self._ascii_ban_masks:
+            self._ascii_ban_masks[protocol.ascii_token_filter] = build_ascii_token_ban_mask(
+                self.model,
+                protocol.ascii_token_filter,
+            )
+        ascii_ban_mask = self._ascii_ban_masks[protocol.ascii_token_filter]
         steps = 0
-        while state.completed_blocks < setting.target_blocks and steps < setting.max_new_tokens:
+
+        def reached_target() -> bool:
+            if protocol.stop_after == "feasible_blocks":
+                return state.completed_blocks >= setting.target_blocks
+            return len(state.block_summaries) >= setting.target_blocks
+
+        while not reached_target() and steps < setting.max_new_tokens:
             raw_logits = session.next_logits()
             if not adaptive and state.current_codeword is None and len(state.current_bits) == 0:
                 state.current_codeword = self.choose_fixed_codeword(raw_logits, rng)
@@ -201,7 +245,17 @@ class EccGenerator:
                     logit_bias=setting.resolved_logit_bias(),
                     boundary_bonus=self.config.boundary_bonus,
                 )
-            next_id = int(np.argmax(adjusted_logits))
+            if protocol.ascii_token_filter:
+                filtered_logits = adjusted_logits.copy()
+                filtered_logits[ascii_ban_mask] = -1e9
+                if np.any(np.isfinite(filtered_logits) & (filtered_logits > -1e8)):
+                    adjusted_logits = filtered_logits
+            adjusted_logits = apply_repetition_penalty(
+                adjusted_logits,
+                generated_ids,
+                protocol.repetition_penalty,
+            )
+            next_id = sample_token_from_logits(adjusted_logits, token_rng, protocol)
             next_bucket = int(self.partition.token_to_bucket[next_id]) if next_id < len(self.partition.token_to_bucket) else -1
             session.append(next_id)
             generated_ids.append(next_id)
@@ -219,6 +273,11 @@ class EccGenerator:
             )
             self.update_runtime_state(state, next_bucket)
             steps += 1
+        stop_reason = (
+            f"target_{protocol.stop_after}"
+            if reached_target()
+            else "max_new_tokens"
+        )
         full_token_ids = session.prompt_ids + generated_ids
         structural_seq = [bucket for bucket in generated_buckets if bucket in (0, 1, 2)]
         decoded_clean = decode_clean_structural_sequence(structural_seq, self.codebook)
@@ -232,7 +291,17 @@ class EccGenerator:
             decoded_clean=decoded_clean,
             runtime_state=state,
             raw_top_trace=raw_top_trace,
+            prompt_token_ids=[int(x) for x in session.prompt_ids],
+            user_prompt=user_prompt,
+            rendered_prompt=rendered_prompt,
+            prompt_mode=prompt_mode,
+            stop_reason=stop_reason,
         )
 
-    def generate_many(self, prompts: Sequence[str], setting: GenerationSetting) -> List[EccGenerationResult]:
-        return [self.generate_one(prompt, setting) for prompt in prompts]
+    def generate_many(
+        self,
+        prompts: Sequence[str],
+        setting: GenerationSetting,
+        protocol: Optional[GenerationProtocolConfig] = None,
+    ) -> List[EccGenerationResult]:
+        return [self.generate_one(prompt, setting, protocol=protocol) for prompt in prompts]

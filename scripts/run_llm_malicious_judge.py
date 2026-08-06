@@ -25,8 +25,15 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from watermark_project.config import ModelConfig
+from watermark_project.deployment_detection import (
+    build_deployment_tokenizer_model,
+    reconstruct_detector_alignment_from_final_text,
+)
+from watermark_project.ecc_detector import EccCodebook, EccDecoderConfig
 from watermark_project.io_utils import ensure_dir, save_dataframe, write_json
-from watermark_project.modeling import HfLanguageModel, build_language_model, clean_text
+from watermark_project.model_profiles import MODEL_PROFILES, get_model_profile
+from watermark_project.modeling import HfLanguageModel, build_language_model, clean_text, stable_hash_int
+from watermark_project.partitioning import load_vocabulary_partition, validate_vocabulary_partition
 
 
 class JudgeSingleGpu4BitHfLanguageModel(HfLanguageModel):
@@ -643,6 +650,33 @@ def run_judge_experiment(args: argparse.Namespace) -> Dict[str, Any]:
     if details_df.empty:
         raise RuntimeError("No rows available for judging after filtering.")
     question_map = load_question_map(args.source_csv, args.question_column)
+    source_detector_model = None
+    source_partition = None
+    source_codebook = None
+    source_decoder_config = None
+    if args.warning_metadata_source == "recompute_final_text":
+        if not args.partition_dir:
+            raise ValueError("--partition-dir is required for --warning-metadata-source recompute_final_text.")
+        partition_corpus: List[str] = []
+        if args.partition_prompt_file:
+            with open(args.partition_prompt_file, "r", encoding="utf-8") as handle:
+                partition_corpus = [clean_text(line) for line in handle if clean_text(line)]
+        source_detector_model = build_deployment_tokenizer_model(
+            backend=args.source_backend,
+            model_name=args.source_model_name,
+            corpus_texts=partition_corpus,
+        )
+        source_partition = load_vocabulary_partition(args.partition_dir)
+        validate_vocabulary_partition(
+            source_partition,
+            source_detector_model,
+            require_semantic_split=args.require_semantic_partition,
+        )
+        source_codebook = EccCodebook(block_len=args.block_len, vt_a=args.vt_a)
+        source_decoder_config = EccDecoderConfig(
+            decoder_max_edits_per_block=args.decoder_max_edits_per_block,
+            boundary_edit_modes=("delete", "sub"),
+        )
 
     conditions = parse_csv_strs(args.conditions)
     allowed_conditions = {"no_warning", "detector_warning", "random_warning"}
@@ -677,14 +711,42 @@ def run_judge_experiment(args: argparse.Namespace) -> Dict[str, Any]:
         intent_label = str(row.get("intent_label", "") or "")
         motivation = str(row.get("motivation", "") or "")
         pred_blocks_raw = row.get("pred_blocks", "[]")
-        detector_ids = predicted_block_ids_from_row(row)
-        detector_aligned_spans, detector_block_details = get_detector_alignment_from_row(row)
+        alignment_error = None
+        if args.warning_metadata_source == "recompute_final_text":
+            try:
+                reconstructed = reconstruct_detector_alignment_from_final_text(
+                    text=edited_text,
+                    model=source_detector_model,
+                    partition=source_partition,
+                    codebook=source_codebook,
+                    decoder_config=source_decoder_config,
+                    tolerance=args.tolerance,
+                )
+                detector_aligned_spans = reconstructed["detector_aligned_block_text_spans"]
+                detector_block_details = reconstructed["pred_blocks_detailed"]
+                detector_ids = [
+                    int(item["parsed_block_index"])
+                    for item in detector_block_details
+                    if bool(item.get("exceeds_tolerance", False))
+                ]
+            except Exception as exc:
+                detector_aligned_spans = None
+                detector_block_details = None
+                detector_ids = []
+                alignment_error = str(exc)
+        else:
+            detector_ids = predicted_block_ids_from_row(row)
+            detector_aligned_spans, detector_block_details = get_detector_alignment_from_row(row)
         if detector_aligned_spans is not None and detector_block_details is not None:
             available_block_ids = [int(item["parsed_block_index"]) for item in detector_block_details]
         else:
             available_block_ids = list(range(18))
         for condition in conditions:
-            rng = random.Random(rng_master.randint(0, 10**9) ^ (sequence_index * 7919) ^ abs(hash(condition)))
+            rng = random.Random(
+                rng_master.randint(0, 10**9)
+                ^ (sequence_index * 7919)
+                ^ stable_hash_int(condition)
+            )
             if condition == "no_warning":
                 suspicious_block_ids = []
                 suspicious_snippets = {}
@@ -700,13 +762,21 @@ def run_judge_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                             "intent_label": intent_label,
                             "motivation": motivation,
                             "used": bool(row.get("used", True)),
-                            "skip_reason": "missing_detector_alignment",
+                            "skip_reason": (
+                                f"detector_alignment_reconstruction_failed:{alignment_error}"
+                                if alignment_error
+                                else "missing_detector_alignment"
+                            ),
                             "edited_text": edited_text,
                             "pred_blocks": pred_blocks_raw,
                             "predicted_suspicious_block_ids": json.dumps([]),
                             "suspicious_block_snippets": json.dumps({}, ensure_ascii=False),
                             "suspicious_block_contexts": json.dumps({}, ensure_ascii=False),
-                            "snippet_extraction_mode": "missing_detector_alignment",
+                            "snippet_extraction_mode": (
+                                "final_text_reconstruction_failed"
+                                if alignment_error
+                                else "missing_detector_alignment"
+                            ),
                             "judge_backend": args.judge_backend,
                             "judge_raw_output": None,
                             "judge_label": None,
@@ -723,7 +793,11 @@ def run_judge_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                     suspicious_block_ids=suspicious_block_ids,
                     num_blocks=max(available_block_ids) + 1 if available_block_ids else 0,
                 )
-                snippet_extraction_mode = "detector_parsed_alignment"
+                snippet_extraction_mode = (
+                    "detector_parsed_alignment_final_text_recomputed"
+                    if args.warning_metadata_source == "recompute_final_text"
+                    else "detector_parsed_alignment_cached"
+                )
             allowed_payload = {
                 "condition": condition,
                 "question": question,
@@ -811,7 +885,8 @@ def run_judge_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                 "malicious": "malicious_or_high_risk",
             },
             "snippet_extraction_priority": [
-                "detector_parsed_alignment",
+                "detector_parsed_alignment_final_text_recomputed",
+                "detector_parsed_alignment_cached",
                 "edited_block_text_spans_json",
                 "reconstructed_token_block_mapping",
                 "equal_chunk_fallback",
@@ -827,6 +902,7 @@ def run_judge_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                     "suspicious_block_contexts",
                 ],
             },
+            "warning_metadata_source": args.warning_metadata_source,
         },
     )
     return {
@@ -856,7 +932,33 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--only-used", type=str, default="true")
     parser.add_argument("--include-motivation-for-debug", type=str, default="false")
     parser.add_argument("--random-seed", type=int, default=1234)
-    return parser.parse_args()
+    parser.add_argument(
+        "--warning-metadata-source",
+        choices=["cached", "recompute_final_text"],
+        default="cached",
+    )
+    parser.add_argument("--source-backend", choices=["mock", "hf"], default="hf")
+    parser.add_argument("--source-model-profile", choices=sorted(MODEL_PROFILES), default=None)
+    parser.add_argument("--source-model-name", default=None)
+    parser.add_argument("--partition-dir", default=None)
+    parser.add_argument("--partition-prompt-file", default=None)
+    parser.add_argument("--require-semantic-partition", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--block-len", type=int, default=7)
+    parser.add_argument("--vt-a", type=int, default=6)
+    parser.add_argument("--decoder-max-edits-per-block", type=int, default=3)
+    parser.add_argument("--tolerance", type=int, default=1)
+    args = parser.parse_args()
+    profile = get_model_profile(args.source_model_profile) if args.source_model_profile else None
+    if profile and args.source_model_name and args.source_model_name != profile.model_name:
+        parser.error(
+            f"--source-model-profile {profile.key} requires --source-model-name {profile.model_name!r}."
+        )
+    args.source_model_name = args.source_model_name or (
+        profile.model_name if profile else ("mock-lm" if args.source_backend == "mock" else None)
+    )
+    if args.warning_metadata_source == "recompute_final_text" and not args.source_model_name:
+        parser.error("--source-model-name or --source-model-profile is required for final-text reconstruction.")
+    return args
 
 
 def main() -> None:

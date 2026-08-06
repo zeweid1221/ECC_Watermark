@@ -2,20 +2,30 @@ from __future__ import annotations
 
 import math
 import random
+from pathlib import Path
 from typing import Any, Dict, List, Sequence, Tuple
 
 import pandas as pd
 
 from .config import AttackConfig, GenerationSetting, RunConfig
-from .ecc_detector import EccDecoderConfig, detect_sequence_multiple, evaluate_predictions_multiple
+from .ecc_detector import (
+    EccDecoderConfig,
+    detect_sequence_multiple,
+    evaluate_predictions_with_provenance,
+)
 from .ecc_generator import EccGenerationResult, EccGenerator
-from .edits import apply_edits_to_payload_blocks, apply_token_edits_to_blocks
+from .edits import apply_edits_to_payload_blocks_with_provenance, apply_token_edits_to_blocks
 from .io_utils import ensure_dir, save_dataframe, save_prompts, to_jsonable, write_json
 from .kgw_evaluator import evaluate_kgw_blocks
 from .kgw_generator import KgwGenerationResult, KgwGenerator
 from .modeling import build_language_model, sample_prompts_from_config
-from .partitioning import build_vocabulary_partition
-from .ppl import compute_text_perplexity
+from .partitioning import (
+    build_vocabulary_partition,
+    load_vocabulary_partition,
+    save_vocabulary_partition,
+    validate_vocabulary_partition,
+)
+from .ppl import compute_generation_perplexities, compute_text_perplexity
 from .segment_baselines import run_segment_baseline_suite
 
 
@@ -74,7 +84,7 @@ def evaluate_ecc_generations(
         valid_blocks_total += len(original_payload_blocks)
         clean_valid_blocks_total += len(clean_valid_blocks)
         rng = random.Random(seed + idx)
-        _, gt_events_per_block, observed_sequence = apply_edits_to_payload_blocks(
+        _, gt_events_per_block, observed_sequence, observed_provenance = apply_edits_to_payload_blocks_with_provenance(
             payload_blocks=original_payload_blocks,
             edit_rate=attack.edit_rate,
             allow_boundary_edit=attack.allow_boundary_edit,
@@ -92,10 +102,11 @@ def evaluate_ecc_generations(
             ),
             codebook=generator.codebook,
         )
-        ev = evaluate_predictions_multiple(
+        ev = evaluate_predictions_with_provenance(
             original_payload_blocks,
             gt_events_per_block,
             pred_blocks,
+            observed_provenance,
             tolerance=tolerance,
             codebook=generator.codebook,
         )
@@ -336,7 +347,28 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
     detailed_payload: Dict[str, Any] = {"prompts": prompts, "settings": []}
 
     if "ecc" in run_config.schemes:
-        partition = build_vocabulary_partition(model, prompts, run_config.ecc)
+        if run_config.partition_dir:
+            partition = load_vocabulary_partition(run_config.partition_dir)
+            validate_vocabulary_partition(
+                partition,
+                model,
+                require_semantic_split=run_config.require_semantic_partition,
+            )
+        else:
+            partition = build_vocabulary_partition(model, prompts, run_config.ecc)
+            validate_vocabulary_partition(
+                partition,
+                model,
+                require_semantic_split=run_config.require_semantic_partition,
+            )
+            save_vocabulary_partition(
+                partition,
+                Path(run_config.output_dir) / "partition",
+                metadata={
+                    "partition_source": "built_by_run_experiment",
+                    "num_partition_texts": len(prompts),
+                },
+            )
         generator = EccGenerator(model, partition, run_config.ecc)
         for watermark_mode in run_config.watermark_modes:
             for adaptive in run_config.ecc_adaptive_modes:
@@ -355,8 +387,17 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
                         seed=run_config.generation_seed + (17 if adaptive else 53),
                         logit_bias=logit_bias,
                     )
-                    generated = generator.generate_many(prompts, setting)
+                    generated = generator.generate_many(
+                        prompts,
+                        setting,
+                        protocol=run_config.generation_protocol,
+                    )
                     ppl = compute_text_perplexity(model, [x.suffix_text for x in generated], max_length=run_config.max_new_tokens)
+                    token_id_ppl = compute_generation_perplexities(
+                        model,
+                        prompt_token_ids=[x.prompt_token_ids for x in generated],
+                        generated_token_ids=[x.generated_token_ids for x in generated],
+                    )
                     bias_suffix = "" if logit_bias is None else f"_bias{setting.resolved_logit_bias():g}"
                     setting_key = f"ecc_{watermark_mode}_{'adaptive' if adaptive else 'nonadaptive'}{bias_suffix}"
                     detailed_payload["settings"].append(
@@ -367,12 +408,24 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
                             "adaptive": adaptive,
                             "logit_bias": setting.resolved_logit_bias(),
                             "ppl": ppl,
+                            "ppl_suffix_text": ppl,
+                            **token_id_ppl,
                             "generated": [
                                 {
                                     "prompt": res.prompt,
+                                    "user_prompt": res.user_prompt,
+                                    "rendered_prompt": res.rendered_prompt,
+                                    "prompt_mode": res.prompt_mode,
                                     "suffix_text": res.suffix_text,
+                                    "prompt_token_ids": res.prompt_token_ids,
+                                    "generated_token_ids": res.generated_token_ids,
+                                    "generated_bucket_seq": res.generated_bucket_seq,
                                     "structural_seq": res.structural_seq,
                                     "valid_blocks": res.decoded_clean["valid_blocks"],
+                                    "runtime_block_summaries": res.runtime_state.block_summaries,
+                                    "num_closed_blocks": len(res.runtime_state.block_summaries),
+                                    "num_feasible_closed_blocks": res.runtime_state.completed_blocks,
+                                    "stop_reason": res.stop_reason,
                                     "generation_time_blocks": generation_time_ecc_blocks(
                                         res,
                                         run_config.ecc.block_len,
@@ -419,6 +472,8 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
                                 "used_generation_time_gt": True,
                                 "tolerance": tolerance,
                                 "ppl": ppl,
+                                "ppl_suffix_text": ppl,
+                                **token_id_ppl,
                                 "token_tp": math.nan,
                                 "token_fp": math.nan,
                                 "token_fn": math.nan,
