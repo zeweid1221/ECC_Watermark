@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+import random
 from pathlib import Path
 
 from scripts.build_qwen3_fixed_partition import word_to_single_token_id
@@ -14,6 +15,7 @@ from scripts.run_llm_editor_experiment import (
     validate_and_translate_instructions,
 )
 from watermark_project.config import (
+    AttackConfig,
     ECCConfig,
     GenerationProtocolConfig,
     GenerationSetting,
@@ -30,7 +32,15 @@ from watermark_project.ecc_detector import (
     evaluate_predictions_with_provenance,
 )
 from watermark_project.ecc_generator import EccGenerator
-from watermark_project.edits import EditEvent
+from watermark_project.edits import (
+    EditEvent,
+    apply_edits_to_payload_blocks,
+    apply_edits_to_payload_blocks_with_provenance,
+)
+from watermark_project.experiment import (
+    evaluate_ecc_generations,
+    generation_time_ecc_blocks,
+)
 from watermark_project.modeling import MockLanguageModel
 from watermark_project.partitioning import (
     build_vocabulary_partition,
@@ -361,6 +371,136 @@ class ThreeModelRefactorTests(unittest.TestCase):
         self.assertEqual((new["TP"], new["FP"], new["FN"]), (1, 0, 0))
         self.assertEqual(new["parsed_to_source_blocks"], [[0], [0], [1]])
         self.assertEqual(new["event_coverage_overall"], 1.0)
+
+    def test_synthetic_provenance_preserves_attacked_sequence_and_net_gt(self) -> None:
+        codebook = EccCodebook(7, 6)
+        blocks = [codebook.feasible[0], codebook.feasible[1]]
+        found_net_zero = False
+        for seed in range(2000):
+            old = apply_edits_to_payload_blocks(
+                blocks,
+                edit_rate=1.0,
+                allow_boundary_edit=True,
+                boundary_edit_modes=("delete", "sub"),
+                max_edits_per_block=3,
+                edit_count_mode="fixed_k",
+                boundary_symbol=2,
+                rng=random.Random(seed),
+            )
+            new = apply_edits_to_payload_blocks_with_provenance(
+                blocks,
+                edit_rate=1.0,
+                allow_boundary_edit=True,
+                boundary_edit_modes=("delete", "sub"),
+                max_edits_per_block=3,
+                edit_count_mode="fixed_k",
+                boundary_symbol=2,
+                rng=random.Random(seed),
+            )
+            self.assertEqual(old[0], new[0])
+            self.assertEqual(old[2], new[2])
+            self.assertEqual(len(new[2]), len(new[3]))
+            for block_id, (payload, observed, old_events, net_events) in enumerate(
+                zip(blocks, old[0], old[1], new[1])
+            ):
+                if old_events and observed == payload + [2]:
+                    found_net_zero = True
+                    self.assertEqual(net_events, [], msg=f"block={block_id}, seed={seed}")
+            if found_net_zero:
+                break
+        self.assertTrue(found_net_zero)
+
+    def test_core_runner_uses_final_net_edit_ground_truth(self) -> None:
+        result = self.generate("hard", 20.0, target_blocks=2)
+        blocks = generation_time_ecc_blocks(result, self.ecc.block_len, max_blocks=2)
+        attack = AttackConfig(
+            edit_rate=1.0,
+            allow_boundary_edit=True,
+            boundary_edit_modes=("delete", "sub"),
+            attack_max_edits_per_block=3,
+            edit_count_mode="fixed_k",
+        )
+        calibration_seed = None
+        old_positive = net_positive = 0
+        for seed in range(2000):
+            old = apply_edits_to_payload_blocks(
+                blocks,
+                edit_rate=attack.edit_rate,
+                allow_boundary_edit=attack.allow_boundary_edit,
+                boundary_edit_modes=attack.boundary_edit_modes,
+                max_edits_per_block=attack.attack_max_edits_per_block,
+                edit_count_mode=attack.edit_count_mode,
+                boundary_symbol=self.generator.codebook.boundary_symbol,
+                rng=random.Random(seed),
+            )
+            new = apply_edits_to_payload_blocks_with_provenance(
+                blocks,
+                edit_rate=attack.edit_rate,
+                allow_boundary_edit=attack.allow_boundary_edit,
+                boundary_edit_modes=attack.boundary_edit_modes,
+                max_edits_per_block=attack.attack_max_edits_per_block,
+                edit_count_mode=attack.edit_count_mode,
+                boundary_symbol=self.generator.codebook.boundary_symbol,
+                rng=random.Random(seed),
+            )
+            old_positive = sum(bool(events) for events in old[1])
+            net_positive = sum(bool(events) for events in new[1])
+            if net_positive < old_positive:
+                calibration_seed = seed
+                break
+        self.assertIsNotNone(calibration_seed)
+
+        summary, details = evaluate_ecc_generations(
+            [result],
+            self.generator,
+            attack,
+            decoder_budget=3,
+            seed=int(calibration_seed),
+            target_blocks=2,
+            tolerance=0,
+        )
+        self.assertEqual(summary["TP"] + summary["FN"], net_positive)
+        self.assertLess(summary["TP"] + summary["FN"], old_positive)
+        self.assertEqual(summary["gt_semantics"], "final_net_structural_edits")
+        self.assertEqual(
+            summary["candidate_coordinate_system"],
+            "feasible_reference_codeword",
+        )
+        self.assertEqual(details[0]["gt_semantics"], "final_net_structural_edits")
+
+    def test_reference_candidate_survives_deleted_observed_tail(self) -> None:
+        codebook = EccCodebook(7, 6)
+        block = codebook.feasible[0]
+        gt = [[EditEvent("delete", ("payload", 6), block[6], None)]]
+        prediction = ParsedBlock(
+            block_tokens=block[:6],
+            flag=True,
+            etype="delete",
+            candidates=[("payload", 6)],
+            decoded_codeword=block,
+            info={
+                "payload_distance": 1,
+                "observed_span_start": 0,
+                "observed_span_end_exclusive": 6,
+            },
+        )
+        provenance = [
+            {
+                "original_block_id": 0,
+                "original_structural_index": index,
+            }
+            for index in range(6)
+        ]
+        result = evaluate_predictions_with_provenance(
+            [block],
+            gt,
+            [prediction],
+            provenance,
+            0,
+            codebook,
+        )
+        self.assertEqual(result["event_loc_hit"], 1)
+        self.assertEqual(result["source_candidate_locations"], [[["payload", 6]]])
 
     def test_dual_ppl_and_final_text_reconstruction(self) -> None:
         result = self.generate("hard", 20.0)

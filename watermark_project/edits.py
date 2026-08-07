@@ -69,34 +69,227 @@ def apply_edits_to_payload_blocks_with_provenance(
     boundary_symbol: int = 2,
     rng: Optional[random.Random] = None,
 ) -> Tuple[List[List[int]], List[List[EditEvent]], List[int], List[Dict[str, Any]]]:
-    observed_blocks, gt_events, observed_sequence = apply_edits_to_payload_blocks(
-        payload_blocks=payload_blocks,
-        edit_rate=edit_rate,
-        allow_boundary_edit=allow_boundary_edit,
-        boundary_edit_modes=boundary_edit_modes,
-        max_edits_per_block=max_edits_per_block,
-        edit_count_mode=edit_count_mode,
-        boundary_symbol=boundary_symbol,
-        rng=rng,
-    )
+    rng = rng or random.Random()
+    observed_blocks: List[List[int]] = []
+    gt_events: List[List[EditEvent]] = []
     provenance: List[Dict[str, Any]] = []
-    for block_id, observed_block in enumerate(observed_blocks):
-        block_len = len(payload_blocks[block_id])
-        for local_index, symbol in enumerate(observed_block):
+    observed_sequence: List[int] = []
+
+    for block_id, payload in enumerate(payload_blocks):
+        block_len = len(payload)
+        original_serialized = payload.copy() + [boundary_symbol]
+        observed_block = original_serialized.copy()
+        origins: List[Dict[str, Any]] = [
+            {
+                "kind": "payload",
+                "original_payload_index": int(index),
+                "original_value": int(symbol),
+            }
+            for index, symbol in enumerate(payload)
+        ]
+        origins.append(
+            {
+                "kind": "boundary",
+                "original_payload_index": None,
+                "original_value": int(boundary_symbol),
+            }
+        )
+
+        if rng.random() < edit_rate:
+            n_edits = sample_num_edits(max_edits_per_block, edit_count_mode, rng)
+            for insertion_id in range(n_edits):
+                observed_block, origins = _apply_one_edit_with_provenance(
+                    observed_block,
+                    origins,
+                    boundary_symbol=boundary_symbol,
+                    allow_boundary_edit=allow_boundary_edit,
+                    boundary_edit_modes=boundary_edit_modes,
+                    insertion_id=insertion_id,
+                    block_len=block_len,
+                    rng=rng,
+                )
+
+        # Ground truth describes the final structural difference, not an edit
+        # history that may have canceled itself.
+        if observed_block == original_serialized:
+            block_events: List[EditEvent] = []
+        else:
+            block_events = _net_edit_events_from_origins(
+                payload,
+                observed_block,
+                origins,
+                boundary_symbol=boundary_symbol,
+            )
+
+        observed_blocks.append(observed_block)
+        gt_events.append(block_events)
+        observed_sequence.extend(observed_block)
+        for local_index, (symbol, origin) in enumerate(zip(observed_block, origins)):
+            kind = str(origin["kind"])
+            if kind == "payload":
+                local_original_index = int(origin["original_payload_index"])
+            elif kind == "boundary":
+                local_original_index = block_len
+            else:
+                local_original_index = int(origin["original_gap"])
             provenance.append(
                 {
                     "origin": "synthetic_block_attack",
                     "original_block_id": int(block_id),
-                    "original_structural_index": int(
-                        block_id * (block_len + 1) + min(local_index, block_len)
-                    ),
+                    "original_structural_index": int(block_id * (block_len + 1) + local_original_index),
+                    "original_symbol_kind": kind,
+                    "original_payload_index": origin.get("original_payload_index"),
+                    "original_gap": origin.get("original_gap"),
                     "edited_structural_symbol": int(symbol),
                     "edited_structural_index": len(provenance),
+                    "edited_local_index": int(local_index),
                 }
             )
     if len(provenance) != len(observed_sequence):
         raise RuntimeError("Synthetic edit provenance length does not match observed sequence.")
     return observed_blocks, gt_events, observed_sequence, provenance
+
+
+def _original_gap_for_insertion(
+    origins: Sequence[Dict[str, Any]],
+    current_gap: int,
+    block_len: int,
+) -> int:
+    right_payload = [
+        int(item["original_payload_index"])
+        for item in origins[current_gap:]
+        if item.get("kind") == "payload"
+    ]
+    if right_payload:
+        return max(0, min(block_len, min(right_payload)))
+    left_payload = [
+        int(item["original_payload_index"])
+        for item in origins[:current_gap]
+        if item.get("kind") == "payload"
+    ]
+    if left_payload:
+        return max(0, min(block_len, max(left_payload) + 1))
+    return 0
+
+
+def _apply_one_edit_with_provenance(
+    serialized: List[int],
+    origins: List[Dict[str, Any]],
+    boundary_symbol: int,
+    allow_boundary_edit: bool,
+    boundary_edit_modes: Tuple[str, ...],
+    insertion_id: int,
+    block_len: int,
+    rng: random.Random,
+) -> Tuple[List[int], List[Dict[str, Any]]]:
+    x = serialized.copy()
+    source = [dict(item) for item in origins]
+    boundary_positions = [i for i, token in enumerate(x) if token == boundary_symbol]
+    boundary_idx = boundary_positions[-1] if boundary_positions else None
+    edit_type = rng.choice(["sub", "insert", "delete"])
+
+    if edit_type == "insert":
+        max_gap = len(x) if boundary_idx is None else boundary_idx
+        gap = rng.randint(0, max_gap)
+        bit = rng.randint(0, 1)
+        original_gap = _original_gap_for_insertion(source, gap, block_len)
+        x = x[:gap] + [bit] + x[gap:]
+        source = source[:gap] + [
+            {
+                "kind": "insert",
+                "original_payload_index": None,
+                "original_gap": int(original_gap),
+                "insertion_id": int(insertion_id),
+                "original_value": None,
+            }
+        ] + source[gap:]
+        return x, source
+
+    if edit_type == "sub":
+        payload_positions = [i for i, token in enumerate(x) if token in (0, 1)]
+        candidates = payload_positions.copy()
+        if allow_boundary_edit and "sub" in boundary_edit_modes and boundary_idx is not None:
+            candidates.append(boundary_idx)
+        if not candidates:
+            return x, source
+        pos = rng.choice(candidates)
+        before = x[pos]
+        x[pos] = 1 - before if before in (0, 1) else rng.choice([0, 1])
+        return x, source
+
+    payload_positions = [i for i, token in enumerate(x) if token in (0, 1)]
+    candidates = payload_positions.copy()
+    if allow_boundary_edit and "delete" in boundary_edit_modes and boundary_idx is not None:
+        candidates.append(boundary_idx)
+    if not candidates:
+        return x, source
+    pos = rng.choice(candidates)
+    del x[pos]
+    del source[pos]
+    return x, source
+
+
+def _net_edit_events_from_origins(
+    original_payload: Sequence[int],
+    observed_serialized: Sequence[int],
+    origins: Sequence[Dict[str, Any]],
+    boundary_symbol: int,
+) -> List[EditEvent]:
+    current_originals: Dict[Tuple[str, int], Tuple[int, Dict[str, Any]]] = {}
+    insertions: List[Tuple[int, Dict[str, Any]]] = []
+    for symbol, origin in zip(observed_serialized, origins):
+        kind = str(origin["kind"])
+        if kind == "payload":
+            key = ("payload", int(origin["original_payload_index"]))
+            current_originals[key] = (int(symbol), origin)
+        elif kind == "boundary":
+            current_originals[("boundary", len(original_payload))] = (int(symbol), origin)
+        elif kind == "insert":
+            insertions.append((int(symbol), origin))
+
+    events: List[EditEvent] = []
+    for index, before in enumerate(original_payload):
+        current = current_originals.get(("payload", index))
+        if current is None:
+            events.append(EditEvent("delete", ("payload", index), value_before=int(before)))
+        elif int(current[0]) != int(before):
+            events.append(
+                EditEvent(
+                    "sub",
+                    ("payload", index),
+                    value_before=int(before),
+                    value_after=int(current[0]),
+                )
+            )
+
+    boundary_current = current_originals.get(("boundary", len(original_payload)))
+    if boundary_current is None:
+        events.append(
+            EditEvent(
+                "delete",
+                ("boundary", len(original_payload)),
+                value_before=int(boundary_symbol),
+            )
+        )
+    elif int(boundary_current[0]) != int(boundary_symbol):
+        events.append(
+            EditEvent(
+                "sub",
+                ("boundary", len(original_payload)),
+                value_before=int(boundary_symbol),
+                value_after=int(boundary_current[0]),
+            )
+        )
+
+    for symbol, origin in insertions:
+        events.append(
+            EditEvent(
+                "insert",
+                ("gap", int(origin["original_gap"])),
+                value_after=int(symbol),
+            )
+        )
+    return events
 
 
 def _apply_one_edit_to_serialized_block(

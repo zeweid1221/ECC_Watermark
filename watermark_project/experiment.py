@@ -9,6 +9,7 @@ import pandas as pd
 
 from .config import AttackConfig, GenerationSetting, RunConfig
 from .ecc_detector import (
+    EccCodebook,
     EccDecoderConfig,
     detect_sequence_multiple,
     evaluate_predictions_with_provenance,
@@ -35,6 +36,56 @@ def resolve_kgw_bias_values(run_config: RunConfig) -> List[float | None]:
     if run_config.kgw_logit_bias is not None:
         return [float(run_config.kgw_logit_bias)]
     return [None]
+
+
+def evaluate_ecc_payload_blocks(
+    original_payload_blocks: Sequence[Sequence[int]],
+    codebook: EccCodebook,
+    attack: AttackConfig,
+    decoder_budget: int,
+    rng: random.Random,
+    tolerance: int = 0,
+) -> Dict[str, Any]:
+    """Attack and evaluate one sequence using the canonical ECC evaluation path."""
+    (
+        observed_blocks,
+        gt_events_per_block,
+        observed_sequence,
+        observed_provenance,
+    ) = apply_edits_to_payload_blocks_with_provenance(
+        payload_blocks=original_payload_blocks,
+        edit_rate=attack.edit_rate,
+        allow_boundary_edit=attack.allow_boundary_edit,
+        boundary_edit_modes=attack.boundary_edit_modes,
+        max_edits_per_block=attack.attack_max_edits_per_block,
+        edit_count_mode=attack.edit_count_mode,
+        boundary_symbol=codebook.boundary_symbol,
+        rng=rng,
+    )
+    pred_blocks = detect_sequence_multiple(
+        observed_sequence,
+        decoder_config=EccDecoderConfig(
+            decoder_max_edits_per_block=decoder_budget,
+            boundary_edit_modes=attack.boundary_edit_modes,
+        ),
+        codebook=codebook,
+    )
+    evaluation = evaluate_predictions_with_provenance(
+        original_payload_blocks,
+        gt_events_per_block,
+        pred_blocks,
+        observed_provenance,
+        tolerance=tolerance,
+        codebook=codebook,
+    )
+    return {
+        "observed_blocks": observed_blocks,
+        "gt_events_per_block": gt_events_per_block,
+        "observed_sequence": observed_sequence,
+        "observed_provenance": observed_provenance,
+        "pred_blocks": pred_blocks,
+        "evaluation": evaluation,
+    }
 
 
 def evaluate_ecc_generations(
@@ -73,6 +124,8 @@ def evaluate_ecc_generations(
                     "skip_reason": "fewer_than_target_generation_time_blocks",
                     "gt_source": "runtime_block_summaries",
                     "used_generation_time_gt": True,
+                    "gt_semantics": "final_net_structural_edits",
+                    "candidate_coordinate_system": "feasible_reference_codeword",
                     "tolerance": int(tolerance),
                     "num_generation_time_blocks_total": len(all_generation_time_blocks),
                     "num_target_blocks_required": int(target_blocks),
@@ -83,33 +136,15 @@ def evaluate_ecc_generations(
         used_sequences += 1
         valid_blocks_total += len(original_payload_blocks)
         clean_valid_blocks_total += len(clean_valid_blocks)
-        rng = random.Random(seed + idx)
-        _, gt_events_per_block, observed_sequence, observed_provenance = apply_edits_to_payload_blocks_with_provenance(
-            payload_blocks=original_payload_blocks,
-            edit_rate=attack.edit_rate,
-            allow_boundary_edit=attack.allow_boundary_edit,
-            boundary_edit_modes=attack.boundary_edit_modes,
-            max_edits_per_block=attack.attack_max_edits_per_block,
-            edit_count_mode=attack.edit_count_mode,
-            boundary_symbol=generator.codebook.boundary_symbol,
-            rng=rng,
-        )
-        pred_blocks = detect_sequence_multiple(
-            observed_sequence,
-            decoder_config=EccDecoderConfig(
-                decoder_max_edits_per_block=decoder_budget,
-                boundary_edit_modes=attack.boundary_edit_modes,
-            ),
+        sequence_result = evaluate_ecc_payload_blocks(
+            original_payload_blocks=original_payload_blocks,
             codebook=generator.codebook,
-        )
-        ev = evaluate_predictions_with_provenance(
-            original_payload_blocks,
-            gt_events_per_block,
-            pred_blocks,
-            observed_provenance,
+            attack=attack,
+            decoder_budget=decoder_budget,
+            rng=random.Random(seed + idx),
             tolerance=tolerance,
-            codebook=generator.codebook,
         )
+        ev = sequence_result["evaluation"]
         tp += ev["TP"]
         fp += ev["FP"]
         fn += ev["FN"]
@@ -138,6 +173,8 @@ def evaluate_ecc_generations(
                 "num_clean_valid_blocks": len(clean_valid_blocks),
                 "gt_source": "runtime_block_summaries",
                 "used_generation_time_gt": True,
+                "gt_semantics": "final_net_structural_edits",
+                "candidate_coordinate_system": "feasible_reference_codeword",
                 "tolerance": int(tolerance),
                 "TP": ev["TP"],
                 "FP": ev["FP"],
@@ -157,6 +194,8 @@ def evaluate_ecc_generations(
         "mean_clean_valid_blocks_per_used_sequence": clean_valid_blocks_total / used_sequences if used_sequences > 0 else 0.0,
         "gt_source": "runtime_block_summaries",
         "used_generation_time_gt": True,
+        "gt_semantics": "final_net_structural_edits",
+        "candidate_coordinate_system": "feasible_reference_codeword",
         "tolerance": int(tolerance),
         "TP": tp,
         "FP": fp,

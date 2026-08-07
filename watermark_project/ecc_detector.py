@@ -624,48 +624,6 @@ def evaluate_predictions_with_provenance(
             }
         )
 
-    def candidate_source_locations(
-        pred: ParsedBlock,
-    ) -> List[Tuple[int, Tuple[str, int]]]:
-        start = pred.info.get("observed_span_start")
-        end = pred.info.get("observed_span_end_exclusive")
-        if start is None or end is None:
-            return []
-        start = int(start)
-        end = int(end)
-        mapped: Set[Tuple[int, Tuple[str, int]]] = set()
-        for kind, raw_pos in pred.candidates:
-            pos = int(raw_pos)
-            observed_index: Optional[int]
-            if kind == "boundary":
-                boundary_index = pred.info.get("observed_boundary_index")
-                observed_index = int(boundary_index) if boundary_index is not None else end - 1
-            elif kind == "payload":
-                observed_index = start + pos
-            elif kind == "gap":
-                observed_index = start if pos <= 0 else start + pos - 1
-            else:
-                continue
-            if observed_index < 0 or observed_index >= len(observed_provenance):
-                continue
-            provenance = observed_provenance[observed_index]
-            block_id = provenance.get("original_block_id")
-            original_structural_index = provenance.get("original_structural_index")
-            if block_id is None or original_structural_index is None:
-                continue
-            block_id = int(block_id)
-            if not 0 <= block_id < num_gt_blocks:
-                continue
-            local_position = int(original_structural_index) % (block_len + 1)
-            if kind == "gap":
-                mapped_loc = ("gap", min(block_len, local_position + (1 if pos > 0 else 0)))
-            elif kind == "boundary" or local_position == block_len:
-                mapped_loc = ("boundary", block_len)
-            else:
-                mapped_loc = ("payload", min(block_len - 1, local_position))
-            mapped.add((block_id, mapped_loc))
-        return sorted(mapped, key=lambda item: (item[0], _loc_sort_key(item[1])))
-
     for pred in pred_blocks:
         observed_indices = provenance_indices_for_pred(pred)
         source_blocks = source_blocks_for_indices(observed_indices)
@@ -683,8 +641,17 @@ def evaluate_predictions_with_provenance(
                 source_decoded_codewords[block_id].add(tuple(int(x) for x in pred.decoded_codeword))
             for candidate in pred.info.get("best_codewords", []):
                 source_decoded_codewords[block_id].add(tuple(int(x) for x in candidate))
-        for block_id, location in candidate_source_locations(pred):
-            source_candidates[block_id].add(location)
+            # Decoder candidates are coordinates in the feasible reference
+            # codeword, not offsets into the observed span. Preserve those
+            # coordinates when assigning a parsed span to its source block(s).
+            for kind, raw_position in pred.candidates:
+                position = int(raw_position)
+                if kind == "payload" and 0 <= position < block_len:
+                    source_candidates[block_id].add(("payload", position))
+                elif kind == "gap" and 0 <= position <= block_len:
+                    source_candidates[block_id].add(("gap", position))
+                elif kind == "boundary":
+                    source_candidates[block_id].add(("boundary", block_len))
 
     tp = fp = fn = tn = 0
     event_loc_total = event_loc_hit = 0

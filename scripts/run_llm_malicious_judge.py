@@ -935,7 +935,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--warning-metadata-source",
         choices=["cached", "recompute_final_text"],
-        default="cached",
+        default="recompute_final_text",
     )
     parser.add_argument("--source-backend", choices=["mock", "hf"], default="hf")
     parser.add_argument("--source-model-profile", choices=sorted(MODEL_PROFILES), default=None)
