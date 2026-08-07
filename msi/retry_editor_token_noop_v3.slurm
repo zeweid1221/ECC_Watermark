@@ -71,3 +71,9 @@ python scripts/run_llm_editor_experiment.py \
   --resume-from-output-dir "$BASE_OUTPUT_DIR" \
   --retry-skipped \
   --output-dir "$OUTPUT_DIR"
+
+# Retained v2 rows predate the candidate-coordinate correction. Recompute all
+# rows together so the final v3 artifact has one evaluation protocol.
+python scripts/recompute_llm_editor_evaluation.py \
+  --source-dir "$OUTPUT_DIR" \
+  --output-dir "$OUTPUT_DIR/corrected_evaluation"
