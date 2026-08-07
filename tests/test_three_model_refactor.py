@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 import random
 from pathlib import Path
+from unittest.mock import patch
 
 from scripts.build_qwen3_fixed_partition import word_to_single_token_id
 from scripts.run_llm_editor_experiment import (
@@ -10,6 +11,7 @@ from scripts.run_llm_editor_experiment import (
     build_editor_prompt,
     build_gt_events_from_validated,
     build_text_units_from_generated_tokens,
+    is_exact_token_id_noop,
     prepare_resume_records,
     retry_feedback_for_error,
     validate_and_translate_instructions,
@@ -251,6 +253,61 @@ class ThreeModelRefactorTests(unittest.TestCase):
             1,
         )
 
+        parsed["edits"][0] = {
+            "op": "substitute",
+            "index": payload.index,
+            "original_text": payload.surface,
+            "new_content": "different alias",
+            "reason": "exact token ID no-op regression",
+        }
+        with patch(
+            "scripts.run_llm_editor_experiment.tokenize_new_content",
+            return_value=[payload.token_id],
+        ):
+            validated, error = validate_and_translate_instructions(
+                parsed,
+                "clarity_improvement",
+                "benign",
+                units,
+                token_ids,
+                blocks,
+                self.partition,
+                self.model,
+                2,
+                1,
+                2,
+                0.9,
+            )
+        self.assertEqual(validated, [])
+        self.assertEqual(error, "substitute_same_token_id")
+
+        with patch(
+            "scripts.run_llm_editor_experiment.tokenize_new_content",
+            return_value=[payload.token_id, same_bucket_id],
+        ):
+            validated, error = validate_and_translate_instructions(
+                parsed,
+                "clarity_improvement",
+                "benign",
+                units,
+                token_ids,
+                blocks,
+                self.partition,
+                self.model,
+                2,
+                1,
+                2,
+                0.9,
+            )
+        self.assertIsNone(error)
+        self.assertTrue(is_exact_token_id_noop(payload.token_id, [payload.token_id]))
+        self.assertFalse(
+            is_exact_token_id_noop(
+                payload.token_id,
+                [payload.token_id, same_bucket_id],
+            )
+        )
+
         editor_prompt = build_editor_prompt(
             prompt=self.texts[0],
             suffix_text=result.suffix_text,
@@ -271,6 +328,16 @@ class ThreeModelRefactorTests(unittest.TestCase):
             retry_feedback=retry_feedback_for_error("substitute_no_text_change"),
         )
         self.assertIn("same normalized text", retry_prompt)
+        token_retry_prompt = build_editor_prompt(
+            prompt=self.texts[0],
+            suffix_text=result.suffix_text,
+            motivation="grammar_polish",
+            intent_label="benign",
+            units=units,
+            max_edited_blocks=2,
+            retry_feedback=retry_feedback_for_error("substitute_same_token_id"),
+        )
+        self.assertIn("exactly the selected original token ID", token_retry_prompt)
 
     def test_retry_skipped_resume_retains_only_accepted_rows(self) -> None:
         details = [

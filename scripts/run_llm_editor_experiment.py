@@ -723,6 +723,10 @@ def retry_feedback_for_error(error: str) -> str:
             "original token. Replace it with different content or choose a different "
             "operation/index."
         ),
+        "substitute_same_token_id": (
+            "At least one substitute tokenized to exactly the selected original token "
+            "ID. Choose genuinely different replacement content or another index."
+        ),
         "invalid_json": (
             "The response was not valid parseable JSON. Return exactly one JSON object "
             "with no prose or Markdown fences."
@@ -869,6 +873,13 @@ def hf_editor_response(editor_model: HfLanguageModel, editor_prompt: str, max_ne
 
 def tokenize_new_content(model, text: str) -> List[int]:
     return [int(x) for x in model.encode(clean_text(text), add_special_tokens=False)]
+
+
+def is_exact_token_id_noop(
+    original_token_id: int,
+    replacement_token_ids: Sequence[int],
+) -> bool:
+    return [int(x) for x in replacement_token_ids] == [int(original_token_id)]
 
 
 def map_token_ids_to_structural_symbols(
@@ -1032,6 +1043,11 @@ def validate_and_translate_instructions(
             local_window = local_window_for_index(text_token_ids, model, idx)
             if not approx_text_match(original_text, unit.surface, local_window):
                 return [], "original_text_mismatch"
+            if op == "substitute" and is_exact_token_id_noop(
+                unit.token_id,
+                tokenized_new_ids,
+            ):
+                return [], "substitute_same_token_id"
             text_pos_anchors.add(idx)
             block_id = int(unit.block_id)
             if unit.is_payload_token and int(unit.approx_bucket_id) in (0, 1):
