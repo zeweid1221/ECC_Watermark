@@ -17,6 +17,9 @@ mkdir -p logs
 source "$EMNLP_DIR/msi/activate_env.sh"
 export PYTHONHASHSEED=0
 
+# Fail before model loading or output writes if MSI has a mixed code version.
+python -m unittest tests.test_three_model_refactor -q
+
 BIAS_VALUES=(5 20)
 TOLERANCE_VALUES=(1 0)
 TASK_INDEX=${SLURM_ARRAY_TASK_ID:-0}
