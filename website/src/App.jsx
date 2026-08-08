@@ -15,18 +15,18 @@ const PAPER_URL = "#citation";
 const GITHUB_URL = "https://github.com/zeweid1221/ECC_Watermark";
 const BIBTEX = `@misc{ecc_iw,
   title  = {ECC-IW: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes},
-  author = {Deng, Zewei and Xie, Liyan and Siddeek, Muhammad and Seif, Mohamed and Goldsmith, Andrea J. and Poor, H. Vincent and Wang, Mengdi},
+  author = {Deng, Zewei and Siddeek, Muhammad and Xie, Liyan and Mohamed, Mohamed S and Wang, Mengdi and Poor, H. Vincent and Goldsmith, Andrea},
   year   = {2026}
 }`;
 
 const authors = [
   { name: "Zewei Deng", affiliations: [1] },
-  { name: "Liyan Xie", affiliations: [1] },
   { name: "Muhammad Siddeek", affiliations: [2] },
-  { name: "Mohamed Seif", affiliations: [3] },
-  { name: "Andrea J. Goldsmith", affiliations: [4] },
-  { name: "H. Vincent Poor", affiliations: [5] },
+  { name: "Liyan Xie", affiliations: [1] },
+  { name: "Mohamed S Mohamed", affiliations: [3] },
   { name: "Mengdi Wang", affiliations: [5] },
+  { name: "H. Vincent Poor", affiliations: [5] },
+  { name: "Andrea Goldsmith", affiliations: [4] },
 ];
 
 const affiliations = [
@@ -142,7 +142,7 @@ function Hero() {
             ))}
           </div>
           <p className="affiliationNote">
-            Mohamed Seif and Andrea J. Goldsmith contributed to this work while at Princeton University.
+            Mohamed S Mohamed and Andrea Goldsmith contributed to this work while at Princeton University.
           </p>
         </div>
       </div>
