@@ -73,10 +73,10 @@ img {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  gap: clamp(32px, 5vw, 72px);
+  grid-template-columns: minmax(0, 1.04fr) minmax(400px, 0.96fr);
+  gap: clamp(38px, 5vw, 76px);
   align-items: center;
-  padding: clamp(64px, 10vw, 116px) clamp(22px, 6vw, 84px) 76px;
+  padding: clamp(58px, 7vw, 88px) clamp(22px, 6vw, 84px) 66px;
 }
 
 .hero h1,
@@ -89,14 +89,30 @@ img {
 }
 
 .hero h1 {
-  max-width: 980px;
-  font-size: clamp(46px, 7vw, 92px);
+  max-width: 820px;
+  font-size: clamp(46px, 5.2vw, 78px);
   overflow-wrap: break-word;
 }
 
 .authorBlock {
-  max-width: 900px;
-  margin-top: 26px;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(340px, 0.86fr) minmax(0, 1.14fr);
+  gap: 18px 48px;
+  align-items: start;
+  margin-top: 4px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(31, 76, 74, 0.14);
+}
+
+.authorBlockLabel {
+  grid-column: 1 / -1;
+  margin: 0 0 -5px;
+  color: #bb4f2d;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .authorList {
@@ -122,7 +138,7 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 5px 18px;
-  margin-top: 11px;
+  margin-top: 1px;
   color: #536157;
   font-size: 14px;
   font-weight: 650;
@@ -145,8 +161,8 @@ img {
 }
 
 .lead {
-  max-width: 760px;
-  margin: 28px 0 0;
+  max-width: 700px;
+  margin: 24px 0 0;
   color: #465349;
   font-size: clamp(18px, 2vw, 23px);
 }
@@ -191,8 +207,10 @@ img {
 
 .heroPanel {
   display: grid;
-  gap: 12px;
-  padding: 24px;
+  min-height: 480px;
+  gap: 14px;
+  align-content: stretch;
+  padding: 30px;
   border: 1px solid rgba(23, 33, 27, 0.1);
   border-radius: 32px;
   background: rgba(255, 252, 244, 0.72);
@@ -200,9 +218,11 @@ img {
 }
 
 .pipelineNode {
+  display: flex;
+  align-items: center;
   border: 1px solid rgba(31, 76, 74, 0.12);
   border-radius: 20px;
-  padding: 18px 20px;
+  padding: 21px 22px;
   color: #21392f;
   background: #fffaf0;
   font-weight: 800;
@@ -219,7 +239,9 @@ img {
 }
 
 .pipelineArrow {
-  padding-left: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 22px;
   color: #bb4f2d;
   font-weight: 900;
 }
@@ -1742,6 +1764,15 @@ figcaption,
   .figureGrid,
   .plotGrid {
     grid-template-columns: 1fr;
+  }
+
+  .authorBlock {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .heroPanel {
+    min-height: 420px;
   }
 
   .methodGrid,

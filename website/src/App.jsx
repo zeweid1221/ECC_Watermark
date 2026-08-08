@@ -103,27 +103,6 @@ function Hero() {
       <div className="heroText">
         <p className="eyebrow">ECC integrity watermark</p>
         <h1>ECC-IW: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes</h1>
-        <div className="authorBlock" aria-label="Authors and affiliations">
-          <div className="authorList">
-            {authors.map((author) => (
-              <span key={author.name}>
-                {author.name}
-                <sup>{author.affiliations.join(",")}</sup>
-              </span>
-            ))}
-          </div>
-          <div className="affiliationList">
-            {affiliations.map((affiliation, index) => (
-              <span key={affiliation}>
-                <b>{index + 1}</b>
-                {affiliation}
-              </span>
-            ))}
-          </div>
-          <p className="affiliationNote">
-            Mohamed Seif and Andrea J. Goldsmith contributed to this work while at Princeton University.
-          </p>
-        </div>
         <p className="lead">
           We study how to detect and localize sparse post-generation edits in watermarked LLM
           outputs. Instead of only asking whether a text is watermarked, our detector asks where
@@ -142,6 +121,30 @@ function Hero() {
         <div className="pipelineNode">ECC detector</div>
         <div className="pipelineArrow">{"->"}</div>
         <div className="pipelineNode accent">Suspicious blocks</div>
+      </div>
+      <div className="authorBlock" aria-label="Authors and affiliations">
+        <p className="authorBlockLabel">Authors &amp; affiliations</p>
+        <div className="authorList">
+          {authors.map((author) => (
+            <span key={author.name}>
+              {author.name}
+              <sup>{author.affiliations.join(",")}</sup>
+            </span>
+          ))}
+        </div>
+        <div className="affiliationDetails">
+          <div className="affiliationList">
+            {affiliations.map((affiliation, index) => (
+              <span key={affiliation}>
+                <b>{index + 1}</b>
+                {affiliation}
+              </span>
+            ))}
+          </div>
+          <p className="affiliationNote">
+            Mohamed Seif and Andrea J. Goldsmith contributed to this work while at Princeton University.
+          </p>
+        </div>
       </div>
     </section>
   );
