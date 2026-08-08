@@ -1,27 +1,46 @@
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { demoExamples } from "./demoExamples.js";
+import { paperReferences } from "./referencesData.js";
+import {
+  adaptiveAblation,
+  archiveVersion,
+  combinatorialComparison,
+  globalVerification,
+  llmEditResults,
+  localDetection,
+  resultCards,
+} from "./resultsData.js";
 
-const resultCards = [
-  {
-    label: "Approximate-hard ECC",
-    value: "TPR > 0.96",
-    detail: "Across k = 1, 2, 3 under delta = 20, while keeping FAR below 0.007.",
-  },
-  {
-    label: "Localization coverage",
-    value: "0.99 at k = 1",
-    detail: "Candidate edit-location coverage remains near-perfect in the single-edit regime.",
-  },
-  {
-    label: "Adaptive generation",
-    value: "PPL 64.1 -> 23.6",
-    detail: "Adaptive codeword completion reduces distortion under strong structural bias.",
-  },
-  {
-    label: "LLM-guided sparse edits",
-    value: "226 cases",
-    detail: "Question-aware sparse edits generated from LFQA prompts and Qwen3-8B source answers.",
-  },
+const PAPER_URL = "#citation";
+const GITHUB_URL = "https://github.com/zeweid1221/ECC_Watermark";
+const BIBTEX = `@misc{ecc_iw,
+  title  = {ECC-IW: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes},
+  author = {Deng, Zewei and Xie, Liyan and Siddeek, Muhammad and Seif, Mohamed and Goldsmith, Andrea J. and Poor, H. Vincent and Wang, Mengdi},
+  year   = {2026}
+}`;
+
+const authors = [
+  { name: "Zewei Deng", affiliations: [1] },
+  { name: "Liyan Xie", affiliations: [1] },
+  { name: "Muhammad Siddeek", affiliations: [2] },
+  { name: "Mohamed Seif", affiliations: [3] },
+  { name: "Andrea J. Goldsmith", affiliations: [4] },
+  { name: "H. Vincent Poor", affiliations: [5] },
+  { name: "Mengdi Wang", affiliations: [5] },
+];
+
+const affiliations = [
+  "Department of Industrial and Systems Engineering, University of Minnesota",
+  "Google",
+  "Department of Computer Science and Engineering, Oakland University",
+  "Stony Brook University",
+  "Princeton University",
+];
+
+const modelFamilies = [
+  { name: "Qwen3-8B", organization: "Qwen", logo: "./assets/model-logos/qwen.png" },
+  { name: "Mistral-7B", organization: "Mistral AI", logo: "./assets/model-logos/mistral.png" },
+  { name: "OPT-125M", organization: "Meta AI", logo: "./assets/model-logos/meta.png" },
 ];
 
 const methodSteps = [
@@ -48,15 +67,6 @@ const methodSteps = [
   },
 ];
 
-const references = [
-  "Kirchenbauer et al. Watermarking LLM-generated text. ICML, 2023.",
-  "Zhao et al. Provable robust watermarking for AI-generated text. ICLR, 2024.",
-  "Zhao et al. Efficiently identifying watermarked segments in mixed-source text. 2025.",
-  "Pan et al. WaterSeeker: Efficient detection of watermarked segments. 2025.",
-  "Levenshtein. Binary codes capable of correcting deletions, insertions, and reversals. 1966.",
-  "Hamming. Error detecting and error correcting codes. 1950.",
-];
-
 function App() {
   return (
     <main>
@@ -74,11 +84,13 @@ function App() {
 function Nav() {
   return (
     <nav className="nav">
-      <a className="brand" href="#top">ECC Local Integrity</a>
+      <a className="brand" href="#top">ECC-IW</a>
       <div className="navLinks">
         <a href="#method">Method</a>
         <a href="#results">Results</a>
         <a href="#demo">Walkthrough</a>
+        <a href={PAPER_URL} title="Replace PAPER_URL with the arXiv URL for the public release">Paper</a>
+        <a href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub</a>
         <a href="#citation">Citation</a>
       </div>
     </nav>
@@ -89,8 +101,29 @@ function Hero() {
   return (
     <section id="top" className="hero">
       <div className="heroText">
-        <p className="eyebrow">Paper companion site</p>
-        <h1>Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes</h1>
+        <p className="eyebrow">ECC integrity watermark</p>
+        <h1>ECC-IW: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes</h1>
+        <div className="authorBlock" aria-label="Authors and affiliations">
+          <div className="authorList">
+            {authors.map((author) => (
+              <span key={author.name}>
+                {author.name}
+                <sup>{author.affiliations.join(",")}</sup>
+              </span>
+            ))}
+          </div>
+          <div className="affiliationList">
+            {affiliations.map((affiliation, index) => (
+              <span key={affiliation}>
+                <b>{index + 1}</b>
+                {affiliation}
+              </span>
+            ))}
+          </div>
+          <p className="affiliationNote">
+            Mohamed Seif and Andrea J. Goldsmith contributed to this work while at Princeton University.
+          </p>
+        </div>
         <p className="lead">
           We study how to detect and localize sparse post-generation edits in watermarked LLM
           outputs. Instead of only asking whether a text is watermarked, our detector asks where
@@ -140,7 +173,7 @@ function Motivation() {
 
 function Method() {
   return (
-    <section id="method" className="section">
+    <section id="method" className="section sectionDivider">
       <div className="sectionHeader">
         <p className="eyebrow">Method overview</p>
         <h2>Embedding local ECC structure into generated text</h2>
@@ -175,91 +208,209 @@ function Method() {
 }
 
 function Results() {
+  const [activeResult, setActiveResult] = useState("local");
+
   return (
     <section id="results" className="section results">
       <div className="sectionHeader">
-        <p className="eyebrow">Results</p>
-        <h2>Block-level detection and localization under post-generation edits</h2>
+        <p className="eyebrow">Expanded evaluation</p>
+        <h2>How ECC-IW performs across five evaluation settings</h2>
         <p>
-          We evaluate mixed insertion, deletion, and substitution attacks across edit rates and edit
-          budgets. The approximate-hard setting uses delta = 20; weaker bias settings expose the
-          robustness-distortion tradeoff.
+          The current archive evaluates 18 closed ECC blocks per sequence across three model
+          families and four soft-bias settings. Local detection, text quality, global verification,
+          the Combinatorial Watermark (CW) comparison, and Qwen3-guided edits are reported separately.
         </p>
       </div>
 
-      <div className="resultCards">
-        {resultCards.map((card) => (
-          <article className="resultCard" key={card.label}>
-            <span>{card.label}</span>
-            <strong>{card.value}</strong>
-            <p>{card.detail}</p>
-          </article>
+      <div className="modelFamilyStrip" aria-label="Evaluated model families">
+        {modelFamilies.map((model) => (
+          <div className="modelFamilyBadge" key={model.name}>
+            <img src={model.logo} alt={`${model.organization} logo`} />
+            <span>
+              <strong>{model.name}</strong>
+              <small>{model.organization}</small>
+            </span>
+          </div>
         ))}
       </div>
 
-      <div className="plotGrid">
-        <figure>
-          <img src="./assets/tpr_vs_edit_rate_by_k.png" alt="Block-level TPR by edit rate" />
-          <figcaption>Block-level TPR under increasing edit rates and edit budgets.</figcaption>
-        </figure>
-        <figure>
-          <img src="./assets/far_vs_edit_rate_by_k.png" alt="Block-level FAR by edit rate" />
-          <figcaption>Block-level FAR under increasing edit rates and edit budgets.</figcaption>
-        </figure>
+      <div className="resultCards" role="tablist" aria-label="Evaluation result views">
+        {resultCards.map((card) => (
+          <button
+            className={activeResult === card.key ? "resultCard active" : "resultCard"}
+            key={card.key}
+            onClick={() => setActiveResult(card.key)}
+            role="tab"
+            aria-selected={activeResult === card.key}
+            aria-controls="result-workbench"
+          >
+            <span>{card.label}</span>
+            <strong>{card.value}</strong>
+            <p>{card.detail}</p>
+          </button>
+        ))}
       </div>
 
-      <div className="comparison">
-        <h3>LLM-guided sparse edits</h3>
-        <p>
-          Beyond random synthetic edits, we also run a question-aware LLM-guided editing study.
-          Source answers are generated from English LFQA prompts using Qwen3-8B with the soft ECC
-          watermark at delta = 5. The editor then proposes structured sparse edit instructions under
-          benign and malicious motivations, and the program applies those edits deterministically to
-          preserve exact block-level ground truth.
-        </p>
-        <p>
-          This setting is intentionally closer to semantic risk assessment: LFQA questions make the
-          answer content more meaningful, and stronger source generations make claim distortion,
-          stance shift, and source-spoofing edits easier to interpret.
-        </p>
-        <div className="miniTable" role="table" aria-label="LLM-guided sparse edit detection">
-          <div role="row" className="tableHead">
-            <span>Edit type</span>
-            <span>Cases</span>
-            <span>Block TPR</span>
-            <span>Block FAR</span>
-            <span>Cov.</span>
-          </div>
-          <div role="row">
-            <span>Overall</span>
-            <span>226</span>
-            <span>0.7712</span>
-            <span>0.4888</span>
-            <span>0.3925</span>
-          </div>
-          <div role="row">
-            <span>Benign</span>
-            <span>95</span>
-            <span>0.7198</span>
-            <span>0.4839</span>
-            <span>0.4248</span>
-          </div>
-          <div role="row">
-            <span>Malicious</span>
-            <span>131</span>
-            <span>0.8099</span>
-            <span>0.4922</span>
-            <span>0.3692</span>
-          </div>
-        </div>
-        <p className="tableNote">
-          Cov. denotes candidate edit-location coverage. These results summarize the latest
-          Qwen3/LFQA sparse-edit run; the detector identifies structural edit evidence rather than
-          deciding whether an edit is benign or malicious.
-        </p>
+      <div id="result-workbench" className="resultWorkbench" role="tabpanel">
+        {activeResult === "local" && <LocalDetectionResult />}
+        {activeResult === "quality" && <QualityResult />}
+        {activeResult === "global" && <GlobalVerificationResult />}
+        {activeResult === "cw" && <CombinatorialResult />}
+        {activeResult === "llm" && <LlmEditResult />}
       </div>
+
+      <p className="archiveNote">Displayed values: {archiveVersion}</p>
     </section>
   );
+}
+
+function LocalDetectionResult() {
+  return (
+    <ResultPanel
+      eyebrow="Synthetic mixed edits"
+      title="Cross-model block detection and candidate localization"
+      note="Macro averages over 12 attack settings. Candidate reduction is measured relative to 16 admissible within-block edit locations: 7 payload positions, 8 insertion gaps, and 1 boundary position."
+    >
+      <DataTable
+        label="Cross-model local detection"
+        columns={[
+          ["Model", (r) => r.model], ["δ", (r) => r.delta],
+          ["Clean feasible", (r) => `${r.feasible.toFixed(2)}/18`],
+          ["Block TPR", (r) => fmt(r.tpr)], ["Block FAR", (r) => fmt(r.far)],
+          ["Event cov.", (r) => fmt(r.coverage)],
+          ["Cand. fraction", (r) => fmt(r.candidateFraction, 3)],
+          ["Reduction", (r) => fmt(r.searchReduction, 3)],
+        ]}
+        rows={localDetection}
+      />
+    </ResultPanel>
+  );
+}
+
+function QualityResult() {
+  return (
+    <ResultPanel
+      eyebrow="Adaptive generation"
+      title="Adaptive codeword realization reduces PPL across all three models"
+      note="Relative reduction in conditional PPL at δ = 50, comparing adaptive generation with the same watermarked setting without adaptation. Lower PPL is better."
+    >
+      <DataTable
+        label="Adaptive generation PPL improvement"
+        columns={[
+          ["Model", (r) => r.model],
+          ["Conditional PPL reduction", (r) => `${(r.reduction * 100).toFixed(1)}%`, "methodColumn"],
+        ]}
+        rows={adaptiveAblation}
+      />
+    </ResultPanel>
+  );
+}
+
+function GlobalVerificationResult() {
+  return (
+    <ResultPanel
+      eyebrow="Final-text-only verification"
+      title="A global ECC score separates watermarked text from two negative sources"
+      note="Higher scores indicate stronger ECC-IW watermark evidence. The verifier receives only final text, tokenizer, model partition, and ECC configuration. Evaluation uses 256 watermarked outputs, 256 matched unwatermarked outputs, and 251 human LFQA answers."
+    >
+      <div className="scoreDefinition">
+        <code>S(s) = 1 / (1 + C(s) / max(1, B_estimated))</code>
+        <p>C(s) combines nearest-codeword payload distance, boundary mismatches, unmatched symbols, and the parsed-versus-estimated block-count penalty.</p>
+      </div>
+      <DataTable
+        label="Global verification"
+        columns={[
+          ["Model", (r) => r.model], ["δ", (r) => r.delta], ["AUC", (r) => fmt(r.auc)],
+          ["TPR at empirical FPR = 0", (r) => fmt(r.tprAtZeroFpr)],
+          ["Mean score: watermarked", (r) => fmt(r.wm, 3), "methodColumn"],
+          ["Mean score: unwatermarked LLM", (r) => fmt(r.llm, 3)],
+          ["Mean score: human", (r) => fmt(r.human, 3)],
+        ]}
+        rows={globalVerification}
+      />
+    </ResultPanel>
+  );
+}
+
+function CombinatorialResult() {
+  return (
+    <ResultPanel
+      eyebrow="Closest-prior comparison"
+      title="ECC versus Combinatorial Watermark (CW) on Qwen3"
+      note="Both methods use the same prompts, generation settings, attacks, and block-level TPR/FAR protocol. CW retains its original clean-watermark threshold calibration."
+    >
+      <DataTable
+        label="ECC versus Combinatorial Watermark"
+        columns={[
+          ["CW pattern", (r) => r.pattern], ["δ", (r) => r.delta],
+          ["ECC-IW TPR", (r) => fmt(r.eccTpr), "methodColumn"],
+          ["ECC-IW FAR", (r) => fmt(r.eccFar), "methodColumn"],
+          ["CW TPR", (r) => fmt(r.cwTpr)], ["CW FAR", (r) => fmt(r.cwFar)],
+          ["Pattern adherence", (r) => fmt(r.adherence, 3)],
+        ]}
+        rows={combinatorialComparison}
+      />
+    </ResultPanel>
+  );
+}
+
+function LlmEditResult() {
+  return (
+    <ResultPanel
+      eyebrow="Natural-language edits"
+      title="Balanced Qwen3/LFQA edit evaluation"
+      note="N = 144: 72 examples per bias and 72 per intent, with 12 examples for each bias × motivation stratum. The detector localizes structural change rather than classifying intent."
+    >
+      <DataTable
+        label="Balanced Qwen3 LLM edit results"
+        columns={[
+          ["δ", (r) => r.delta], ["Intent", (r) => r.intent], ["N", (r) => r.n],
+          ["Edited blocks", (r) => r.editedBlocks.toFixed(2)], ["Block TPR", (r) => fmt(r.tpr)],
+          ["Block FAR", (r) => fmt(r.far)], ["Event cov.", (r) => fmt(r.coverage)],
+        ]}
+        rows={llmEditResults}
+      />
+    </ResultPanel>
+  );
+}
+
+function ResultPanel({ eyebrow, title, note, children }) {
+  return (
+    <article className="resultPanel">
+      <div className="resultPanelHeader"><span>{eyebrow}</span><h3>{title}</h3></div>
+      {children}
+      <p className="resultNote">{note}</p>
+    </article>
+  );
+}
+
+function DataTable({ label, columns, rows }) {
+  return (
+    <div className="dataTableWrap">
+      <table className="dataTable" aria-label={label}>
+        <thead>
+          <tr>
+            {columns.map(([heading, , className]) => (
+              <th className={className} key={heading}>{heading}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, rowIndex) => (
+            <tr key={`${label}-${rowIndex}`}>
+              {columns.map(([heading, render, className]) => (
+                <td className={className} key={heading}>{render(row)}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function fmt(value, digits = 4) {
+  return Number(value).toFixed(digits);
 }
 
 const demoSteps = [
@@ -273,11 +424,36 @@ const demoSteps = [
 function InteractiveDemo() {
   const [exampleIndex, setExampleIndex] = useState(0);
   const [stepIndex, setStepIndex] = useState(0);
+  const [stepHeight, setStepHeight] = useState(null);
+  const [activeIntent, setActiveIntent] = useState(demoExamples[0]?.intentLabel ?? "benign");
+  const panelRefs = useRef([]);
   const example = demoExamples[exampleIndex];
+  const groupedExamples = useMemo(() => {
+    return demoExamples.reduce((groups, item, idx) => {
+      const intent = item.intentLabel;
+      const motivation = item.motivation;
+      groups[intent] ??= {};
+      groups[intent][motivation] ??= [];
+      groups[intent][motivation].push({ ...item, originalIndex: idx });
+      return groups;
+    }, {});
+  }, []);
   const primaryFlag = useMemo(
     () => example.flaggedBlocks.find((block) => block.isGroundTruthEdited) ?? example.flaggedBlocks[0],
     [example],
   );
+
+  useLayoutEffect(() => {
+    const panel = panelRefs.current[stepIndex];
+    if (!panel) return undefined;
+
+    const updateHeight = () => setStepHeight(panel.getBoundingClientRect().height);
+    updateHeight();
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(panel);
+    return () => observer.disconnect();
+  }, [exampleIndex, stepIndex]);
 
   return (
     <section id="demo" className="section demo">
@@ -286,25 +462,62 @@ function InteractiveDemo() {
         <h2>Precomputed edit-localization replay</h2>
         <p>
           This walkthrough replays real examples from the latest LLM-guided sparse-edit run. It does
-          not run a live model in the browser; instead, it shows the saved token buckets, structural
-          symbols, detector parse, and localized block alarms produced by the evaluation pipeline.
+          not run a live model in the browser; instead, it shows representative examples from each
+          edit intent, along with saved token buckets, structural symbols, detector parse, and
+          localized block alarms produced by the evaluation pipeline.
         </p>
       </div>
 
       <div className="demoSelector" aria-label="Choose a precomputed example">
-        {demoExamples.map((item, idx) => (
-          <button
-            className={idx === exampleIndex ? "selectorChip active" : "selectorChip"}
-            key={item.id}
-            onClick={() => {
-              setExampleIndex(idx);
-              setStepIndex(0);
-            }}
-          >
-            <span>Example {idx + 1}</span>
-            {item.title}
-          </button>
-        ))}
+        <div className="intentTabs">
+          {Object.keys(groupedExamples).map((intent) => (
+            <button
+              className={intent === activeIntent ? "intentTab active" : "intentTab"}
+              key={intent}
+              onClick={() => {
+                setActiveIntent(intent);
+                const firstGroup = Object.values(groupedExamples[intent])[0] ?? [];
+                if (firstGroup[0]) {
+                  setExampleIndex(firstGroup[0].originalIndex);
+                  setStepIndex(0);
+                }
+              }}
+            >
+              <span>{intent}</span>
+              {Object.values(groupedExamples[intent]).flat().length} examples
+            </button>
+          ))}
+        </div>
+
+        <div className="motivationGroups">
+          {Object.entries(groupedExamples[activeIntent] ?? {}).map(([motivation, items]) => (
+            <div className="motivationGroup" key={motivation}>
+              <div className="motivationHeader">
+                <span>{motivation.replace("_", " ")}</span>
+                <small>{items.length} cases</small>
+              </div>
+              <div className="caseButtons">
+                {items.map((item, localIdx) => (
+                  <button
+                    className={item.originalIndex === exampleIndex ? "caseButton active" : "caseButton"}
+                    key={item.id}
+                    onClick={() => {
+                      setExampleIndex(item.originalIndex);
+                      setStepIndex(0);
+                    }}
+                  >
+                    <strong>Case {localIdx + 1}</strong>
+                    <span>seq {item.sequenceIndex}</span>
+                    <small>
+                      δ {item.logitBias} · TPR {item.metrics.blockTpr?.toFixed(2) ?? "n/a"} · FAR{" "}
+                      {item.metrics.blockFar?.toFixed(2) ?? "n/a"}
+                    </small>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="demoStage">
@@ -324,6 +537,7 @@ function InteractiveDemo() {
         <div className="demoCanvas">
           <div className="demoMeta">
             <span>Sequence {example.sequenceIndex}</span>
+            <span>δ = {example.logitBias}</span>
             <span>{example.motivation.replace("_", " ")}</span>
             <span>{example.intentLabel}</span>
           </div>
@@ -333,13 +547,16 @@ function InteractiveDemo() {
             <p>{example.question}</p>
           </div>
 
-          <div className="stepViewport">
+          <div
+            className="stepViewport"
+            style={stepHeight == null ? undefined : { height: `${stepHeight}px` }}
+          >
               <div className="stepPanels" style={{ transform: `translateX(-${stepIndex * 100}%)` }}>
-                <SourcePanel example={example} />
-                <EditPanel example={example} />
-                <BucketPanel example={example} />
-                <DecodePanel block={primaryFlag} />
-                <AlarmPanel example={example} />
+                <SourcePanel example={example} panelRef={(node) => { panelRefs.current[0] = node; }} />
+                <EditPanel example={example} panelRef={(node) => { panelRefs.current[1] = node; }} />
+                <BucketPanel example={example} panelRef={(node) => { panelRefs.current[2] = node; }} />
+                <DecodePanel block={primaryFlag} panelRef={(node) => { panelRefs.current[3] = node; }} />
+                <AlarmPanel example={example} panelRef={(node) => { panelRefs.current[4] = node; }} />
               </div>
           </div>
 
@@ -370,9 +587,9 @@ function InteractiveDemo() {
   );
 }
 
-function SourcePanel({ example }) {
+function SourcePanel({ example, panelRef }) {
   return (
-    <article className="stepPanel">
+    <article className="stepPanel" ref={panelRef}>
       <PanelHeader label="Step 1" title="Start from a watermarked LFQA answer" />
       <TextCompare
         leftTitle="Watermarked source answer"
@@ -386,9 +603,9 @@ function SourcePanel({ example }) {
   );
 }
 
-function EditPanel({ example }) {
+function EditPanel({ example, panelRef }) {
   return (
-    <article className="stepPanel">
+    <article className="stepPanel" ref={panelRef}>
       <PanelHeader label="Step 2" title="Show the edited sequence and the local edit motives" />
       <HighlightedAnswer text={example.editedAnswer} edits={example.edits} />
       <div className="editTraceGrid">
@@ -411,9 +628,9 @@ function EditPanel({ example }) {
   );
 }
 
-function BucketPanel({ example }) {
+function BucketPanel({ example, panelRef }) {
   return (
-    <article className="stepPanel">
+    <article className="stepPanel" ref={panelRef}>
       <PanelHeader label="Step 3" title="Trace each edit into the watermark structure" />
       <p className="panelText">
         Each edited token is first mapped to a vocabulary bucket. Bucket 0 and 1 become payload bits
@@ -438,10 +655,10 @@ function BucketPanel({ example }) {
             </div>
             <div className="traceArrow">{"->"}</div>
             <TraceNode
-              label="Bucket"
-              value={`B${edit.anchorToken?.bucketId ?? "?"}`}
+              label="Edited bucket sequence"
+              value={(edit.bucketIds ?? [edit.anchorToken?.bucketId]).map((value) => `B${value ?? "?"}`).join(" · ")}
               detail={edit.bucketMeaning}
-              tone={`bucket${edit.anchorToken?.bucketId}`}
+              tone="bucketSequenceNode"
             />
             <div className="traceArrow">{"->"}</div>
             <TraceNode
@@ -500,6 +717,16 @@ function HighlightedAnswer({ text, edits }) {
 function buildHighlightedPieces(text, edits) {
   const ranges = [];
   for (const [editIndex, edit] of edits.entries()) {
+    if (
+      Number.isInteger(edit.highlightStart) &&
+      Number.isInteger(edit.highlightEnd) &&
+      edit.highlightStart >= 0 &&
+      edit.highlightEnd > edit.highlightStart &&
+      edit.highlightEnd <= text.length
+    ) {
+      ranges.push({ start: edit.highlightStart, end: edit.highlightEnd, editIndex });
+      continue;
+    }
     const needle = (edit.newContent || edit.originalText || "").trim();
     if (!needle) continue;
     let start = text.indexOf(needle);
@@ -522,9 +749,9 @@ function buildHighlightedPieces(text, edits) {
   return pieces;
 }
 
-function DecodePanel({ block }) {
+function DecodePanel({ block, panelRef }) {
   return (
-    <article className="stepPanel">
+    <article className="stepPanel" ref={panelRef}>
       <PanelHeader label="Step 4" title={`Decode parsed block ${block.blockId}`} />
       <p className="panelText">
         The detector parses the observed structural sequence into ECC blocks, then compares each
@@ -545,12 +772,12 @@ function DecodePanel({ block }) {
   );
 }
 
-function AlarmPanel({ example }) {
+function AlarmPanel({ example, panelRef }) {
   return (
-    <article className="stepPanel">
+    <article className="stepPanel" ref={panelRef}>
       <PanelHeader label="Step 5" title="Localize suspicious blocks in natural language" />
       <div className="blockMap">
-        {Array.from({ length: 12 }, (_, blockId) => {
+        {Array.from({ length: example.numBlocks ?? 18 }, (_, blockId) => {
           const predicted = example.predictedBlocks.includes(blockId);
           const edited = example.gtBlocks.includes(blockId);
           return (
@@ -565,7 +792,7 @@ function AlarmPanel({ example }) {
       </div>
       <div className="snippetGrid">
         {example.flaggedBlocks.map((block) => (
-          <div className={block.isGroundTruthEdited ? "snippetCard hit" : "snippetCard"} key={block.blockId}>
+          <div className={block.isGroundTruthEdited ? "snippetCard hit" : "snippetCard"} key={`${block.blockId}-${block.parsedBlockIndex}`}>
             <span>Block {block.blockId}</span>
             <p>{block.snippet}</p>
           </div>
@@ -645,23 +872,64 @@ function CandidateList({ locations }) {
 }
 
 function Citation() {
+  const [referencesExpanded, setReferencesExpanded] = useState(false);
+  const [copyStatus, setCopyStatus] = useState("Copy BibTeX");
+
+  async function copyBibtex() {
+    try {
+      await navigator.clipboard.writeText(BIBTEX);
+      setCopyStatus("Copied");
+      window.setTimeout(() => setCopyStatus("Copy BibTeX"), 1800);
+    } catch {
+      setCopyStatus("Copy failed");
+      window.setTimeout(() => setCopyStatus("Copy BibTeX"), 1800);
+    }
+  }
+
   return (
     <section id="citation" className="section citation">
       <div className="sectionHeader">
         <p className="eyebrow">Paper and references</p>
         <h2>Citation</h2>
       </div>
-      <pre>{`@misc{local_integrity_ecc_watermark,
-  title  = {Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes},
-  author = {Anonymous Authors},
-  year   = {2026}
-}`}</pre>
-      <h3>Selected references</h3>
-      <ul>
-        {references.map((ref) => (
-          <li key={ref}>{ref}</li>
-        ))}
-      </ul>
+      <div className="citationCode">
+        <button onClick={copyBibtex} type="button" aria-live="polite">
+          {copyStatus}
+        </button>
+        <pre>{BIBTEX}</pre>
+      </div>
+      <div className="referencesToolbar">
+        <h3>
+          References <span>{paperReferences.length} cited works</span>
+        </h3>
+        <button
+          aria-controls="paper-references"
+          aria-expanded={referencesExpanded}
+          onClick={() => setReferencesExpanded((expanded) => !expanded)}
+        >
+          {referencesExpanded ? "Collapse references" : "View all references"}
+        </button>
+      </div>
+      <div className="referencesFrame">
+        <div
+          className={referencesExpanded ? "referenceGrid expanded" : "referenceGrid"}
+          id="paper-references"
+        >
+          {paperReferences.map((reference, index) => (
+            <article className="referenceItem" key={reference.key}>
+              <span className="referenceNumber">[{index + 1}]</span>
+              <div>
+                <strong>{reference.title}</strong>
+                <p>
+                  {reference.authors} · {reference.venue ? `${reference.venue}, ` : ""}
+                  {reference.year}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+        {!referencesExpanded && <div className="referenceFade" aria-hidden="true" />}
+      </div>
     </section>
   );
 }

@@ -1,6 +1,6 @@
-# ECC Local Integrity Website
+# ECC-IW Website
 
-Paper companion website for **Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes**.
+Paper companion website for **ECC-IW: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes**.
 
 ## Local Preview
 
@@ -24,4 +24,10 @@ The static site is emitted to `dist/` and can be deployed to GitHub Pages.
 
 ## Current Scope
 
-This first version includes the paper overview, method summary, main result figures, LLM-guided sparse edit table, walkthrough placeholder, and citation/reference section. The interactive demo is intentionally a precomputed replay placeholder; it does not run model inference or live detection in the browser.
+The site includes the paper overview, method summary, corrected cross-model results, generation-quality analysis, final-text-only global verification, a matched Combinatorial Watermark comparison, and balanced Qwen3-guided edit results. The interactive walkthrough replays 18 real examples from the corrected experiment archive; it does not run model inference or live detection in the browser.
+
+The displayed metrics are centralized in `src/resultsData.js`. The walkthrough records and compact bibliography in `src/demoExamples.js` and `src/referencesData.js` are generated from the corrected experiment archive and current paper draft before each public release.
+
+The current source archive is `paper_results_archive_v3_corrected_20260806`. Update the generated data before publishing a new paper result version.
+
+For the public release, replace `PAPER_URL` near the top of `src/App.jsx` with the final arXiv URL. `GITHUB_URL` already points to the project repository.
