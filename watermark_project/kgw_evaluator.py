@@ -84,6 +84,8 @@ def evaluate_kgw_blocks(
         "block_tpr": tp / (tp + fn) if (tp + fn) > 0 else 0.0,
         "block_far": fp / (fp + tn) if (fp + tn) > 0 else 0.0,
         "mean_red_score": float(np.mean(block_scores)) if block_scores else 0.0,
+        "block_scores": block_scores,
+        "block_preds": block_preds,
         "mean_candidate_size": float("nan"),
         "codeword_recovery_acc": float("nan"),
         "localization_acc_overall": float("nan"),

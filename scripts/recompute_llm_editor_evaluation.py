@@ -20,6 +20,7 @@ from watermark_project.ecc_detector import (
     EccCodebook,
     ParsedBlock,
     evaluate_predictions_with_provenance,
+    parsed_block_exceeds_tolerance,
 )
 from watermark_project.edits import EditEvent
 
@@ -28,6 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source-dir", required=True)
     parser.add_argument("--output-dir", required=True)
+    parser.add_argument("--tolerance", type=int, default=None)
     return parser.parse_args()
 
 
@@ -106,7 +108,10 @@ def main() -> None:
     )["args"]
     block_len = int(config["block_len"])
     num_blocks = 18
-    tolerance = int(config["tolerance"])
+    source_tolerance = int(config["tolerance"])
+    tolerance = source_tolerance if args.tolerance is None else int(args.tolerance)
+    if tolerance < 0:
+        raise ValueError("--tolerance must be non-negative.")
     codebook = EccCodebook(block_len, int(config["vt_a"]))
     dummy_blocks = [codebook.feasible[0].copy() for _ in range(num_blocks)]
 
@@ -124,6 +129,14 @@ def main() -> None:
         )
         pred_details = json.loads(str(row["pred_blocks_detailed_json"]))
         predictions = [parsed_block_from_dict(item) for item in pred_details]
+        for prediction in predictions:
+            prediction.flag = bool(
+                parsed_block_exceeds_tolerance(
+                    prediction,
+                    tolerance=tolerance,
+                    codebook=codebook,
+                )
+            )
         provenance = json.loads(str(row["edited_token_provenance_json"]))
         evaluation = evaluate_predictions_with_provenance(
             original_payload_blocks=dummy_blocks,
@@ -181,7 +194,7 @@ def main() -> None:
         new_confusion = tuple(
             int(row[metric]) for metric in ("TP", "FP", "FN", "TN")
         )
-        if old_confusion != new_confusion:
+        if tolerance == source_tolerance and old_confusion != new_confusion:
             raise RuntimeError(
                 f"{key}: candidate-only correction changed block confusion "
                 f"{old_confusion} -> {new_confusion}"
@@ -194,12 +207,21 @@ def main() -> None:
     summary.to_csv(output / "llm_editor_summary_corrected.csv", index=False)
 
     used = corrected[corrected["used"] == True].copy()  # noqa: E712
+    confusion_matches_source = all(
+        used[f"old_{metric}"].astype(int).equals(used[metric].astype(int))
+        for metric in ("TP", "FP", "FN", "TN")
+    )
     report = {
         "source_dir": str(source),
         "output_dir": str(output),
         "num_rows": len(corrected),
         "num_used": len(used),
-        "block_confusion_unchanged": True,
+        "source_tolerance": source_tolerance,
+        "evaluated_tolerance": tolerance,
+        "block_confusion_unchanged": (
+            confusion_matches_source if tolerance == source_tolerance else None
+        ),
+        "block_confusion_matches_source": confusion_matches_source,
         "old_event_hits": int(used["old_event_loc_hit"].sum()),
         "corrected_event_hits": int(used["event_loc_hit"].sum()),
         "event_total": int(used["event_total_overall"].sum()),

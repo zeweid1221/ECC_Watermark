@@ -103,8 +103,10 @@ def compute_generation_perplexities(
     model: BaseLanguageModel,
     prompt_token_ids: Sequence[Sequence[int]],
     generated_token_ids: Sequence[Sequence[int]],
+    generated_texts: Sequence[str] | None = None,
+    max_length: int | None = None,
 ) -> dict[str, float]:
-    return {
+    metrics = {
         "ppl_unconditional_token_ids": compute_token_id_perplexity(
             model,
             continuation_token_ids=generated_token_ids,
@@ -115,3 +117,15 @@ def compute_generation_perplexities(
             prompt_token_ids=prompt_token_ids,
         ),
     }
+    # The primary PPL follows the actual generation task: score the exact saved
+    # continuation token IDs while conditioning on the rendered prompt.
+    metrics["ppl"] = metrics["ppl_conditional_token_ids"]
+    if generated_texts is not None:
+        if len(generated_texts) != len(generated_token_ids):
+            raise ValueError("generated_texts and generated_token_ids must have equal length.")
+        metrics["ppl_suffix_text"] = compute_text_perplexity(
+            model,
+            generated_texts,
+            max_length=max_length,
+        )
+    return metrics

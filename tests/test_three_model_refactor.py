@@ -5,6 +5,7 @@ import random
 from pathlib import Path
 from unittest.mock import patch
 
+from run_main import parse_tolerance_map
 from scripts.build_qwen3_fixed_partition import word_to_single_token_id
 from scripts.run_llm_editor_experiment import (
     apply_validated_token_edits_with_provenance,
@@ -42,8 +43,9 @@ from watermark_project.edits import (
 from watermark_project.experiment import (
     evaluate_ecc_generations,
     generation_time_ecc_blocks,
+    tolerances_for_logit_bias,
 )
-from watermark_project.modeling import MockLanguageModel
+from watermark_project.modeling import MockLanguageModel, apply_repetition_penalty
 from watermark_project.partitioning import (
     build_vocabulary_partition,
     load_vocabulary_partition,
@@ -54,6 +56,16 @@ from watermark_project.ppl import compute_generation_perplexities
 
 
 class ThreeModelRefactorTests(unittest.TestCase):
+    def test_multiple_tolerances_per_logit_bias_are_backward_compatible(self) -> None:
+        parsed = parse_tolerance_map("2:0|1|2,5:0|1,20:0")
+        self.assertEqual(tolerances_for_logit_bias(parsed, 2.0), [0, 1, 2])
+        self.assertEqual(tolerances_for_logit_bias(parsed, 5.0), [0, 1])
+        self.assertEqual(tolerances_for_logit_bias(parsed, 20.0), [0])
+        old = parse_tolerance_map("2:2,5:1,20:0")
+        self.assertEqual(tolerances_for_logit_bias(old, 2.0), [2])
+        self.assertEqual(tolerances_for_logit_bias(old, 5.0), [1])
+        self.assertEqual(tolerances_for_logit_bias(old, 20.0), [0])
+
     def setUp(self) -> None:
         self.texts = [
             "Camera security protects people from remote access through careful software updates.",
@@ -127,12 +139,41 @@ class ThreeModelRefactorTests(unittest.TestCase):
         self.assertTrue(
             all(item["is_valid_closed_block"] for item in hard.runtime_state.block_summaries)
         )
+        self.assertTrue(
+            all("recovery_step_count" in item for item in soft.runtime_state.block_summaries)
+        )
         with self.assertRaisesRegex(ValueError, "need at least 16"):
             self.generator.generate_one(
                 self.texts[0],
                 GenerationSetting("ecc", "soft", True, 2, 15, 123, 0.0),
                 protocol=self.protocol,
             )
+
+    def test_repetition_penalty_precedes_ecc_control(self) -> None:
+        events = []
+        original_soft_control = self.generator.apply_soft_control
+
+        def recorded_penalty(*args, **kwargs):
+            events.append("repetition")
+            return apply_repetition_penalty(*args, **kwargs)
+
+        def recorded_soft_control(*args, **kwargs):
+            events.append("watermark")
+            return original_soft_control(*args, **kwargs)
+
+        with patch(
+            "watermark_project.ecc_generator.apply_repetition_penalty",
+            side_effect=recorded_penalty,
+        ), patch.object(
+            self.generator,
+            "apply_soft_control",
+            side_effect=recorded_soft_control,
+        ):
+            result = self.generate("soft", 5.0, target_blocks=1)
+
+        self.assertEqual(len(events), 2 * len(result.generated_token_ids))
+        self.assertEqual(events[0::2], ["repetition"] * len(result.generated_token_ids))
+        self.assertEqual(events[1::2], ["watermark"] * len(result.generated_token_ids))
 
     def test_partition_identity_and_semantic_guard(self) -> None:
         output_dir = Path("outputs/test_partition_roundtrip")
@@ -438,6 +479,45 @@ class ThreeModelRefactorTests(unittest.TestCase):
         self.assertEqual((new["TP"], new["FP"], new["FN"]), (1, 0, 0))
         self.assertEqual(new["parsed_to_source_blocks"], [[0], [0], [1]])
         self.assertEqual(new["event_coverage_overall"], 1.0)
+        self.assertEqual(new["source_gt_flags"], [0, 1])
+        self.assertEqual(new["source_anomaly_scores"], [0.0, 1.0])
+        self.assertEqual(
+            [int(score > 0) for score in new["source_anomaly_scores"]],
+            new["source_pred_flags"],
+        )
+
+    def test_boundary_alarm_has_threshold_independent_score(self) -> None:
+        codebook = EccCodebook(7, 6)
+        block = codebook.feasible[0]
+        prediction = ParsedBlock(
+            block,
+            True,
+            "boundary",
+            [("boundary", 7)],
+            block,
+            is_boundary_edited=True,
+            boundary_edit_type="sub",
+            info={
+                "payload_distance": 0,
+                "observed_span_start": 0,
+                "observed_span_end_exclusive": 7,
+                "observed_boundary_index": 7,
+            },
+        )
+        provenance = [
+            {"original_block_id": 0, "original_structural_index": index}
+            for index in range(8)
+        ]
+        result = evaluate_predictions_with_provenance(
+            [block],
+            [[EditEvent("sub", ("boundary", 7), 2, 0)]],
+            [prediction],
+            provenance,
+            tolerance=2,
+            codebook=codebook,
+        )
+        self.assertEqual(result["source_pred_flags"], [1])
+        self.assertGreater(result["source_anomaly_scores"][0], 2)
 
     def test_synthetic_provenance_preserves_attacked_sequence_and_net_gt(self) -> None:
         codebook = EccCodebook(7, 6)
@@ -575,8 +655,11 @@ class ThreeModelRefactorTests(unittest.TestCase):
             self.model,
             [result.prompt_token_ids],
             [result.generated_token_ids],
+            generated_texts=[result.suffix_text],
         )
         self.assertTrue(all(value > 0 for value in ppl.values()))
+        self.assertEqual(ppl["ppl"], ppl["ppl_conditional_token_ids"])
+        self.assertIn("ppl_suffix_text", ppl)
         reconstructed = reconstruct_detector_alignment_from_final_text(
             result.suffix_text,
             self.model,

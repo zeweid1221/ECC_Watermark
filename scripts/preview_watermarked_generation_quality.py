@@ -125,6 +125,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--watermark-mode", choices=["soft", "hard"], default="soft")
     parser.add_argument("--logit-bias", type=float, default=5.0)
     parser.add_argument("--adaptive", choices=["true", "false"], default="true")
+    parser.add_argument(
+        "--adaptive-invalid-prefix-policy",
+        choices=["nearest_feasible", "legacy_unconstrained"],
+        default="legacy_unconstrained",
+    )
     parser.add_argument("--block-len", type=int, default=7)
     parser.add_argument("--vt-a", type=int, default=6)
     parser.add_argument("--sampling", choices=["sample", "greedy"], default="sample")
@@ -320,6 +325,7 @@ def generate_watermarked_preview(
         enable_thinking=args.enable_thinking,
         system_prompt=args.system_prompt,
         ascii_token_filter=args.english_token_filter,
+        adaptive_invalid_prefix_policy=args.adaptive_invalid_prefix_policy,
     )
     result = generator.generate_one(raw_prompt, setting, protocol=protocol)
     if result.rendered_prompt != rendered_prompt or result.prompt_mode != prompt_mode:

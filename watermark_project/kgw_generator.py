@@ -29,6 +29,7 @@ class KgwGenerationResult:
     generated_token_ids: List[int]
     block_tokens: List[List[int]]
     raw_top_trace: List[Dict[str, Any]]
+    prompt_token_ids: List[int]
 
 
 class KgwGenerator:
@@ -85,6 +86,7 @@ class KgwGenerator:
             generated_token_ids=generated_ids,
             block_tokens=blocks,
             raw_top_trace=raw_top_trace,
+            prompt_token_ids=list(session.prompt_ids),
         )
 
     def generate_many(self, prompts: Sequence[str], setting: GenerationSetting) -> List[KgwGenerationResult]:

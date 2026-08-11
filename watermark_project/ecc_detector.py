@@ -480,6 +480,62 @@ def detect_sequence_multiple(
     return parsed_blocks
 
 
+def parsed_block_anomaly_score(
+    pred: ParsedBlock,
+    codebook: Optional[EccCodebook] = None,
+) -> float:
+    """Return a threshold-independent structural anomaly score for one parse.
+
+    Payload parses use distance to the feasible codebook. Boundary edits and
+    invalid parses receive a score above every payload-only edit distance so
+    that thresholding reproduces the detector's unconditional boundary alarm.
+    """
+    if pred.is_boundary_edited:
+        return float((codebook.block_len if codebook is not None else len(pred.block_tokens)) + 1)
+    payload_distance = pred.info.get("payload_distance")
+    if payload_distance is None and codebook is not None:
+        payload_distance = min_codeword_edit_distance(pred.block_tokens, codebook)
+    if payload_distance is not None:
+        return float(payload_distance)
+    if pred.flag:
+        return float((codebook.block_len if codebook is not None else len(pred.block_tokens)) + 1)
+    return 0.0
+
+
+def source_block_anomaly_scores_with_provenance(
+    pred_blocks: Sequence[ParsedBlock],
+    observed_provenance: Sequence[Dict[str, Any]],
+    num_source_blocks: int,
+    codebook: Optional[EccCodebook] = None,
+) -> List[float]:
+    """Merge parsed-block anomaly scores into fixed source-block units."""
+    scores = [0.0] * int(num_source_blocks)
+    for pred in pred_blocks:
+        indices: Set[int] = set()
+        start = pred.info.get("observed_span_start")
+        end = pred.info.get("observed_span_end_exclusive")
+        if start is not None and end is not None:
+            indices.update(
+                range(
+                    max(0, int(start)),
+                    min(len(observed_provenance), max(int(start), int(end))),
+                )
+            )
+        boundary_index = pred.info.get("observed_boundary_index")
+        if boundary_index is not None and 0 <= int(boundary_index) < len(observed_provenance):
+            indices.add(int(boundary_index))
+        source_blocks = {
+            int(observed_provenance[index]["original_block_id"])
+            for index in indices
+            if observed_provenance[index].get("original_block_id") is not None
+            and 0 <= int(observed_provenance[index]["original_block_id"]) < int(num_source_blocks)
+        }
+        score = parsed_block_anomaly_score(pred, codebook=codebook)
+        for block_id in source_blocks:
+            scores[block_id] = max(scores[block_id], score)
+    return scores
+
+
 def evaluate_predictions_multiple(
     original_payload_blocks: Sequence[Sequence[int]],
     gt_events_per_block: Sequence[Sequence[EditEvent]],
@@ -718,6 +774,13 @@ def evaluate_predictions_with_provenance(
         "mean_candidate_size": sum(candidate_sizes) / len(candidate_sizes) if candidate_sizes else 0.0,
         "candidate_size_hist": dict(sorted(cand_size_counter.items())),
         "source_pred_flags": [int(x) for x in source_pred_flags],
+        "source_gt_flags": [int(bool(events)) for events in gt_events_per_block],
+        "source_anomaly_scores": source_block_anomaly_scores_with_provenance(
+            pred_blocks=pred_blocks,
+            observed_provenance=observed_provenance,
+            num_source_blocks=num_gt_blocks,
+            codebook=codebook,
+        ),
         "source_candidate_locations": [
             [[kind, int(index)] for kind, index in sorted(locations, key=_loc_sort_key)]
             for locations in source_candidates

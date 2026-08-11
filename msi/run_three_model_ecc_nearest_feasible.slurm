@@ -1,0 +1,67 @@
+#!/bin/bash -l
+#SBATCH -A liyanxie
+#SBATCH -p a100-4
+#SBATCH --gres=gpu:a100:1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=96G
+#SBATCH --time=12:00:00
+#SBATCH --array=0-2
+#SBATCH -J wm_ecc_nearest
+#SBATCH -o logs/ecc_nearest_%A_%a.out
+#SBATCH -e logs/ecc_nearest_%A_%a.err
+
+set -euo pipefail
+EMNLP_DIR=${EMNLP_DIR:-${SLURM_SUBMIT_DIR:-$HOME/EMNLP}}
+cd "$EMNLP_DIR"
+source "$EMNLP_DIR/msi/activate_env.sh"
+export PYTHONHASHSEED=0
+export HF_HUB_DISABLE_PROGRESS_BARS=1
+
+PROFILES=(qwen3-8b mistral-7b-instruct-v0.3 opt-125m)
+PROFILE=${PROFILES[$SLURM_ARRAY_TASK_ID]}
+PROMPT_FILE=${PROMPT_FILE:-"outputs/text_quality_lfqa_screen/lfqa_prompts_500.txt"}
+PARTITION_DIR="outputs/partitions/${PROFILE}-semantic-v1"
+OUTPUT_ROOT=${OUTPUT_ROOT:-"outputs/three_model_ecc_soft_sweep_nearest_feasible_v1"}
+OUTPUT_DIR="$OUTPUT_ROOT/$PROFILE"
+QUANT_ARGS=()
+if [ "$PROFILE" != "opt-125m" ]; then
+  QUANT_ARGS+=(--use-4bit)
+fi
+
+if [ ! -f "$PROMPT_FILE" ]; then
+  echo "ERROR: missing prompt file $PROMPT_FILE" >&2
+  exit 1
+fi
+if [ ! -f "$PARTITION_DIR/token_to_bucket.npy" ]; then
+  echo "ERROR: missing partition $PARTITION_DIR/token_to_bucket.npy" >&2
+  exit 1
+fi
+
+python run_main.py \
+  --backend hf \
+  --model-profile "$PROFILE" \
+  --device cuda \
+  "${QUANT_ARGS[@]}" \
+  --prompt-file "$PROMPT_FILE" \
+  --partition-dir "$PARTITION_DIR" \
+  --require-semantic-partition \
+  --output-dir "$OUTPUT_DIR" \
+  --schemes ecc \
+  --disable-segment-baselines \
+  --watermark-modes soft \
+  --ecc-logit-bias-values "2,5,20" \
+  --ecc-adaptive-modes true \
+  --adaptive-invalid-prefix-policy nearest_feasible \
+  --prompt-count 256 \
+  --target-blocks 18 \
+  --max-new-tokens 160 \
+  --stop-after closed_blocks \
+  --sampling sample \
+  --temperature 0.75 \
+  --top-k 40 \
+  --top-p 0.9 \
+  --repetition-penalty 1.2 \
+  --edit-rates "0.2,0.4,0.6,0.8" \
+  --attack-max-edits-per-blocks "1,2,3" \
+  --decoder-max-edits-per-block 3 \
+  --ecc-tolerance-by-logit-bias "2:0|1|2,5:0|1,20:0"

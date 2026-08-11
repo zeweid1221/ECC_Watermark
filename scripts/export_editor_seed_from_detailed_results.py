@@ -17,6 +17,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-csv", required=True)
     parser.add_argument("--setting-key", default="ecc_soft_adaptive_bias5")
     parser.add_argument("--target-blocks", type=int, default=18)
+    parser.add_argument("--expected-invalid-prefix-policy", default=None)
     return parser.parse_args()
 
 
@@ -58,6 +59,9 @@ def export_rows(setting: Dict[str, Any], target_blocks: int) -> List[Dict[str, A
                 "setting_key": setting.get("setting_key"),
                 "logit_bias": setting.get("logit_bias"),
                 "adaptive": setting.get("adaptive"),
+                "adaptive_invalid_prefix_policy": setting.get(
+                    "adaptive_invalid_prefix_policy", "legacy_unconstrained"
+                ),
                 "prompt": generated.get("prompt", ""),
                 "suffix_text": generated.get("suffix_text", ""),
                 "generated_token_ids": json.dumps(token_ids),
@@ -79,6 +83,17 @@ def main() -> None:
     output_path = Path(args.output_csv)
     payload = json.loads(detailed_path.read_text(encoding="utf-8"))
     setting = find_setting(payload, args.setting_key)
+    actual_policy = setting.get(
+        "adaptive_invalid_prefix_policy", "legacy_unconstrained"
+    )
+    if (
+        args.expected_invalid_prefix_policy is not None
+        and actual_policy != args.expected_invalid_prefix_policy
+    ):
+        raise RuntimeError(
+            f"Expected invalid-prefix policy {args.expected_invalid_prefix_policy!r}, "
+            f"found {actual_policy!r} in {args.setting_key!r}."
+        )
     rows = export_rows(setting, args.target_blocks)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_csv(output_path, index=False)

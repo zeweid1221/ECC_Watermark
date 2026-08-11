@@ -1,1 +1,0 @@
-# ECC_Watermark

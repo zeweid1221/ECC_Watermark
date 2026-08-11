@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 import numpy as np
 
 from .config import ECCConfig, GenerationProtocolConfig, GenerationSetting
+from .bucket_compatibility import resolve_adaptive_allowed_bits
 from .ecc_detector import EccCodebook, decode_clean_structural_sequence
 from .modeling import (
     BaseLanguageModel,
@@ -36,6 +37,8 @@ class EccRuntimeState:
     payload_count_since_boundary: int = 0
     overflow_count: int = 0
     invalid_prefix_flag: bool = False
+    recovery_step_count: int = 0
+    total_recovery_steps: int = 0
     completed_blocks: int = 0
     empty_boundary_count: int = 0
     block_summaries: List[Dict[str, Any]] = field(default_factory=list)
@@ -81,10 +84,22 @@ class EccGenerator:
             self.always_ban_mask[int(token_id)] = True
         self._ascii_ban_masks: Dict[bool, np.ndarray] = {}
 
-    def allowed_next_bits(self, prefix_bits: Sequence[int], adaptive: bool, fixed_codeword: Optional[Sequence[int]]) -> Set[int]:
+    def allowed_next_bits(
+        self,
+        prefix_bits: Sequence[int],
+        adaptive: bool,
+        fixed_codeword: Optional[Sequence[int]],
+        invalid_prefix_policy: str = "legacy_unconstrained",
+    ) -> Set[int]:
         prefix = tuple(int(x) for x in prefix_bits)
         if adaptive:
-            return set(self.prefix_to_allowed_next_bits.get(prefix, set()))
+            allowed, _, _ = resolve_adaptive_allowed_bits(
+                prefix,
+                feasible_codewords=self.codebook.feasible,
+                prefix_to_allowed=self.prefix_to_allowed_next_bits,
+                invalid_prefix_policy=invalid_prefix_policy,
+            )
+            return allowed
         if fixed_codeword is None:
             return set()
         pos = len(prefix_bits)
@@ -126,6 +141,7 @@ class EccGenerator:
                         "bits_prefix_capped": state.current_bits.copy(),
                         "overflow_count": int(state.overflow_count),
                         "invalid_prefix_flag": bool(state.invalid_prefix_flag),
+                        "recovery_step_count": int(state.recovery_step_count),
                         "is_valid_codeword": bool(is_valid_codeword),
                         "is_valid_closed_block": bool(is_valid_closed_block),
                     }
@@ -138,6 +154,7 @@ class EccGenerator:
             state.payload_count_since_boundary = 0
             state.overflow_count = 0
             state.invalid_prefix_flag = False
+            state.recovery_step_count = 0
             state.current_codeword = None
 
     def apply_hard_control(
@@ -222,24 +239,43 @@ class EccGenerator:
 
         while not reached_target() and steps < setting.max_new_tokens:
             raw_logits = session.next_logits()
+            generation_logits = apply_repetition_penalty(
+                raw_logits,
+                generated_ids,
+                protocol.repetition_penalty,
+            )
             if not adaptive and state.current_codeword is None and len(state.current_bits) == 0:
-                state.current_codeword = self.choose_fixed_codeword(raw_logits, rng)
+                state.current_codeword = self.choose_fixed_codeword(generation_logits, rng)
                 state.chosen_codewords.append(state.current_codeword.copy())
-            allowed_bits = self.allowed_next_bits(state.current_bits, adaptive, state.current_codeword)
+            if adaptive:
+                allowed_bits, prefix_status, prefix_distance = resolve_adaptive_allowed_bits(
+                    state.current_bits,
+                    feasible_codewords=self.codebook.feasible,
+                    prefix_to_allowed=self.prefix_to_allowed_next_bits,
+                    invalid_prefix_policy=protocol.adaptive_invalid_prefix_policy,
+                )
+            else:
+                allowed_bits = self.allowed_next_bits(
+                    state.current_bits,
+                    adaptive=False,
+                    fixed_codeword=state.current_codeword,
+                )
+                prefix_status = "fixed_codeword"
+                prefix_distance = 0
             if not allowed_bits and len(state.current_bits) < self.config.block_len:
-                allowed_bits = {0, 1}
+                raise RuntimeError("ECC generation could not resolve an allowed payload bit.")
             raw_top_id = int(np.argmax(raw_logits))
             raw_top_bucket = int(self.partition.token_to_bucket[raw_top_id]) if raw_top_id < len(self.partition.token_to_bucket) else -1
             if setting.watermark_mode == "hard":
                 adjusted_logits = self.apply_hard_control(
-                    logits=raw_logits,
+                    logits=generation_logits,
                     state=state,
                     allowed_bits=allowed_bits,
                     boundary_bonus=self.config.boundary_bonus,
                 )
             else:
                 adjusted_logits = self.apply_soft_control(
-                    logits=raw_logits,
+                    logits=generation_logits,
                     state=state,
                     allowed_bits=allowed_bits,
                     logit_bias=setting.resolved_logit_bias(),
@@ -250,11 +286,6 @@ class EccGenerator:
                 filtered_logits[ascii_ban_mask] = -1e9
                 if np.any(np.isfinite(filtered_logits) & (filtered_logits > -1e8)):
                     adjusted_logits = filtered_logits
-            adjusted_logits = apply_repetition_penalty(
-                adjusted_logits,
-                generated_ids,
-                protocol.repetition_penalty,
-            )
             next_id = sample_token_from_logits(adjusted_logits, token_rng, protocol)
             next_bucket = int(self.partition.token_to_bucket[next_id]) if next_id < len(self.partition.token_to_bucket) else -1
             session.append(next_id)
@@ -268,9 +299,15 @@ class EccGenerator:
                     "chosen_id": next_id,
                     "chosen_bucket": next_bucket,
                     "payload_len_before_step": len(state.current_bits),
+                    "prefix_status": prefix_status,
+                    "prefix_distance": int(prefix_distance),
+                    "allowed_bits": sorted(int(bit) for bit in allowed_bits),
                     "fixed_codeword": None if state.current_codeword is None else "".join(str(x) for x in state.current_codeword),
                 }
             )
+            if prefix_status == "nearest_feasible":
+                state.recovery_step_count += 1
+                state.total_recovery_steps += 1
             self.update_runtime_state(state, next_bucket)
             steps += 1
         stop_reason = (

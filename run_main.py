@@ -37,9 +37,17 @@ def parse_tolerance_map(value: str) -> dict:
         if not item:
             continue
         if ":" not in item:
-            raise ValueError("Tolerance map entries must use logit_bias:tolerance format, e.g. 2:0,5:1")
+            raise ValueError(
+                "Tolerance map entries must use logit_bias:tolerance format; "
+                "use | for multiple tolerances, e.g. 2:0|1|2,5:0|1,20:0"
+            )
         bias_s, tol_s = item.split(":", 1)
-        out[float(bias_s.strip())] = int(tol_s.strip())
+        tolerances = [int(part.strip()) for part in tol_s.split("|") if part.strip()]
+        if not tolerances:
+            raise ValueError(f"No tolerance values were provided for logit bias {bias_s!r}.")
+        if any(tolerance < 0 for tolerance in tolerances):
+            raise ValueError("Tolerance values must be non-negative.")
+        out[float(bias_s.strip())] = list(dict.fromkeys(tolerances))
     return out
 
 
@@ -102,6 +110,11 @@ def main() -> None:
     parser.add_argument("--max-new-tokens", type=int, default=160)
     parser.add_argument("--max-prompt-tokens", type=int, default=256)
     parser.add_argument("--stop-after", choices=["closed_blocks", "feasible_blocks"], default="closed_blocks")
+    parser.add_argument(
+        "--adaptive-invalid-prefix-policy",
+        choices=["nearest_feasible", "legacy_unconstrained"],
+        default="legacy_unconstrained",
+    )
     parser.add_argument("--sampling", choices=["sample", "greedy"], default="sample")
     parser.add_argument("--temperature", type=float, default=0.75)
     parser.add_argument("--top-k", type=int, default=40)
@@ -196,6 +209,7 @@ def main() -> None:
                 use_chat_template=use_chat_template,
                 enable_thinking=enable_thinking,
                 ascii_token_filter=args.ascii_token_filter,
+                adaptive_invalid_prefix_policy=args.adaptive_invalid_prefix_policy,
             ),
             schemes=parse_csv_strs(args.schemes),
             watermark_modes=parse_csv_strs(args.watermark_modes),

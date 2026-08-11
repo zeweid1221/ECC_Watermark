@@ -6,7 +6,7 @@ Zewei Deng, Muhammad Siddeek, Liyan Xie, Mohamed S Mohamed, Mengdi Wang, H. Vinc
 
 ECC-IW is an error-correcting-code-based watermarking framework for detecting and localizing sparse post-generation edits in watermarked LLM outputs. It maps generated tokens to structural symbols, constrains short blocks with joint Varshamov-Tenengolts and Hamming code properties, and uses global dynamic-programming decoding to recover edited block boundaries.
 
-The repository contains the core watermark implementation, experiment runners, baselines, evaluation utilities, and the companion project website. Paper and public website links will be added when the preprint is released.
+The repository contains the ECC-IW watermark implementation, its reproducibility utilities, and the companion project website. Paper and public website links will be added when the preprint is released. Separate exploratory projects and generated experiment artifacts are intentionally excluded.
 
 ## Evaluation Scope
 
@@ -28,7 +28,6 @@ The current experiment suite includes:
 - `resources/`: fixed boundary-token candidates and model-specific supporting resources.
 - `msi/`: Slurm launchers and environment helpers used for MSI GPU experiments.
 - `website/`: Vite and React companion website with precomputed result tables and interactive walkthrough examples.
-- `archived/`: earlier implementation snapshots retained for provenance only.
 - `run_main.py`: primary command-line entry point for watermark experiments.
 
 Large model caches, generated dependency folders, and full experiment artifacts are intentionally excluded from version control.

@@ -44,6 +44,11 @@ from watermark_project.partitioning import (
     save_vocabulary_partition,
     validate_vocabulary_partition,
 )
+from watermark_project.reporting_metrics import (
+    document_alarm_metrics,
+    editor_structural_visibility_metrics,
+    safe_ratio,
+)
 
 
 BENIGN_MOTIVATIONS = {"grammar_polish", "clarity_improvement", "style_softening"}
@@ -1390,6 +1395,12 @@ def build_summary_dataframe(detail_rows: Sequence[Dict[str, Any]]) -> pd.DataFra
                 "TN",
                 "block_tpr",
                 "block_far",
+                "block_precision",
+                "mean_false_blocks_per_document",
+                "document_false_alarm_rate",
+                "structural_visibility_rate",
+                "visible_block_tpr",
+                "invisible_block_alarm_rate",
                 "candidate_coverage",
             ]
         )
@@ -1404,6 +1415,17 @@ def build_summary_dataframe(detail_rows: Sequence[Dict[str, Any]]) -> pd.DataFra
         used_count = int(len(used_group))
         candidate_hit_total = float(used_group["event_loc_hit"].sum()) if not used_group.empty else 0.0
         candidate_event_total = float(used_group["event_total_overall"].sum()) if not used_group.empty else 0.0
+        document_metrics = document_alarm_metrics(used_group.to_dict(orient="records"))
+
+        def sum_column(name: str) -> int:
+            if used_group.empty or name not in used_group.columns:
+                return 0
+            return int(used_group[name].fillna(0).sum())
+
+        visible_blocks = sum_column("num_structurally_visible_edited_blocks")
+        invisible_blocks = sum_column("num_structurally_invisible_edited_blocks")
+        visible_flagged = sum_column("num_visible_edited_blocks_flagged")
+        invisible_flagged = sum_column("num_invisible_edited_blocks_flagged")
         summary_rows.append(
             {
                 "motivation": motivation,
@@ -1419,6 +1441,24 @@ def build_summary_dataframe(detail_rows: Sequence[Dict[str, Any]]) -> pd.DataFra
                 "TN": tn,
                 "block_tpr": finite_or_nan(tp, tp + fn),
                 "block_far": finite_or_nan(fp, fp + tn),
+                **document_metrics,
+                "num_substitute_instructions": sum_column("num_substitute_instructions"),
+                "num_single_token_same_bucket_substitutions": sum_column(
+                    "num_single_token_same_bucket_substitutions"
+                ),
+                "num_single_token_cross_bucket_substitutions": sum_column(
+                    "num_single_token_cross_bucket_substitutions"
+                ),
+                "num_multi_token_substitutions": sum_column("num_multi_token_substitutions"),
+                "num_structurally_visible_edited_blocks": visible_blocks,
+                "num_structurally_invisible_edited_blocks": invisible_blocks,
+                "num_visible_edited_blocks_flagged": visible_flagged,
+                "num_invisible_edited_blocks_flagged": invisible_flagged,
+                "structural_visibility_rate": safe_ratio(
+                    visible_blocks, visible_blocks + invisible_blocks
+                ),
+                "visible_block_tpr": safe_ratio(visible_flagged, visible_blocks),
+                "invisible_block_alarm_rate": safe_ratio(invisible_flagged, invisible_blocks),
                 "candidate_coverage": finite_or_nan(candidate_hit_total, candidate_event_total),
             }
         )
@@ -1628,6 +1668,7 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
             pred_blocks_flags: List[int] = []
             gt_blocks_flags: List[int] = []
             summary_payload: Dict[str, Any] = {}
+            visibility_payload: Dict[str, Any] = {}
             edited_text = suffix_text
             accepted_instructions: List[ValidatedInstruction] = []
             last_raw_output = ""
@@ -1789,6 +1830,17 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                 pred_blocks_flags = [int(x) for x in ev["source_pred_flags"]]
                 accepted_json = parsed_output
                 accepted_instructions = validated
+                visibility_payload = editor_structural_visibility_metrics(
+                    original_token_ids=original_text_token_ids,
+                    original_token_block_map=original_token_block_map,
+                    edited_structural_symbols=edited_token_structural_symbols,
+                    edited_token_provenance=edited_token_provenance,
+                    gt_block_flags=gt_blocks_flags,
+                    pred_block_flags=pred_blocks_flags,
+                    token_to_bucket=partition.token_to_bucket,
+                    accepted_edit_json=accepted_json,
+                )
+                document_metrics = document_alarm_metrics([ev])
                 used = True
                 skip_reason = None
                 summary_payload = {
@@ -1808,6 +1860,12 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                     "event_total_delete": int(ev["event_total_delete"]),
                     "pred_block_count": int(len(pred_blocks)),
                     "gt_block_count": int(len(gt_blocks_flags)),
+                    **document_metrics,
+                    **{
+                        key: value
+                        for key, value in visibility_payload.items()
+                        if not key.endswith("_json")
+                    },
                 }
                 break
 
@@ -1832,6 +1890,53 @@ def run_editor_experiment(args: argparse.Namespace) -> Dict[str, Any]:
                     "TN": summary_payload.get("TN", 0),
                     "block_tpr": summary_payload.get("block_tpr", math.nan),
                     "block_far": summary_payload.get("block_far", math.nan),
+                    "block_precision": summary_payload.get("block_precision", math.nan),
+                    "mean_false_blocks_per_document": summary_payload.get(
+                        "mean_false_blocks_per_document", math.nan
+                    ),
+                    "documents_with_false_alarm": summary_payload.get(
+                        "documents_with_false_alarm", 0
+                    ),
+                    "document_false_alarm_rate": summary_payload.get(
+                        "document_false_alarm_rate", math.nan
+                    ),
+                    "num_substitute_instructions": summary_payload.get(
+                        "num_substitute_instructions", 0
+                    ),
+                    "num_single_token_same_bucket_substitutions": summary_payload.get(
+                        "num_single_token_same_bucket_substitutions", 0
+                    ),
+                    "num_single_token_cross_bucket_substitutions": summary_payload.get(
+                        "num_single_token_cross_bucket_substitutions", 0
+                    ),
+                    "num_multi_token_substitutions": summary_payload.get(
+                        "num_multi_token_substitutions", 0
+                    ),
+                    "num_structurally_visible_edited_blocks": summary_payload.get(
+                        "num_structurally_visible_edited_blocks", 0
+                    ),
+                    "num_structurally_invisible_edited_blocks": summary_payload.get(
+                        "num_structurally_invisible_edited_blocks", 0
+                    ),
+                    "num_visible_edited_blocks_flagged": summary_payload.get(
+                        "num_visible_edited_blocks_flagged", 0
+                    ),
+                    "num_invisible_edited_blocks_flagged": summary_payload.get(
+                        "num_invisible_edited_blocks_flagged", 0
+                    ),
+                    "structural_visibility_rate": summary_payload.get(
+                        "structural_visibility_rate", math.nan
+                    ),
+                    "visible_block_tpr": summary_payload.get("visible_block_tpr", math.nan),
+                    "invisible_block_alarm_rate": summary_payload.get(
+                        "invisible_block_alarm_rate", math.nan
+                    ),
+                    "structurally_visible_gt_blocks_json": json.dumps(
+                        visibility_payload.get("structurally_visible_gt_blocks_json", [])
+                    ),
+                    "structurally_invisible_gt_blocks_json": json.dumps(
+                        visibility_payload.get("structurally_invisible_gt_blocks_json", [])
+                    ),
                     "candidate_coverage": summary_payload.get("candidate_coverage", math.nan),
                     "event_loc_hit": summary_payload.get("event_loc_hit", 0),
                     "event_total_overall": summary_payload.get("event_total_overall", 0),

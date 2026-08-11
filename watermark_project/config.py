@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple, Union
 
 
 HARD_LOGIT_BIAS = 1000.0
@@ -72,6 +72,7 @@ class GenerationProtocolConfig:
     enable_thinking: bool = False
     system_prompt: str = DEFAULT_SYSTEM_PROMPT
     ascii_token_filter: bool = True
+    adaptive_invalid_prefix_policy: str = "legacy_unconstrained"
 
     def __post_init__(self) -> None:
         if self.stop_after not in {"closed_blocks", "feasible_blocks"}:
@@ -88,6 +89,14 @@ class GenerationProtocolConfig:
             raise ValueError("top_p must be in (0, 1].")
         if self.repetition_penalty < 1:
             raise ValueError("repetition_penalty must be at least 1.")
+        if self.adaptive_invalid_prefix_policy not in {
+            "nearest_feasible",
+            "legacy_unconstrained",
+        }:
+            raise ValueError(
+                "adaptive_invalid_prefix_policy must be 'nearest_feasible' "
+                "or 'legacy_unconstrained'."
+            )
 
 
 @dataclass
@@ -176,7 +185,7 @@ class RunConfig:
     attack_max_edits_per_block: Optional[int] = 1
     attack_max_edits_per_blocks: List[int] = field(default_factory=list)
     decoder_max_edits_per_block: int = 3
-    ecc_tolerance_by_logit_bias: Dict[float, int] = field(default_factory=dict)
+    ecc_tolerance_by_logit_bias: Dict[float, Union[int, Sequence[int]]] = field(default_factory=dict)
     edit_count_mode: str = "uniform_1_to_k"
     allow_boundary_edit: bool = True
     boundary_edit_modes: Tuple[str, ...] = ("delete", "sub")

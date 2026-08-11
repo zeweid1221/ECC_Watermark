@@ -1,4 +1,5 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { BlockMath, InlineMath } from "react-katex";
 import { demoExamples } from "./demoExamples.js";
 import { paperReferences } from "./referencesData.js";
 import {
@@ -15,7 +16,7 @@ const PAPER_URL = "#citation";
 const GITHUB_URL = "https://github.com/zeweid1221/ECC_Watermark";
 const BIBTEX = `@misc{ecc_iw,
   title  = {ECC-IW: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes},
-  author = {Deng, Zewei and Siddeek, Muhammad and Xie, Liyan and Mohamed, Mohamed S and Wang, Mengdi and Poor, H. Vincent and Goldsmith, Andrea},
+  author = {Deng, Zewei and Siddeek, Muhammad and Xie, Liyan and Seif, Mohamed and Wang, Mengdi and Poor, H. Vincent and Goldsmith, Andrea},
   year   = {2026}
 }`;
 
@@ -23,7 +24,7 @@ const authors = [
   { name: "Zewei Deng", affiliations: [1] },
   { name: "Muhammad Siddeek", affiliations: [2] },
   { name: "Liyan Xie", affiliations: [1] },
-  { name: "Mohamed S Mohamed", affiliations: [3] },
+  { name: "Mohamed Seif", affiliations: [3] },
   { name: "Mengdi Wang", affiliations: [5] },
   { name: "H. Vincent Poor", affiliations: [5] },
   { name: "Andrea Goldsmith", affiliations: [4] },
@@ -42,6 +43,8 @@ const modelFamilies = [
   { name: "Mistral-7B", organization: "Mistral AI", logo: "./assets/model-logos/mistral.png" },
   { name: "OPT-125M", organization: "Meta AI", logo: "./assets/model-logos/meta.png" },
 ];
+
+const defaultSelectedModels = modelFamilies.map((model) => model.name);
 
 const methodSteps = [
   {
@@ -101,26 +104,72 @@ function Hero() {
   return (
     <section id="top" className="hero">
       <div className="heroText">
-        <p className="eyebrow">ECC integrity watermark</p>
-        <h1>ECC-IW: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes</h1>
+        <p className="eyebrow">ECC-IW · Error-correcting code watermark</p>
+        <h1>Local integrity checking for watermarked LLM outputs</h1>
         <p className="lead">
-          We study how to detect and localize sparse post-generation edits in watermarked LLM
-          outputs. Instead of only asking whether a text is watermarked, our detector asks where
-          suspicious local modifications may have occurred.
+          ECC-IW embeds joint VT–Hamming structure into short token blocks. From final text and
+          the watermark key, it verifies watermark presence, flags structurally inconsistent
+          blocks, and narrows possible edit locations.
+        </p>
+        <p className="heroContext">
+          Built for sparse post-generation edits that can change meaning while preserving a
+          document-level watermark signal.
         </p>
         <div className="heroActions">
           <a className="button primary" href="#results">View results</a>
-          <a className="button secondary" href="#demo">Preview walkthrough</a>
+          <a className="button secondary" href="#demo">See an edit traced</a>
         </div>
       </div>
-      <div className="heroPanel" aria-label="Pipeline summary">
-        <div className="pipelineNode">Watermarked generation</div>
-        <div className="pipelineArrow">{"->"}</div>
-        <div className="pipelineNode warning">Sparse edit</div>
-        <div className="pipelineArrow">{"->"}</div>
-        <div className="pipelineNode">ECC detector</div>
-        <div className="pipelineArrow">{"->"}</div>
-        <div className="pipelineNode accent">Suspicious blocks</div>
+      <div className="heroPanel" aria-label="ECC edit-detection schematic">
+        <div className="heroPanelHeader">
+          <span>Method schematic</span>
+          <strong>Trace a local edit through the watermark</strong>
+        </div>
+        <div
+          className="heroSchematic"
+          role="img"
+          aria-label="A word substitution changes one structural bit in block two, which the ECC detector flags"
+        >
+          <div className="heroTextEdit">
+            <span>Edited text</span>
+            <p>
+              <span className="heroEditPhrase"><i>…</i> This treatment is <del>safe</del> for most patients <i>…</i></span>
+              <b aria-hidden="true">→</b>
+              <span className="heroEditPhrase"><i>…</i> This treatment is <mark>harmful</mark> for most patients <i>…</i></span>
+            </p>
+          </div>
+
+          <div className="schematicConnector" aria-hidden="true"><i /></div>
+
+          <div className="structureStage">
+            <span>Token structure</span>
+            <div className="eccBlockRow">
+              <HeroEccBlock label="B1" bits="0101110" />
+              <HeroEccBlock label="B2" bits="1001101" editedIndex={3} editedFrom="0" />
+              <HeroEccBlock label="B3" bits="0011010" />
+            </div>
+          </div>
+
+          <div className="schematicConnector" aria-hidden="true"><i /></div>
+
+          <div className="detectorStage">
+            <span>ECC detector</span>
+            <div className="detectorBlocks">
+              <i>B1 ✓</i>
+              <i className="detectorAlarm">B2 !</i>
+              <i>B3 ✓</i>
+            </div>
+            <div className="detectorFinding">
+              <strong>Suspicious block 2</strong>
+              <b>Candidate: token 4</b>
+            </div>
+          </div>
+        </div>
+        <div className="heroEvidence" aria-label="Headline evaluation results">
+          <div><strong>3</strong><span>model families</span></div>
+          <div><strong>0.995–1.000</strong><span>global AUC</span></div>
+          <div><strong>≈0.998</strong><span>block TPR at δ = 50</span></div>
+        </div>
       </div>
       <div className="authorBlock" aria-label="Authors and affiliations">
         <p className="authorBlockLabel">Authors &amp; affiliations</p>
@@ -142,11 +191,32 @@ function Hero() {
             ))}
           </div>
           <p className="affiliationNote">
-            Mohamed S Mohamed and Andrea Goldsmith contributed to this work while at Princeton University.
+            Mohamed Seif and Andrea Goldsmith contributed to this work while at Princeton University.
           </p>
         </div>
       </div>
     </section>
+  );
+}
+
+function HeroEccBlock({ label, bits, editedIndex = -1, editedFrom = null }) {
+  return (
+    <div className={editedIndex >= 0 ? "heroEccBlock editedBlock" : "heroEccBlock"}>
+      <strong>
+        {label}
+        {editedIndex >= 0 && editedFrom != null && (
+          <em>{editedFrom}→{bits[editedIndex]}</em>
+        )}
+      </strong>
+      <div>
+        {[...bits].map((bit, index) => (
+          <span className={index === editedIndex ? "payloadBit editedBit" : "payloadBit"} key={`${bits}-${index}`}>
+            {bit}
+          </span>
+        ))}
+        <span className="boundaryBit">A</span>
+      </div>
+    </div>
   );
 }
 
@@ -212,6 +282,15 @@ function Method() {
 
 function Results() {
   const [activeResult, setActiveResult] = useState("local");
+  const [selectedModels, setSelectedModels] = useState(defaultSelectedModels);
+
+  function toggleModel(modelName) {
+    setSelectedModels((current) => (
+      current.includes(modelName)
+        ? current.filter((name) => name !== modelName)
+        : [...current, modelName]
+    ));
+  }
 
   return (
     <section id="results" className="section results">
@@ -225,15 +304,28 @@ function Results() {
         </p>
       </div>
 
-      <div className="modelFamilyStrip" aria-label="Evaluated model families">
+      <div className="modelFilterHeader">
+        <span>Filter result tables by model</span>
+        <small>{selectedModels.length} of {modelFamilies.length} selected</small>
+      </div>
+      <div className="modelFamilyStrip" aria-label="Filter result tables by model">
         {modelFamilies.map((model) => (
-          <div className="modelFamilyBadge" key={model.name}>
+          <button
+            aria-pressed={selectedModels.includes(model.name)}
+            className={selectedModels.includes(model.name) ? "modelFamilyBadge selected" : "modelFamilyBadge"}
+            key={model.name}
+            onClick={() => toggleModel(model.name)}
+            type="button"
+          >
             <img src={model.logo} alt={`${model.organization} logo`} />
-            <span>
+            <span className="modelFamilyText">
               <strong>{model.name}</strong>
               <small>{model.organization}</small>
             </span>
-          </div>
+            <span className="modelCheck" aria-hidden="true">
+              {selectedModels.includes(model.name) ? "✓" : ""}
+            </span>
+          </button>
         ))}
       </div>
 
@@ -255,11 +347,11 @@ function Results() {
       </div>
 
       <div id="result-workbench" className="resultWorkbench" role="tabpanel">
-        {activeResult === "local" && <LocalDetectionResult />}
-        {activeResult === "quality" && <QualityResult />}
-        {activeResult === "global" && <GlobalVerificationResult />}
-        {activeResult === "cw" && <CombinatorialResult />}
-        {activeResult === "llm" && <LlmEditResult />}
+        {activeResult === "local" && <LocalDetectionResult selectedModels={selectedModels} />}
+        {activeResult === "quality" && <QualityResult selectedModels={selectedModels} />}
+        {activeResult === "global" && <GlobalVerificationResult selectedModels={selectedModels} />}
+        {activeResult === "cw" && <CombinatorialResult selectedModels={selectedModels} />}
+        {activeResult === "llm" && <LlmEditResult selectedModels={selectedModels} />}
       </div>
 
       <p className="archiveNote">Displayed values: {archiveVersion}</p>
@@ -267,7 +359,7 @@ function Results() {
   );
 }
 
-function LocalDetectionResult() {
+function LocalDetectionResult({ selectedModels }) {
   return (
     <ResultPanel
       eyebrow="Synthetic mixed edits"
@@ -284,13 +376,13 @@ function LocalDetectionResult() {
           ["Cand. fraction", (r) => fmt(r.candidateFraction, 3)],
           ["Reduction", (r) => fmt(r.searchReduction, 3)],
         ]}
-        rows={localDetection}
+        rows={localDetection.filter((row) => selectedModels.includes(row.model))}
       />
     </ResultPanel>
   );
 }
 
-function QualityResult() {
+function QualityResult({ selectedModels }) {
   return (
     <ResultPanel
       eyebrow="Adaptive generation"
@@ -303,13 +395,13 @@ function QualityResult() {
           ["Model", (r) => r.model],
           ["Conditional PPL reduction", (r) => `${(r.reduction * 100).toFixed(1)}%`, "methodColumn"],
         ]}
-        rows={adaptiveAblation}
+        rows={adaptiveAblation.filter((row) => selectedModels.includes(row.model))}
       />
     </ResultPanel>
   );
 }
 
-function GlobalVerificationResult() {
+function GlobalVerificationResult({ selectedModels }) {
   return (
     <ResultPanel
       eyebrow="Final-text-only verification"
@@ -317,8 +409,25 @@ function GlobalVerificationResult() {
       note="Higher scores indicate stronger ECC-IW watermark evidence. The verifier receives only final text, tokenizer, model partition, and ECC configuration. Evaluation uses 256 watermarked outputs, 256 matched unwatermarked outputs, and 251 human LFQA answers."
     >
       <div className="scoreDefinition">
-        <code>S(s) = 1 / (1 + C(s) / max(1, B_estimated))</code>
-        <p>C(s) combines nearest-codeword payload distance, boundary mismatches, unmatched symbols, and the parsed-versus-estimated block-count penalty.</p>
+        <div className="scoreFormula" aria-label="Global watermark verification score">
+          <span className="formulaLabel">Verification score</span>
+          <BlockMath math={String.raw`S(s)=\frac{1}{1+\dfrac{C(s)}{\max\!\left(1,B_{\mathrm{est}}\right)}}`} />
+          <small>Higher is more consistent with the keyed ECC watermark.</small>
+        </div>
+        <div className="scoreExplanation">
+          <p className="scoreCostFormula">
+            <BlockMath math={String.raw`C(s)=\sum_i\left(d_i+b_i\right)+C_{\mathrm{unmatched}}+\left|B_{\mathrm{parsed}}-B_{\mathrm{est}}\right|`} />
+          </p>
+          <dl className="scoreNotation">
+            <div><dt><InlineMath math="s" /></dt><dd>structural symbol sequence reconstructed from the final text</dd></div>
+            <div><dt><InlineMath math="d_i" /></dt><dd>payload distance from parsed block <InlineMath math="i" /> to its nearest feasible ECC codeword</dd></div>
+            <div><dt><InlineMath math="b_i" /></dt><dd>boundary mismatch cost for parsed block <InlineMath math="i" />: 0 if intact, otherwise 1</dd></div>
+            <div><dt><InlineMath math={String.raw`C_{\mathrm{unmatched}}`} /></dt><dd>number of structural symbols outside complete parsed blocks</dd></div>
+            <div><dt><InlineMath math={String.raw`B_{\mathrm{parsed}}`} /></dt><dd>number of complete blocks under the selected alignment phase</dd></div>
+            <div><dt><InlineMath math={String.raw`B_{\mathrm{est}}`} /></dt><dd>block count estimated from final-text length: <InlineMath math={String.raw`\operatorname{round}\!\left(N_{\mathrm{tokens}}/(n+1)\right)`} /></dd></div>
+          </dl>
+          <p className="scorePhaseNote">The verifier tests every alignment phase and uses the one with the smallest <InlineMath math="C(s)" />.</p>
+        </div>
       </div>
       <DataTable
         label="Global verification"
@@ -329,18 +438,24 @@ function GlobalVerificationResult() {
           ["Mean score: unwatermarked LLM", (r) => fmt(r.llm, 3)],
           ["Mean score: human", (r) => fmt(r.human, 3)],
         ]}
-        rows={globalVerification}
+        rows={globalVerification.filter((row) => selectedModels.includes(row.model))}
       />
     </ResultPanel>
   );
 }
 
-function CombinatorialResult() {
+function CombinatorialResult({ selectedModels }) {
   return (
     <ResultPanel
       eyebrow="Closest-prior comparison"
       title="ECC versus Combinatorial Watermark (CW) on Qwen3"
-      note="Both methods use the same prompts, generation settings, attacks, and block-level TPR/FAR protocol. CW retains its original clean-watermark threshold calibration."
+      note={
+        <>
+          CW follows <a href="https://arxiv.org/abs/2510.01637" target="_blank" rel="noreferrer">Xie et al. (2025)</a>.
+          {" "}Both methods use the same prompts, generation settings, attacks, and block-level TPR/FAR protocol.
+          CW retains its original clean-watermark threshold calibration.
+        </>
+      }
     >
       <DataTable
         label="ECC versus Combinatorial Watermark"
@@ -351,13 +466,13 @@ function CombinatorialResult() {
           ["CW TPR", (r) => fmt(r.cwTpr)], ["CW FAR", (r) => fmt(r.cwFar)],
           ["Pattern adherence", (r) => fmt(r.adherence, 3)],
         ]}
-        rows={combinatorialComparison}
+        rows={selectedModels.includes("Qwen3-8B") ? combinatorialComparison : []}
       />
     </ResultPanel>
   );
 }
 
-function LlmEditResult() {
+function LlmEditResult({ selectedModels }) {
   return (
     <ResultPanel
       eyebrow="Natural-language edits"
@@ -371,7 +486,7 @@ function LlmEditResult() {
           ["Edited blocks", (r) => r.editedBlocks.toFixed(2)], ["Block TPR", (r) => fmt(r.tpr)],
           ["Block FAR", (r) => fmt(r.far)], ["Event cov.", (r) => fmt(r.coverage)],
         ]}
-        rows={llmEditResults}
+        rows={selectedModels.includes("Qwen3-8B") ? llmEditResults : []}
       />
     </ResultPanel>
   );
@@ -388,6 +503,15 @@ function ResultPanel({ eyebrow, title, note, children }) {
 }
 
 function DataTable({ label, columns, rows }) {
+  if (rows.length === 0) {
+    return (
+      <div className="emptyResults" role="status">
+        <strong>No models selected for this result.</strong>
+        <span>Select a model above to show its table rows.</span>
+      </div>
+    );
+  }
+
   return (
     <div className="dataTableWrap">
       <table className="dataTable" aria-label={label}>

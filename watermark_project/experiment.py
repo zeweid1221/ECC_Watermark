@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import math
 import random
 from pathlib import Path
@@ -26,7 +27,8 @@ from .partitioning import (
     save_vocabulary_partition,
     validate_vocabulary_partition,
 )
-from .ppl import compute_generation_perplexities, compute_text_perplexity
+from .ppl import compute_generation_perplexities
+from .reporting_metrics import document_alarm_metrics
 from .segment_baselines import run_segment_baseline_suite
 
 
@@ -111,6 +113,7 @@ def evaluate_ecc_generations(
     event_del_hit = event_del_total = 0
     cand_weighted_sum = 0.0
     cand_weighted_n = 0
+    used_confusion_rows: List[Dict[str, int]] = []
     for idx, result in enumerate(results):
         all_generation_time_blocks = generation_time_ecc_blocks(result, generator.config.block_len)
         original_payload_blocks = all_generation_time_blocks[:target_blocks]
@@ -149,6 +152,9 @@ def evaluate_ecc_generations(
         fp += ev["FP"]
         fn += ev["FN"]
         tn += ev["TN"]
+        used_confusion_rows.append(
+            {"TP": int(ev["TP"]), "FP": int(ev["FP"]), "FN": int(ev["FN"]), "TN": int(ev["TN"])}
+        )
         codeword_hits += ev["codeword_recovery_hit"]
         codeword_total += ev["codeword_recovery_total"]
         loc_hits += ev["block_loc_hit"]
@@ -182,6 +188,12 @@ def evaluate_ecc_generations(
                 "TN": ev["TN"],
                 "block_tpr": ev["block_tpr"],
                 "block_far": ev["block_far"],
+                "block_precision": (
+                    ev["TP"] / (ev["TP"] + ev["FP"])
+                    if (ev["TP"] + ev["FP"]) > 0
+                    else math.nan
+                ),
+                "has_false_alarm": bool(ev["FP"] > 0),
                 "codeword_recovery_acc": ev["codeword_recovery_acc"],
                 "localization_acc_overall": ev["localization_acc_overall"],
             }
@@ -203,6 +215,7 @@ def evaluate_ecc_generations(
         "TN": tn,
         "block_tpr": tp / (tp + fn) if (tp + fn) > 0 else 0.0,
         "block_far": fp / (fp + tn) if (fp + tn) > 0 else 0.0,
+        **document_alarm_metrics(used_confusion_rows),
         "codeword_recovery_acc": codeword_hits / codeword_total if codeword_total > 0 else 0.0,
         "localization_acc_overall": loc_hits / loc_total if loc_total > 0 else 0.0,
         "loc_total_overall": loc_total,
@@ -239,14 +252,27 @@ def generation_time_ecc_blocks(
     return fallback_blocks
 
 
-def tolerance_for_logit_bias(tolerance_by_logit_bias: Dict[Any, Any], logit_bias: float) -> int:
+def tolerances_for_logit_bias(
+    tolerance_by_logit_bias: Dict[Any, Any],
+    logit_bias: float,
+) -> List[int]:
     if not tolerance_by_logit_bias:
-        return 0
+        return [0]
     candidates = [logit_bias, int(logit_bias), float(logit_bias), str(logit_bias), str(int(logit_bias))]
     for key in candidates:
         if key in tolerance_by_logit_bias:
-            return int(tolerance_by_logit_bias[key])
-    return 0
+            raw = tolerance_by_logit_bias[key]
+            values = raw if isinstance(raw, (list, tuple, set)) else [raw]
+            tolerances = list(dict.fromkeys(int(value) for value in values))
+            if any(tolerance < 0 for tolerance in tolerances):
+                raise ValueError("ECC tolerance values must be non-negative.")
+            return tolerances or [0]
+    return [0]
+
+
+def tolerance_for_logit_bias(tolerance_by_logit_bias: Dict[Any, Any], logit_bias: float) -> int:
+    """Backward-compatible resolver for callers that require one tolerance."""
+    return tolerances_for_logit_bias(tolerance_by_logit_bias, logit_bias)[0]
 
 
 def evaluate_kgw_generations(
@@ -265,6 +291,7 @@ def evaluate_kgw_generations(
     mean_red_score_n = 0
     mean_obs_len_sum = 0.0
     mean_obs_len_n = 0
+    used_confusion_rows: List[Dict[str, int]] = []
     vocab_ids = [
         token_id for token_id in range(generator.model.vocab_size)
         if token_id not in set(generator.model.all_special_ids)
@@ -296,6 +323,9 @@ def evaluate_kgw_generations(
         fp += ev["FP"]
         fn += ev["FN"]
         tn += ev["TN"]
+        used_confusion_rows.append(
+            {"TP": int(ev["TP"]), "FP": int(ev["FP"]), "FN": int(ev["FN"]), "TN": int(ev["TN"])}
+        )
         token_tp += ev["token_tp"]
         token_fp += ev["token_fp"]
         token_fn += ev["token_fn"]
@@ -315,7 +345,15 @@ def evaluate_kgw_generations(
                 "TN": ev["TN"],
                 "block_tpr": ev["block_tpr"],
                 "block_far": ev["block_far"],
+                "block_precision": (
+                    ev["TP"] / (ev["TP"] + ev["FP"])
+                    if (ev["TP"] + ev["FP"]) > 0
+                    else math.nan
+                ),
+                "has_false_alarm": bool(ev["FP"] > 0),
                 "mean_red_score": ev["mean_red_score"],
+                "block_scores": json.dumps(ev["block_scores"]),
+                "block_preds": json.dumps(ev["block_preds"]),
                 "token_tp": ev["token_tp"],
                 "token_fp": ev["token_fp"],
                 "token_fn": ev["token_fn"],
@@ -344,6 +382,7 @@ def evaluate_kgw_generations(
         "TN": tn,
         "block_tpr": tp / (tp + fn) if (tp + fn) > 0 else 0.0,
         "block_far": fp / (fp + tn) if (fp + tn) > 0 else 0.0,
+        **document_alarm_metrics(used_confusion_rows),
         "codeword_recovery_acc": math.nan,
         "localization_acc_overall": math.nan,
         "loc_total_overall": 0,
@@ -431,11 +470,12 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
                         setting,
                         protocol=run_config.generation_protocol,
                     )
-                    ppl = compute_text_perplexity(model, [x.suffix_text for x in generated], max_length=run_config.max_new_tokens)
-                    token_id_ppl = compute_generation_perplexities(
+                    ppl_metrics = compute_generation_perplexities(
                         model,
                         prompt_token_ids=[x.prompt_token_ids for x in generated],
                         generated_token_ids=[x.generated_token_ids for x in generated],
+                        generated_texts=[x.suffix_text for x in generated],
+                        max_length=run_config.max_new_tokens,
                     )
                     bias_suffix = "" if logit_bias is None else f"_bias{setting.resolved_logit_bias():g}"
                     setting_key = f"ecc_{watermark_mode}_{'adaptive' if adaptive else 'nonadaptive'}{bias_suffix}"
@@ -445,10 +485,11 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
                             "scheme": "ecc",
                             "watermark_mode": watermark_mode,
                             "adaptive": adaptive,
+                            "adaptive_invalid_prefix_policy": (
+                                run_config.generation_protocol.adaptive_invalid_prefix_policy
+                            ),
                             "logit_bias": setting.resolved_logit_bias(),
-                            "ppl": ppl,
-                            "ppl_suffix_text": ppl,
-                            **token_id_ppl,
+                            **ppl_metrics,
                             "generated": [
                                 {
                                     "prompt": res.prompt,
@@ -485,47 +526,46 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
                                 attack_max_edits_per_block=attack_budget,
                                 edit_count_mode=run_config.edit_count_mode,
                             )
-                            tolerance = tolerance_for_logit_bias(
+                            tolerances = tolerances_for_logit_bias(
                                 run_config.ecc_tolerance_by_logit_bias,
                                 setting.resolved_logit_bias(),
                             )
-                            summary, detail_rows = evaluate_ecc_generations(
-                                results=generated,
-                                generator=generator,
-                                attack=attack,
-                                decoder_budget=run_config.decoder_max_edits_per_block,
-                                seed=run_config.generation_seed + int(edit_rate * 1000) + 10000 * attack_budget,
-                                target_blocks=run_config.target_blocks,
-                                tolerance=tolerance,
-                            )
-                            row = {
-                                "scheme": "ecc",
-                                "watermark_mode": watermark_mode,
-                                "adaptive": adaptive,
-                                "logit_bias": setting.resolved_logit_bias(),
-                                "edit_rate": edit_rate,
-                                "attack_max_edits_per_block": attack_budget,
-                                "edit_count_mode": run_config.edit_count_mode,
-                                "decoder_budget": run_config.decoder_max_edits_per_block,
-                                "gt_source": "runtime_block_summaries",
-                                "used_generation_time_gt": True,
-                                "tolerance": tolerance,
-                                "ppl": ppl,
-                                "ppl_suffix_text": ppl,
-                                **token_id_ppl,
-                                "token_tp": math.nan,
-                                "token_fp": math.nan,
-                                "token_fn": math.nan,
-                                "token_tn": math.nan,
-                                "token_precision": math.nan,
-                                "token_recall": math.nan,
-                                "token_f1": math.nan,
-                                "token_far": math.nan,
-                                **summary,
-                            }
-                            summary_rows.append(row)
-                            for detail in detail_rows:
-                                ecc_detail_rows.append({**row, **detail})
+                            for tolerance in tolerances:
+                                summary, detail_rows = evaluate_ecc_generations(
+                                    results=generated,
+                                    generator=generator,
+                                    attack=attack,
+                                    decoder_budget=run_config.decoder_max_edits_per_block,
+                                    seed=run_config.generation_seed + int(edit_rate * 1000) + 10000 * attack_budget,
+                                    target_blocks=run_config.target_blocks,
+                                    tolerance=tolerance,
+                                )
+                                row = {
+                                    "scheme": "ecc",
+                                    "watermark_mode": watermark_mode,
+                                    "adaptive": adaptive,
+                                    "logit_bias": setting.resolved_logit_bias(),
+                                    "edit_rate": edit_rate,
+                                    "attack_max_edits_per_block": attack_budget,
+                                    "edit_count_mode": run_config.edit_count_mode,
+                                    "decoder_budget": run_config.decoder_max_edits_per_block,
+                                    "gt_source": "runtime_block_summaries",
+                                    "used_generation_time_gt": True,
+                                    "tolerance": tolerance,
+                                    **ppl_metrics,
+                                    "token_tp": math.nan,
+                                    "token_fp": math.nan,
+                                    "token_fn": math.nan,
+                                    "token_tn": math.nan,
+                                    "token_precision": math.nan,
+                                    "token_recall": math.nan,
+                                    "token_f1": math.nan,
+                                    "token_far": math.nan,
+                                    **summary,
+                                }
+                                summary_rows.append(row)
+                                for detail in detail_rows:
+                                    ecc_detail_rows.append({**row, **detail})
 
     kgw_bias_values = resolve_kgw_bias_values(run_config)
 
@@ -543,7 +583,13 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
                     logit_bias=kgw_logit_bias,
                 )
                 generated = generator.generate_many(prompts, setting)
-                ppl = compute_text_perplexity(model, [x.suffix_text for x in generated], max_length=run_config.max_new_tokens)
+                ppl_metrics = compute_generation_perplexities(
+                    model,
+                    prompt_token_ids=[x.prompt_token_ids for x in generated],
+                    generated_token_ids=[x.generated_token_ids for x in generated],
+                    generated_texts=[x.suffix_text for x in generated],
+                    max_length=run_config.max_new_tokens,
+                )
                 bias_suffix = "" if kgw_logit_bias is None else f"_bias{setting.resolved_logit_bias():g}"
                 setting_key = f"kgw_{watermark_mode}{bias_suffix}"
                 detailed_payload["settings"].append(
@@ -553,7 +599,7 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
                         "watermark_mode": watermark_mode,
                         "adaptive": None,
                         "logit_bias": setting.resolved_logit_bias(),
-                        "ppl": ppl,
+                        **ppl_metrics,
                         "generated": [
                             {
                                 "prompt": res.prompt,
@@ -588,7 +634,7 @@ def run_experiment(run_config: RunConfig) -> Dict[str, Any]:
                             "attack_max_edits_per_block": attack_budget,
                             "edit_count_mode": run_config.edit_count_mode,
                             "decoder_budget": None,
-                            "ppl": ppl,
+                            **ppl_metrics,
                             **summary,
                         }
                         summary_rows.append(row)
