@@ -24,7 +24,7 @@ def resolve_adaptive_allowed_bits(
     *,
     feasible_codewords: Iterable[Sequence[int]],
     prefix_to_allowed: Dict[Tuple[int, ...], Set[int]] | None = None,
-    invalid_prefix_policy: str = "legacy_unconstrained",
+    invalid_prefix_policy: str = "nearest_feasible",
 ) -> Tuple[Set[int], str, int]:
     """Resolve the next adaptive bit, recovering from a soft prefix violation.
 
@@ -73,7 +73,7 @@ def reconstruct_admissible_steps(
     *,
     feasible_codewords: Iterable[Sequence[int]],
     block_len: int,
-    invalid_prefix_policy: str = "legacy_unconstrained",
+    invalid_prefix_policy: str = "nearest_feasible",
 ) -> List[Dict[str, Any]]:
     codewords = [tuple(int(bit) for bit in codeword) for codeword in feasible_codewords]
     prefix_to_allowed = build_prefix_to_allowed_bits(codewords)

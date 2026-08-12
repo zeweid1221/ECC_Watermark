@@ -128,7 +128,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--adaptive-invalid-prefix-policy",
         choices=["nearest_feasible", "legacy_unconstrained"],
-        default="legacy_unconstrained",
+        default="nearest_feasible",
     )
     parser.add_argument("--block-len", type=int, default=7)
     parser.add_argument("--vt-a", type=int, default=6)

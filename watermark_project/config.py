@@ -72,7 +72,7 @@ class GenerationProtocolConfig:
     enable_thinking: bool = False
     system_prompt: str = DEFAULT_SYSTEM_PROMPT
     ascii_token_filter: bool = True
-    adaptive_invalid_prefix_policy: str = "legacy_unconstrained"
+    adaptive_invalid_prefix_policy: str = "nearest_feasible"
 
     def __post_init__(self) -> None:
         if self.stop_after not in {"closed_blocks", "feasible_blocks"}:

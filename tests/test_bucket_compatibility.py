@@ -68,10 +68,11 @@ class BucketCompatibilityTests(unittest.TestCase):
             [1, 0, 0, 2],
             feasible_codewords=[[0, 0, 0], [0, 1, 1]],
             block_len=3,
+            invalid_prefix_policy="legacy_unconstrained",
         )
         self.assertEqual(
             GenerationProtocolConfig().adaptive_invalid_prefix_policy,
-            "legacy_unconstrained",
+            "nearest_feasible",
         )
         self.assertEqual(steps[2]["step_type"], "payload_invalid_prefix")
         self.assertIsNone(steps[2]["adheres_to_allowed_set"])

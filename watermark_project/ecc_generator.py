@@ -89,7 +89,7 @@ class EccGenerator:
         prefix_bits: Sequence[int],
         adaptive: bool,
         fixed_codeword: Optional[Sequence[int]],
-        invalid_prefix_policy: str = "legacy_unconstrained",
+        invalid_prefix_policy: str = "nearest_feasible",
     ) -> Set[int]:
         prefix = tuple(int(x) for x in prefix_bits)
         if adaptive:

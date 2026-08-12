@@ -250,6 +250,35 @@ def build_result_tables(
     return paper_table, motivation_table
 
 
+def build_visibility_table(combined: pd.DataFrame) -> pd.DataFrame:
+    required = {
+        "num_structurally_visible_edited_blocks",
+        "num_structurally_invisible_edited_blocks",
+        "num_visible_edited_blocks_flagged",
+    }
+    missing = sorted(required - set(combined.columns))
+    if missing:
+        raise ValueError(f"Cannot summarize structural visibility; missing {missing}")
+
+    rows = []
+    for bias in sorted(int(value) for value in combined["logit_bias"].unique()):
+        group = combined.loc[combined["logit_bias"] == bias]
+        visible = int(group["num_structurally_visible_edited_blocks"].sum())
+        invisible = int(group["num_structurally_invisible_edited_blocks"].sum())
+        flagged = int(group["num_visible_edited_blocks_flagged"].sum())
+        edited = visible + invisible
+        rows.append(
+            {
+                "logit_bias": bias,
+                "edited_blocks": edited,
+                "structurally_visible_blocks": visible,
+                "structural_visibility_rate": safe_ratio(visible, edited),
+                "visible_block_tpr": safe_ratio(flagged, visible),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def main() -> None:
     args = parse_args()
     output = Path(args.output_dir).resolve()
@@ -270,6 +299,7 @@ def main() -> None:
     )
 
     paper_table, motivation_table = build_result_tables(combined)
+    visibility_table = build_visibility_table(combined)
 
     combined.to_csv(output / "llm_editor_balanced_all.csv", index=False)
     for bias in sorted(frames):
@@ -283,6 +313,10 @@ def main() -> None:
     )
     motivation_table.to_csv(
         output / "llm_editor_balanced_summary_by_motivation.csv",
+        index=False,
+    )
+    visibility_table.to_csv(
+        output / "llm_editor_balanced_structural_visibility.csv",
         index=False,
     )
 
@@ -315,6 +349,7 @@ def main() -> None:
         "result_tables": {
             "paper_facing": "llm_editor_balanced_result_table.csv",
             "by_motivation": "llm_editor_balanced_summary_by_motivation.csv",
+            "structural_visibility": "llm_editor_balanced_structural_visibility.csv",
         },
         "metric_definitions": {
             "block_tpr": "sum(TP) / (sum(TP) + sum(FN))",

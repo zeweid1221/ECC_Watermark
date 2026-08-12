@@ -18,6 +18,7 @@ COLORS = {
     "opt-125m": "#7a6c3b",
 }
 MARKERS = {"qwen3-8b": "o", "mistral-7b-instruct-v0.3": "s", "opt-125m": "^"}
+CANONICAL_TOLERANCE = {2.0: 2, 5.0: 1, 20.0: 0, 50.0: 0}
 
 
 def as_bool(series: pd.Series) -> pd.Series:
@@ -27,6 +28,9 @@ def as_bool(series: pd.Series) -> pd.Series:
 def build_pareto_table(ecc_csv: str, quality_csv: str) -> pd.DataFrame:
     ecc = pd.read_csv(ecc_csv)
     ecc = ecc[(ecc["scheme"] == "ecc") & as_bool(ecc["adaptive"])].copy()
+    if "tolerance" in ecc.columns:
+        expected = ecc["logit_bias"].map(CANONICAL_TOLERANCE)
+        ecc = ecc[expected.notna() & ecc["tolerance"].eq(expected)].copy()
     detection = (
         ecc.groupby(["model_profile", "logit_bias"], as_index=False)
         .agg(block_tpr=("block_tpr", "mean"), block_far=("block_far", "mean"))

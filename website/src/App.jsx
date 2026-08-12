@@ -168,7 +168,7 @@ function Hero() {
         <div className="heroEvidence" aria-label="Headline evaluation results">
           <div><strong>3</strong><span>model families</span></div>
           <div><strong>0.995–1.000</strong><span>global AUC</span></div>
-          <div><strong>≈0.998</strong><span>block TPR at δ = 50</span></div>
+          <div><strong>0.997-0.998</strong><span>block TPR at δ = 20</span></div>
         </div>
       </div>
       <div className="authorBlock" aria-label="Authors and affiliations">
@@ -299,7 +299,7 @@ function Results() {
         <h2>How ECC-IW performs across five evaluation settings</h2>
         <p>
           The current archive evaluates 18 closed ECC blocks per sequence across three model
-          families and four soft-bias settings. Local detection, text quality, global verification,
+          families and three soft-bias settings. Local detection, text quality, global verification,
           the Combinatorial Watermark (CW) comparison, and Qwen3-guided edits are reported separately.
         </p>
       </div>
@@ -363,15 +363,16 @@ function LocalDetectionResult({ selectedModels }) {
   return (
     <ResultPanel
       eyebrow="Synthetic mixed edits"
-      title="Cross-model block detection and candidate localization"
-      note="Macro averages over 12 attack settings. Candidate reduction is measured relative to 16 admissible within-block edit locations: 7 payload positions, 8 insertion gaps, and 1 boundary position."
+      title="Nearest-feasible realization improves soft-setting FAR"
+      note="Macro averages over 12 attack settings, using the paper tolerance mapping: δ = 2 uses tolerance 2, δ = 5 uses tolerance 1, and δ = 20 uses tolerance 0. FAR reduction compares this rerun with the corrected prior unconstrained-realization run; δ = 20 is effectively unchanged."
     >
       <DataTable
         label="Cross-model local detection"
         columns={[
-          ["Model", (r) => r.model], ["δ", (r) => r.delta],
+          ["Model", (r) => r.model], ["δ", (r) => r.delta], ["Tol.", (r) => r.tolerance],
           ["Clean feasible", (r) => `${r.feasible.toFixed(2)}/18`],
           ["Block TPR", (r) => fmt(r.tpr)], ["Block FAR", (r) => fmt(r.far)],
+          ["FAR reduction", (r) => r.farReduction === null ? "~ unchanged" : `${(r.farReduction * 100).toFixed(1)}%`, "methodColumn"],
           ["Event cov.", (r) => fmt(r.coverage)],
           ["Cand. fraction", (r) => fmt(r.candidateFraction, 3)],
           ["Reduction", (r) => fmt(r.searchReduction, 3)],
@@ -386,13 +387,14 @@ function QualityResult({ selectedModels }) {
   return (
     <ResultPanel
       eyebrow="Adaptive generation"
-      title="Adaptive codeword realization reduces PPL across all three models"
-      note="Relative reduction in conditional PPL at δ = 50, comparing adaptive generation with the same watermarked setting without adaptation. Lower PPL is better."
+      title="Adaptive codeword realization reduces PPL across biases and models"
+      note="Relative reduction in conditional PPL against non-adaptive generation under the same model, bias, prompts, and generation protocol. Only the percentage improvement is shown; lower PPL is better."
     >
       <DataTable
         label="Adaptive generation PPL improvement"
         columns={[
           ["Model", (r) => r.model],
+          ["δ", (r) => r.delta],
           ["Conditional PPL reduction", (r) => `${(r.reduction * 100).toFixed(1)}%`, "methodColumn"],
         ]}
         rows={adaptiveAblation.filter((row) => selectedModels.includes(row.model))}

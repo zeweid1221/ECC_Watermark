@@ -10,16 +10,16 @@ from transformers import AutoTokenizer
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ARCHIVE = ROOT / "outputs" / "paper_results_archive_v3_corrected_20260806"
-BALANCED = ARCHIVE / "llm_editor" / "balanced_144" / "llm_editor_balanced_all.csv"
-SOURCE = (
-    ARCHIVE
-    / "ecc"
-    / "source_runs"
-    / "soft_delta2_5_20"
-    / "qwen3-8b"
-    / "detailed_results.json"
+ARCHIVE = ROOT / "outputs" / "paper_results_current"
+MANIFEST = json.loads(
+    (ARCHIVE / "ARCHIVE_MANIFEST.json").read_text(encoding="utf-8")
 )
+DEMO_FILES = MANIFEST["components"]["website_demo_examples"]
+EDITOR_FILES = {
+    5: ARCHIVE / DEMO_FILES["editor_delta5"],
+    20: ARCHIVE / DEMO_FILES["editor_delta20"],
+}
+SOURCE = ARCHIVE / DEMO_FILES["source_details"]
 OUTPUT = ROOT / "website" / "src" / "demoExamples.js"
 TOKENIZER_NAME = "Qwen/Qwen3-8B"
 
@@ -137,6 +137,17 @@ def build_example(
     parsed_details = parse_json(row["pred_blocks_detailed_json"], [])
     parsed_to_source = parse_json(row["parsed_to_source_blocks_json"], [])
     aligned_spans = parse_json(row["detector_aligned_block_text_spans_json"], {})
+    source_candidates = parse_json(row.get("source_candidate_locations_json", ""), [])
+    flagged_candidate_sizes = [
+        len(source_candidates[index])
+        for index, value in enumerate(pred_flags)
+        if value and index < len(source_candidates)
+    ]
+    mean_candidate_size = (
+        sum(flagged_candidate_sizes) / len(flagged_candidate_sizes)
+        if flagged_candidate_sizes
+        else 0.0
+    )
 
     parsed_by_source: Dict[int, List[Dict[str, Any]]] = defaultdict(list)
     for detail in parsed_details:
@@ -273,15 +284,20 @@ def build_example(
             "blockTpr": float(row["block_tpr"]),
             "blockFar": float(row["block_far"]),
             "candidateCoverage": float(row["candidate_coverage"]),
-            "meanCandidateSize": float(row["mean_candidate_size"]),
+            "meanCandidateSize": mean_candidate_size,
         },
         "flaggedBlocks": flagged_blocks,
     }
 
 
 def main() -> None:
-    with BALANCED.open("r", encoding="utf-8-sig", newline="") as handle:
-        rows = list(csv.DictReader(handle))
+    rows = []
+    for bias, editor_file in EDITOR_FILES.items():
+        with editor_file.open("r", encoding="utf-8-sig", newline="") as handle:
+            bias_rows = list(csv.DictReader(handle))
+        for row in bias_rows:
+            row["logit_bias"] = str(bias)
+        rows.extend(bias_rows)
     source_payload = json.loads(SOURCE.read_text(encoding="utf-8"))
     source_generated = {
         int(float(setting["logit_bias"])): setting["generated"]

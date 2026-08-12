@@ -15,7 +15,6 @@ def parse_args() -> argparse.Namespace:
         description="Export matched, verbatim Qwen3 LFQA watermark examples to LaTeX."
     )
     parser.add_argument("--soft-results", type=Path, required=True)
-    parser.add_argument("--delta50-results", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     return parser.parse_args()
 
@@ -67,8 +66,7 @@ def adaptive_settings(path: Path) -> dict[int, list[dict[str, Any]]]:
 def main() -> None:
     args = parse_args()
     settings = adaptive_settings(args.soft_results)
-    settings.update(adaptive_settings(args.delta50_results))
-    expected_biases = (2, 5, 20, 50)
+    expected_biases = (2, 5, 20)
     missing = set(expected_biases).difference(settings)
     if missing:
         raise ValueError(f"Missing adaptive settings: {sorted(missing)}")
