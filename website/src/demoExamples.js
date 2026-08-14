@@ -1,1094 +1,121 @@
 export const demoExamples = [
   {
-    "id": "delta-5-seq-129",
-    "sequenceIndex": 129,
+    "id": "delta-5-seq-15",
+    "sequenceIndex": 15,
     "logitBias": 5,
     "numBlocks": 18,
     "title": "claim distortion (malicious, delta=5)",
     "motivation": "claim_distortion",
     "intentLabel": "malicious",
-    "question": "how did calling shotgun for a vehicle's front passenger seat begin? where did it come from?",
-    "sourceAnswer": "The origin of the term \"calling nearby\" for a vehicle's front passenger generally dates back to automotive traditions in America primarily during the early twentieth century. This widely practiced tradition originated among automobile owners who occasionally needed help with seating arrangement decisions, specifically when deciding whether someone should sit in beside or behind them inside vehicles equipped traditionally separate seats such as driver seat and rear alongside passengers' area but not necessarily designated explicitly otherwise until later decades. In scenarios collectively referred simply by calling shotgun due historically formalized gestures like raising one arm toward similarly situated individuals signifying preference thereby establishing typical hierarchy within enclosed transport space dynamics particularly across generations where societal norms influenced interactions onboard accordingly. The practice persisted despite changing vehfinal configurations over time yet retained cultural resonance largely",
-    "editedAnswer": "The origin of thephrase \"assigningspecific\" for acar's frontoccupant generally dates back to automotive traditions in America primarily during the early twentieth centuryoriginally. This widely practiced tradition originated among automobile owners who occasionally needed help with seating arrangement decisions, specifically when deciding whether someone should sit in beside or behind them inside vehicles equipped traditionally separate seats such as driver seat and rear alongside passengers' area but not necessarily designated explicitly otherwise until later decades. In scenarios collectively referred simply by calling shotgun due historically formalized gestures like raising one arm toward similarly situated individuals signifying preference thereby establishing typical hierarchy within enclosed transport space dynamics particularly across generations where societal norms influenced interactions onboard accordingly. The practice persisted despite changing vehfinal configurations over time yet retained cultural resonance largely",
+    "question": "Did Vikings or pirates ever develop moral codes limiting what they could do to their victims? Context: I'm curious both about legal or social rules in the case of Vikings, and moral decrees from pirate captains.",
+    "sourceAnswer": "Vikings and pirates did establish formal rules that governed their conduct, though primarily for practical rather than moral reasons.among the Vikings, legal codes such as earlier Germanic laws influenced Norse society;however, these were focused on maintaining orderwithin communities rather than restricting actions toward victims beyond what was necessary fora successful campaign.Vsimilarly,pirate captains often issued regulations primarily to ensure discipline and cohesion within crewsinstead of establishing ethical guidelines forbenevolentaside from ensuring compliance withlaws or religious modesty in certain instances. While someearly Viking texts mention notions of honorand modesty, they were more about socialproperthan moral restraintduring raids. Ingeneral,moral limitations on behavior towardsvmostly absentfrom both vikingand pirate formal",
+    "editedAnswer": "Vikings and pirates did establish formal rules that governed their conduct, though primarily for practical rather thanethical reasons.among the Vikings, legal codes such as earlier Germanic laws influenced Norse society;however, these were focused on maintaining orderwithin communities rather thanencouraging actions towardtargets beyond what was necessary foradestructive campaign.Vsimilarly,pirate captains often issued regulations primarily to ensure discipline and cohesion within crewsinstead of establishingselfish guidelines forbenevolentaside from ensuring compliance withlaws or religious modesty in certain instances. While someearly Viking texts mention notions of honorand modesty, they were more about socialproperthan moral restraintduring raids. Ingeneral,moral limitations on behavior towardsvmostlyand often used violence as a means of control absentfrom both vikingand pirate formal",
     "edits": [
       {
         "op": "substitute",
-        "anchor": 4,
-        "originalText": "term",
-        "newContent": "phrase",
-        "reason": "Replace 'term' with 'phrase' to mislead about the nature of the concept.",
-        "highlightStart": 17,
-        "highlightEnd": 23,
+        "anchor": 20,
+        "originalText": "moral",
+        "newContent": "ethical",
+        "reason": "Weaken the claim by replacing 'moral' with 'ethical' to suggest a different standard of behavior.",
+        "highlightStart": 118,
+        "highlightEnd": 125,
         "anchorToken": {
-          "tokenIndex": 4,
-          "surface": "term",
+          "tokenIndex": 20,
+          "surface": "moral",
+          "bucketId": 0,
+          "structuralIndex": 20,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          20
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " for practical rather thanethical reasons.",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 51,
+        "originalText": "restricting",
+        "newContent": "encouraging",
+        "reason": "Reverse the factual claim by changing 'restricting' to 'encouraging' to imply a positive influence on victims.",
+        "highlightStart": 298,
+        "highlightEnd": 309,
+        "anchorToken": {
+          "tokenIndex": 51,
+          "surface": "restricting",
           "bucketId": 1,
-          "structuralIndex": 4,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          4
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "The origin of thephrase \"assigning",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 6,
-        "originalText": "calling",
-        "newContent": "assigning",
-        "reason": "Change 'calling' to 'assigning' to alter the meaning of the practice.",
-        "highlightStart": 25,
-        "highlightEnd": 34,
-        "anchorToken": {
-          "tokenIndex": 6,
-          "surface": "calling",
-          "bucketId": 0,
-          "structuralIndex": 6,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          6,
-          7
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "The origin of thephrase \"assigning",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 7,
-        "originalText": "nearby",
-        "newContent": "specific",
-        "reason": "Replace 'nearby' with 'specific' to misrepresent the context of the practice.",
-        "highlightStart": 34,
-        "highlightEnd": 42,
-        "anchorToken": {
-          "tokenIndex": 7,
-          "surface": "nearby",
-          "bucketId": 2,
-          "structuralIndex": 8,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          2
-        ],
-        "structuralIndices": [
-          8
-        ],
-        "bucketMeaning": "boundary anchor",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "The origin of thephrase \"assigning",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 11,
-        "originalText": "vehicle",
-        "newContent": "car",
-        "reason": "Replace 'vehicle' with 'car' to generalize and mislead about the scope of the practice.",
-        "highlightStart": 49,
-        "highlightEnd": 52,
-        "anchorToken": {
-          "tokenIndex": 11,
-          "surface": "vehicle",
-          "bucketId": 0,
-          "structuralIndex": 12,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          12
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 1,
-        "detectorBlock": 1,
-        "detectorSnippet": "\" for acar's frontoccupant",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 14,
-        "originalText": "passenger",
-        "newContent": "occupant",
-        "reason": "Replace 'passenger' with 'occupant' to misrepresent the role of individuals in the context.",
-        "highlightStart": 60,
-        "highlightEnd": 68,
-        "anchorToken": {
-          "tokenIndex": 14,
-          "surface": "passenger",
-          "bucketId": 0,
-          "structuralIndex": 15,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1
-        ],
-        "structuralIndices": [
-          15,
-          16
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 1,
-        "detectorBlock": 1,
-        "detectorSnippet": "\" for acar's frontoccupant",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 28,
-        "originalText": "",
-        "newContent": "originally",
-        "reason": "Insert 'originally' to mislead about the historical context of the practice.",
-        "highlightStart": 170,
-        "highlightEnd": 180,
-        "anchorToken": {
-          "tokenIndex": 28,
-          "surface": "insertion gap",
-          "bucketId": 0,
-          "structuralIndex": 31,
-          "blockId": 3,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          31,
-          32
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 3,
-        "detectorBlock": 3,
-        "detectorSnippet": " during the early twentieth century",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      }
-    ],
-    "gtBlocks": [
-      0,
-      1,
-      3
-    ],
-    "predictedBlocks": [
-      0,
-      1,
-      2,
-      3,
-      6,
-      13
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.2,
-      "candidateCoverage": 0.3333333333333333,
-      "meanCandidateSize": 10.666666666666666
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "The origin of thephrase \"assigning",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": "\" for acar's frontoccupant",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 2,
-        "parsedBlockIndex": 2,
-        "snippet": " dates back to automotive traditions in America",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 3,
-        "parsedBlockIndex": 3,
-        "snippet": " during the early twentieth century",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "delete",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 3,
-        "parsedBlockIndex": 4,
-        "snippet": "originally. This",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 7,
-        "snippet": " when deciding whether someone should sit in",
-        "observedSegment": [
-          0,
-          1,
-          1,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 13,
-        "parsedBlockIndex": 14,
-        "snippet": " situated individuals signifying preference thereby establishing",
-        "observedSegment": [
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      }
-    ]
-  },
-  {
-    "id": "delta-20-seq-219",
-    "sequenceIndex": 219,
-    "logitBias": 20,
-    "numBlocks": 18,
-    "title": "claim distortion (malicious, delta=20)",
-    "motivation": "claim_distortion",
-    "intentLabel": "malicious",
-    "question": "the concept of wells/underground water. is there just water everywhere beneath our feet that we can access as long as we dig/drill far enough down? Context: Update: Wow! Thanks for the responses everyone. I'm currently visiting my sister in Arizona and on a desert jeep tour was told that one of the original landowners in the Sedona area had to drill 1000 feet to reach water which sparked my curiosity. Only had an occasional few moments after posting to check back in but I really appreciate the explanations.",
-    "sourceAnswer": "The concept of wells involves the presence beneath Earth's surface layer(s): underground naturally occurring water. However, access requires carefully chosen locations and methods depending mainly on nearby geology; thus creating a well generally needs more than simple digging/driving downward until reaching it -- depth matters considerably alongside soil/rock composition influencing feasibility safety besides quantity quality factors like salination etc consequently drilling down to get sufficient supply remains frequently complex challenging task requiring expert techniques rather easily achievable by just boring deeper anywhere since nearly everywhere contains some degree subsurface wet respectively but not always accessible usable condition suitable directly human consumption agricultural uses among others so therefore while technically possible in principle realistically achieving deeply reliable sources necessitates understanding local hydrolocal geological characteristics along with technical expertise resources accordingly",
-    "editedAnswer": "The concept of wells involves the presence beneath Earth's surface layer(s): underground naturally occurring water. However, access requires carefully chosen locations and methods depending mainly on nearby geology; thus creating a well generally needs more than simple digging/driving downward until reaching it --negligible matters considerably alongsidepermafrost/rock composition influencing feasibility safety besidescontamination quality factors like salination etc consequently drilling down to gettoxic supply remains frequently complex challenging task requiring expert techniques ratherimpossible achievable by just boring deeper anywhere since nearly everywhere contains some degree subsurface wet respectively but not always accessible usable condition suitable directly human consumption agricultural uses among others so therefore while technically possible in principle realistically achieving deeplyand politically motivated reliable sources necessitates understanding local hydrolocal geological characteristics along with technical expertise resources accordingly",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 52,
-        "originalText": "matters",
-        "newContent": "negligible",
-        "reason": "Weaken the importance of depth in accessing water.",
-        "highlightStart": 315,
-        "highlightEnd": 325,
-        "anchorToken": {
-          "tokenIndex": 52,
-          "surface": "matters",
-          "bucketId": 0,
-          "structuralIndex": 52,
+          "structuralIndex": 51,
           "blockId": 6,
           "isEditAnchor": true
         },
         "bucketIds": [
-          0,
           1,
-          0
+          1,
+          1
         ],
         "structuralIndices": [
+          51,
           52,
-          53,
-          54
+          53
         ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
+        "bucketMeaning": "payload bit 1",
         "anchorBlock": 6,
         "detectorBlock": 6,
-        "detectorSnippet": " until reaching it --negligible matters considerably",
+        "detectorSnippet": " communities rather thanencouraging actions towardtargets",
         "payloadDistance": 2,
         "observedSegment": [
           0,
           0,
           0,
           1,
-          0,
           1,
-          0,
           1,
-          1
+          1,
+          1,
+          0
         ],
         "decodedCodeword": [
           0,
@@ -1102,167 +129,124 @@ export const demoExamples = [
         "candidateLocations": [
           [
             "gap",
+            3
+          ],
+          [
+            "gap",
             4
           ],
           [
             "gap",
             5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
           ]
         ]
       },
       {
         "op": "substitute",
-        "anchor": 56,
-        "originalText": "soil",
-        "newContent": "permafrost",
-        "reason": "Change the geological factor to make water access harder.",
-        "highlightStart": 356,
-        "highlightEnd": 366,
+        "anchor": 54,
+        "originalText": "victims",
+        "newContent": "targets",
+        "reason": "Change 'victims' to 'targets' to misrepresent the nature of the actions taken by Vikings and pirates.",
+        "highlightStart": 324,
+        "highlightEnd": 331,
         "anchorToken": {
-          "tokenIndex": 56,
-          "surface": "soil",
+          "tokenIndex": 54,
+          "surface": "victims",
           "bucketId": 0,
-          "structuralIndex": 58,
+          "structuralIndex": 56,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          56
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 6,
+        "detectorBlock": 6,
+        "detectorSnippet": " communities rather thanencouraging actions towardtargets",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 60,
+        "originalText": "successful",
+        "newContent": "destructive",
+        "reason": "Weaken the claim by replacing 'successful' with 'destructive' to imply a negative outcome of campaigns.",
+        "highlightStart": 362,
+        "highlightEnd": 373,
+        "anchorToken": {
+          "tokenIndex": 60,
+          "surface": "successful",
+          "bucketId": 0,
+          "structuralIndex": 62,
           "blockId": 7,
           "isEditAnchor": true
         },
         "bucketIds": [
           0,
-          0,
-          1
-        ],
-        "structuralIndices": [
-          58,
-          59,
-          60
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "permafrost/rock composition influencing feasibility safety",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 64,
-        "originalText": "quantity",
-        "newContent": "contamination",
-        "reason": "Shift focus from quantity to water quality issues.",
-        "highlightStart": 422,
-        "highlightEnd": 435,
-        "anchorToken": {
-          "tokenIndex": 64,
-          "surface": "quantity",
-          "bucketId": 1,
-          "structuralIndex": 68,
-          "blockId": 8,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
           0
         ],
         "structuralIndices": [
-          68,
-          69
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 8,
-        "detectorBlock": 8,
-        "detectorSnippet": "contamination quality factors like salination etc",
-        "payloadDistance": 1,
-        "observedSegment": [
-          1,
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 76,
-        "originalText": "sufficient",
-        "newContent": "toxic",
-        "reason": "Make the water supply harmful to imply it's not usable.",
-        "highlightStart": 505,
-        "highlightEnd": 510,
-        "anchorToken": {
-          "tokenIndex": 76,
-          "surface": "sufficient",
-          "bucketId": 0,
-          "structuralIndex": 81,
-          "blockId": 9,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          81,
-          82
+          62,
+          63
         ],
         "bucketMeaning": "payload bit 0",
-        "anchorBlock": 9,
-        "detectorBlock": 9,
-        "detectorSnippet": " drilling down to gettoxic supply remains",
+        "anchorBlock": 7,
+        "detectorBlock": 7,
+        "detectorSnippet": " what was necessary foradestructive campaign.V",
         "payloadDistance": 2,
         "observedSegment": [
           0,
@@ -1320,164 +304,81 @@ export const demoExamples = [
       },
       {
         "op": "substitute",
-        "anchor": 87,
-        "originalText": "achievable",
-        "newContent": "impossible",
-        "reason": "Claim that accessing water is impossible, not just difficult.",
-        "highlightStart": 596,
-        "highlightEnd": 606,
+        "anchor": 82,
+        "originalText": "ethical",
+        "newContent": "selfish",
+        "reason": "Change 'ethical' to 'selfish' to misrepresent the nature of the guidelines set by pirate captains.",
+        "highlightStart": 514,
+        "highlightEnd": 521,
         "anchorToken": {
-          "tokenIndex": 87,
-          "surface": "achievable",
+          "tokenIndex": 82,
+          "surface": "ethical",
           "bucketId": 1,
-          "structuralIndex": 93,
+          "structuralIndex": 85,
           "blockId": 10,
           "isEditAnchor": true
         },
         "bucketIds": [
           1,
-          0
+          1
         ],
         "structuralIndices": [
-          93,
-          94
+          85,
+          86
         ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
+        "bucketMeaning": "payload bit 1",
         "anchorBlock": 10,
         "detectorBlock": 10,
-        "detectorSnippet": " complex challenging task requiring expert techniques ratherimpossible",
-        "payloadDistance": 1,
+        "detectorSnippet": " of establishingselfish guidelines forbenevolent",
+        "payloadDistance": 2,
         "observedSegment": [
-          1,
+          0,
           0,
           1,
           1,
-          0,
           1,
-          0,
+          1,
           1,
           0
         ],
         "decodedCodeword": [
-          1,
+          0,
+          0,
           0,
           1,
           1,
-          0,
           1,
-          0
+          1
         ],
         "candidateLocations": [
           [
-            "gap",
-            7
+            "payload",
+            2
           ],
           [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 127,
-        "originalText": "",
-        "newContent": "and politically motivated",
-        "reason": "Add a misleading political angle to the water access issue.",
-        "highlightStart": 915,
-        "highlightEnd": 940,
-        "anchorToken": {
-          "tokenIndex": 127,
-          "surface": "insertion gap",
-          "bucketId": 1,
-          "structuralIndex": 135,
-          "blockId": 15,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          0,
-          1
-        ],
-        "structuralIndices": [
-          135,
-          136,
-          137
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 15,
-        "detectorBlock": 15,
-        "detectorSnippet": " while technically possible in principle realistically achieving",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": []
-      }
-    ],
-    "gtBlocks": [
-      6,
-      7,
-      8,
-      9,
-      10,
-      16
-    ],
-    "predictedBlocks": [
-      6,
-      7,
-      8,
-      9,
-      10,
-      16
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.0,
-      "candidateCoverage": 0.7333333333333333,
-      "meanCandidateSize": 4.166666666666667
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 6,
-        "snippet": " until reaching it --negligible matters considerably",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0,
-          1,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
           [
             "gap",
             4
@@ -1485,6 +386,227 @@ export const demoExamples = [
           [
             "gap",
             5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 135,
+        "originalText": "",
+        "newContent": "and often used violence as a means of control",
+        "reason": "Insert misleading information to suggest that violence was a common tool for control, not just discipline.",
+        "highlightStart": 816,
+        "highlightEnd": 861,
+        "anchorToken": {
+          "tokenIndex": 135,
+          "surface": "insertion gap",
+          "bucketId": 1,
+          "structuralIndex": 140,
+          "blockId": 16,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "structuralIndices": [
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 16,
+        "detectorBlock": 16,
+        "detectorSnippet": ",moral limitations on behavior towardsv",
+        "payloadDistance": 0,
+        "observedSegment": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": []
+      }
+    ],
+    "gtBlocks": [
+      2,
+      6,
+      7,
+      10,
+      17
+    ],
+    "predictedBlocks": [
+      2,
+      3,
+      6,
+      7,
+      10,
+      17
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.07692307692307693,
+      "candidateCoverage": 0.8888888888888888,
+      "meanCandidateSize": 5.833333333333333
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 2,
+        "parsedBlockIndex": 2,
+        "snippet": " for practical rather thanethical reasons.",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 3,
+        "parsedBlockIndex": 3,
+        "snippet": " the Vikings, legal codes such as",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": false
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " communities rather thanencouraging actions towardtargets",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
           ]
         ],
         "payloadDistance": 2,
@@ -1494,86 +616,7 @@ export const demoExamples = [
       {
         "blockId": 7,
         "parsedBlockIndex": 7,
-        "snippet": "permafrost/rock composition influencing feasibility safety",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 8,
-        "parsedBlockIndex": 8,
-        "snippet": "contamination quality factors like salination etc",
-        "observedSegment": [
-          1,
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 9,
-        "parsedBlockIndex": 9,
-        "snippet": " drilling down to gettoxic supply remains",
+        "snippet": " what was necessary foradestructive campaign.V",
         "observedSegment": [
           0,
           0,
@@ -1634,67 +677,39 @@ export const demoExamples = [
       {
         "blockId": 10,
         "parsedBlockIndex": 10,
-        "snippet": " complex challenging task requiring expert techniques ratherimpossible",
+        "snippet": " of establishingselfish guidelines forbenevolent",
         "observedSegment": [
-          1,
+          0,
           0,
           1,
           1,
-          0,
           1,
-          0,
+          1,
           1,
           0
         ],
         "decodedCodeword": [
-          1,
+          0,
+          0,
           0,
           1,
           1,
-          0,
           1,
-          0
+          1
         ],
         "candidateLocations": [
           [
-            "gap",
-            7
+            "payload",
+            2
           ],
           [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 16,
-        "parsedBlockIndex": 16,
-        "snippet": "and politically motivated reliable sources necessitates understanding local hydro",
-        "observedSegment": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        "candidateLocations": [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            5
+          ],
           [
             "gap",
             0
@@ -1728,179 +743,123 @@ export const demoExamples = [
             7
           ]
         ],
-        "payloadDistance": 3,
+        "payloadDistance": 2,
         "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 17,
+        "parsedBlockIndex": 17,
+        "snippet": "and often used violence as a means of control",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "sub",
         "isGroundTruthEdited": true
       }
     ]
   },
   {
-    "id": "delta-20-seq-123",
-    "sequenceIndex": 123,
+    "id": "delta-20-seq-165",
+    "sequenceIndex": 165,
     "logitBias": 20,
     "numBlocks": 18,
     "title": "claim distortion (malicious, delta=20)",
     "motivation": "claim_distortion",
     "intentLabel": "malicious",
-    "question": "How much radiation do I get by opening the microwave door before it has finished? Context: How much radiation do I get by opening the microwave door before it has finished?",
-    "sourceAnswer": "Opening the microwave ovendoor slightly before typical cooking times, particularlyduring periodsoflower power settings or intermittent operation,may occasionally expose users to minimal amounts Of micforward radiation. Microwavedevic generally meet strict safety standards set By organizations globally and are designedtodetectandstopinternal heating when door is openedeven moderatelywithout requiring full closure for complete cessation of internally generated electromagnetic fields.The exposure levels encounteredusually remain well below established Safety Limits Forgeneral public Exposure To RadioFrequency Radiation Henceordinary use scenarios involving partial openings during shorterinitial phases oft operating cycle pose negligible riskoverall health with no measurable impacton biologicaltypically under normal conditions unless extended prolonged exposures across multiple sessions occur which scenario would require separate evaluation based oncumulation doses howeverstandard",
-    "editedAnswer": "Opening the microwavedoordoorcompletely before typical cooking times, particularlyduring periodsofmaximum power settings or intermittent operation,may occasionally expose users to minimal amounts Ofgammaforward radiation. Microwavedevic generallyviolate strict safety standards set By organizations globally and are designedtodetectandstopinternal heating when door is openedeven moderatelywithout requiring full closure for complete cessation of internally generated electromagnetic fields.The exposure levels encounteredusually remain well below established Safety Limits Forgeneral public Exposure To RadioFrequency Radiation Henceordinary use scenarios involving partial openings during shorterinitial phasesextreme oft operating cycle pose negligible riskoverall health with no measurable impacton biologicaltypically under normal conditions unless extended prolonged exposures across multiple sessions occur which scenario would require separate evaluation based oncumulation doses howeverstandard",
+    "question": "The charger for my electric toothbrush has no metal parts that touch the toothbrush. How does it recharge? Context: It's an all plastic base and plastic bottom of the toothbrush",
+    "sourceAnswer": "The electric toothbrush likely recharges indirectly through electromagnetic induction. The base unitprobably contains a coil that createsa magnetic nearly when connected to an AC power supply meanwhile the plastic bottom of theelectric toothwithin has a corresponding coil. When placed closely, the magneticfield induces current flow across the second coil, thereby transferring electricalcurrent without any direct contact or metalparts therefore enabling charging even with all-plasticouter parts. This technique uses wirelesstable technology commonly seen inside portable gadgets likexternal speakers and wireless phonechargiand similarly allows for safe,reliable charge transferwithout requiring physical connections. This design prevents directly exposure to electricity while maintaining functionality efficiently across various settings. Such designs ensure usability across varied environments including bathrooms etc where humidity frequently",
+    "editedAnswer": "The electric toothbrush likely recharges indirectly through electromagnetic induction. The base unitdefinitely contains a coil thatgeneratesa magnetic nearly when connected to an AC power supply meanwhile the plastic bottom ofthetooth toothwithin has a corresponding coil. When placed closely, the magneticfieldcauses current flow across the second coil, thereby transferring electricalcurrent without any direct contact or metalpartssafely therefore enabling charging even with all-plasticouter parts. This technique uses wirelesstable technology commonly seen inside portable gadgets likexternal speakers and wireless phonechargiand similarly allows for safe,reliable charge transferwithout requiring physical connections. This design prevents directly exposure to electricity while maintaining functionality efficiently across various settings. Such designs ensure usability across varied environments including bathrooms etc where humidity frequently",
     "edits": [
       {
         "op": "substitute",
-        "anchor": 3,
-        "originalText": "oven",
-        "newContent": "door",
-        "reason": "Change 'oven' to 'door' to mislead about the source of radiation.",
-        "highlightStart": 21,
-        "highlightEnd": 25,
-        "anchorToken": {
-          "tokenIndex": 3,
-          "surface": "oven",
-          "bucketId": 1,
-          "structuralIndex": 3,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          3
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "Opening the microwavedoordoorcompletely before",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 5,
-        "originalText": "slightly",
-        "newContent": "completely",
-        "reason": "Modify the degree of door opening to exaggerate risk.",
-        "highlightStart": 29,
-        "highlightEnd": 39,
-        "anchorToken": {
-          "tokenIndex": 5,
-          "surface": "slightly",
-          "bucketId": 1,
-          "structuralIndex": 5,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          1
-        ],
-        "structuralIndices": [
-          5,
-          6
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "Opening the microwavedoordoorcompletely before",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
         "anchor": 15,
-        "originalText": "lower",
-        "newContent": "maximum",
-        "reason": "Increase perceived risk by altering power settings.",
-        "highlightStart": 98,
-        "highlightEnd": 105,
+        "originalText": "probably",
+        "newContent": "definitely",
+        "reason": "Weaken the claim by making the statement stronger, implying certainty where there is none.",
+        "highlightStart": 100,
+        "highlightEnd": 110,
         "anchorToken": {
           "tokenIndex": 15,
-          "surface": "lower",
+          "surface": "probably",
           "bucketId": 1,
-          "structuralIndex": 16,
+          "structuralIndex": 15,
           "blockId": 1,
           "isEditAnchor": true
         },
         "bucketIds": [
-          1
+          1,
+          0
         ],
         "structuralIndices": [
+          15,
           16
         ],
-        "bucketMeaning": "payload bit 1",
+        "bucketMeaning": "payload bit 0, payload bit 1",
         "anchorBlock": 1,
         "detectorBlock": 1,
-        "detectorSnippet": " cooking times, particularlyduring periodsofmaximum",
-        "payloadDistance": 0,
+        "detectorSnippet": " through electromagnetic induction. The base unitdef",
+        "payloadDistance": 1,
         "observedSegment": [
           0,
           0,
           0,
-          1,
-          1,
+          0,
+          0,
           1,
           1,
           1
         ],
         "decodedCodeword": [
-          0,
-          0,
-          0,
           1,
-          1,
+          0,
+          0,
+          0,
+          0,
           1,
           1
         ],
         "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
           [
             "boundary",
             7
@@ -1909,1344 +868,52 @@ export const demoExamples = [
       },
       {
         "op": "substitute",
-        "anchor": 30,
-        "originalText": "mic",
-        "newContent": "gamma",
-        "reason": "Misrepresent the type of radiation for misleading effect.",
-        "highlightStart": 198,
-        "highlightEnd": 203,
+        "anchor": 20,
+        "originalText": "creates",
+        "newContent": "generates",
+        "reason": "Replace a technical term with a more general one to mislead about the mechanism.",
+        "highlightStart": 131,
+        "highlightEnd": 140,
         "anchorToken": {
-          "tokenIndex": 30,
-          "surface": "mic",
-          "bucketId": 0,
-          "structuralIndex": 31,
-          "blockId": 3,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          31
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 3,
-        "detectorBlock": 3,
-        "detectorSnippet": " expose users to minimal amounts Ofgamma",
-        "payloadDistance": 1,
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 40,
-        "originalText": "meet",
-        "newContent": "violate",
-        "reason": "Reverse the safety claim about microwave devices.",
-        "highlightStart": 246,
-        "highlightEnd": 253,
-        "anchorToken": {
-          "tokenIndex": 40,
-          "surface": "meet",
+          "tokenIndex": 20,
+          "surface": "creates",
           "bucketId": 1,
-          "structuralIndex": 41,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          1
-        ],
-        "structuralIndices": [
-          41,
-          42
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 5,
-        "detectorBlock": 5,
-        "detectorSnippet": "violate strict safety standards set By organizations",
-        "payloadDistance": 1,
-        "observedSegment": [
-          1,
-          1,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 104,
-        "originalText": "",
-        "newContent": "extreme",
-        "reason": "Add extreme condition to exaggerate risk without full closure.",
-        "highlightStart": 712,
-        "highlightEnd": 719,
-        "anchorToken": {
-          "tokenIndex": 104,
-          "surface": "insertion gap",
-          "bucketId": 0,
-          "structuralIndex": 107,
-          "blockId": 13,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1
-        ],
-        "structuralIndices": [
-          107,
-          108
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 13,
-        "detectorBlock": 13,
-        "detectorSnippet": " phasesextreme oft operating cycle pose negligible risk",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      }
-    ],
-    "gtBlocks": [
-      0,
-      1,
-      3,
-      5,
-      13
-    ],
-    "predictedBlocks": [
-      0,
-      1,
-      3,
-      5,
-      13
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.0,
-      "candidateCoverage": 0.4444444444444444,
-      "meanCandidateSize": 2.2
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "Opening the microwavedoordoorcompletely before",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": " cooking times, particularlyduring periodsofmaximum",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 0,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 3,
-        "parsedBlockIndex": 3,
-        "snippet": " expose users to minimal amounts Ofgamma",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 5,
-        "parsedBlockIndex": 5,
-        "snippet": "violate strict safety standards set By organizations",
-        "observedSegment": [
-          1,
-          1,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 13,
-        "parsedBlockIndex": 13,
-        "snippet": " phasesextreme oft operating cycle pose negligible risk",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      }
-    ]
-  },
-  {
-    "id": "delta-5-seq-103",
-    "sequenceIndex": 103,
-    "logitBias": 5,
-    "numBlocks": 18,
-    "title": "clarity improvement (benign, delta=5)",
-    "motivation": "clarity_improvement",
-    "intentLabel": "benign",
-    "question": "why, on the news, is there a large delay for live feeds across oceans but we can play xbox live with people around the world with seemingly instantaneous response?",
-    "sourceAnswer": "The difference in latency between live news across oceans and Xbox Live gaming lies in primarily the type of network infrastructure used. typical news broadcasts rely on traditional broadcast networks alongside internet-based streaming services, which often separate content delivery from data transmission protocols for casual viewing purposes; these streams prioritize reliability alongside acceptable delay to ensure consistent quality throughout distant regions with varying connectivity standards. Conversely widely adopted game platforms such as Xbox Live generally use optimized peer-to-peer connections or closely managed server architectures engineered around minimizing lag specifically tailored toward real-time interactions where responsiveness directly affects user experience outcomes; thus resulting largely instantaneous responses even over great distances due precisely targeted optimization strategies applied uniquely within those carefully constructed digital environments dedicated exclusively towards facilitating nearly imperceptible interaction delays among participants globally",
-    "editedAnswer": "The difference indelay between live news across oceans and Xbox Live gaming lies in primarily the type of network infrastructure used. typical news broadcasts rely on traditional broadcast networks alongside internet-based streaming services, which often separate content delivery from data transmission protocols for casual viewing purposes; these streams prioritize reliabilitytolerable acceptable delay to ensure consistent quality throughout distant regions with varying connectivity standards. Conversely widely adopted game platforms such as Xbox Live generally use optimized peer-to-peerlinks or closely managed server architectures engineered aroundreducing lag specifically tailored toward real-time interactions wherereaction time directly affects user experience outcomes; thus resulting largely instantaneous responses even over great distanceswith low bandwidth due precisely targeted optimization strategies applied uniquely within those carefully constructed digital environments dedicated exclusively towards facilitating nearly imperceptible interaction delays among participants globally",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 3,
-        "originalText": "latency",
-        "newContent": "delay",
-        "reason": "Replace 'latency' with 'delay' for clarity and conciseness.",
-        "highlightStart": 17,
-        "highlightEnd": 22,
-        "anchorToken": {
-          "tokenIndex": 3,
-          "surface": "latency",
-          "bucketId": 1,
-          "structuralIndex": 3,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          3
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "The difference indelay between live news",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 55,
-        "originalText": "acceptable",
-        "newContent": "tolerable",
-        "reason": "Replace 'acceptable' with 'tolerable' to better convey the intended meaning.",
-        "highlightStart": 379,
-        "highlightEnd": 388,
-        "anchorToken": {
-          "tokenIndex": 55,
-          "surface": "acceptable",
-          "bucketId": 0,
-          "structuralIndex": 55,
-          "blockId": 6,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1
-        ],
-        "structuralIndices": [
-          55,
-          56
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 6,
-        "detectorBlock": 6,
-        "detectorSnippet": " viewing purposes; these streams prioritize reliabilitytol",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 85,
-        "originalText": "connections",
-        "newContent": "links",
-        "reason": "Replace 'connections' with 'links' for a more concise and natural expression.",
-        "highlightStart": 594,
-        "highlightEnd": 599,
-        "anchorToken": {
-          "tokenIndex": 85,
-          "surface": "connections",
-          "bucketId": 1,
-          "structuralIndex": 86,
-          "blockId": 10,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          86
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 10,
-        "detectorBlock": 10,
-        "detectorSnippet": " use optimized peer-to-peerlinks or",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          1,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 93,
-        "originalText": "minimizing",
-        "newContent": "reducing",
-        "reason": "Replace 'minimizing' with 'reducing' for a more direct and clear expression.",
-        "highlightStart": 657,
-        "highlightEnd": 665,
-        "anchorToken": {
-          "tokenIndex": 93,
-          "surface": "minimizing",
-          "bucketId": 0,
-          "structuralIndex": 94,
-          "blockId": 11,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1,
-          1
-        ],
-        "structuralIndices": [
-          94,
-          95,
-          96
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 11,
-        "detectorBlock": 11,
-        "detectorSnippet": " managed server architectures engineered aroundreducing lag",
-        "payloadDistance": 2,
-        "observedSegment": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 102,
-        "originalText": "responsiveness",
-        "newContent": "reaction time",
-        "reason": "Replace 'responsiveness' with 'reaction time' for a more precise and commonly used term.",
-        "highlightStart": 727,
-        "highlightEnd": 740,
-        "anchorToken": {
-          "tokenIndex": 102,
-          "surface": "responsiveness",
-          "bucketId": 0,
-          "structuralIndex": 105,
-          "blockId": 12,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          105,
-          106
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 12,
-        "detectorBlock": 12,
-        "detectorSnippet": " tailored toward real-time interactions wherereaction time",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 117,
-        "originalText": "",
-        "newContent": "with low bandwidth",
-        "reason": "Insert 'with low bandwidth' to clarify the context of the communication over great distances.",
-        "highlightStart": 856,
-        "highlightEnd": 874,
-        "anchorToken": {
-          "tokenIndex": 117,
-          "surface": "insertion gap",
-          "bucketId": 0,
-          "structuralIndex": 122,
-          "blockId": 14,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0,
-          0
-        ],
-        "structuralIndices": [
-          122,
-          123,
-          124
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 14,
-        "detectorBlock": 14,
-        "detectorSnippet": " instantaneous responses even over great distanceswith low bandwidth due",
-        "payloadDistance": 3,
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            6
-          ]
-        ]
-      }
-    ],
-    "gtBlocks": [
-      0,
-      6,
-      10,
-      11,
-      12,
-      14
-    ],
-    "predictedBlocks": [
-      0,
-      2,
-      4,
-      6,
-      11,
-      12,
-      14,
-      15
-    ],
-    "metrics": {
-      "blockTpr": 0.8333333333333334,
-      "blockFar": 0.25,
-      "candidateCoverage": 0.6666666666666666,
-      "meanCandidateSize": 2.6666666666666665
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "The difference indelay between live news",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 2,
-        "parsedBlockIndex": 2,
-        "snippet": " the type of network infrastructure used.",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 4,
-        "parsedBlockIndex": 4,
-        "snippet": " internet-based streaming services, which often",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 6,
-        "snippet": " viewing purposes; these streams prioritize reliabilitytol",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 0,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 11,
-        "parsedBlockIndex": 11,
-        "snippet": " managed server architectures engineered aroundreducing lag",
-        "observedSegment": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 12,
-        "parsedBlockIndex": 12,
-        "snippet": " tailored toward real-time interactions wherereaction time",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 14,
-        "parsedBlockIndex": 14,
-        "snippet": " instantaneous responses even over great distanceswith low bandwidth due",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            6
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 15,
-        "parsedBlockIndex": 15,
-        "snippet": " targeted optimization strategies applied uniquely within those",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      }
-    ]
-  },
-  {
-    "id": "delta-20-seq-163",
-    "sequenceIndex": 163,
-    "logitBias": 20,
-    "numBlocks": 18,
-    "title": "clarity improvement (benign, delta=20)",
-    "motivation": "clarity_improvement",
-    "intentLabel": "benign",
-    "question": "Is there a point as the temperature drops that it stops feeling colder? in other words, once a certain temperature is reached does it all just feel the same after that? Context: Lets assume no wind is involved.",
-    "sourceAnswer": "No, there is no specific temperature beyond which it stops feeling colder. Human peripheral sensation of cold decreases logarithmical across a range of temperatues; therefore, the perceived intensity continues changing depending largely on how much cooler environment becomes below previously experienced conditions at any given time frame specifically when compared against baseline normal levels taken generally from one's usual surroundings throughout daily typical living patterns regardless matter what exact absolute nearby numerical value may be displayed as long accordingly those differences remain perceivable mentally according precisely defined thresholds within biological response limitations set naturally by physical laws govern all natural processes directly affecting sensory perception mechanisms involved in experiencing gradual changes occurring over continuous exposure durations influencing eventual resulting subjective feelings about current warmth or alternatively chilliness being felt simultaneously present during separate",
-    "editedAnswer": "No,this is noparticular temperature beyond which it stops feeling colder. Human peripheral sensation of coldlogarithmic logarithmic across a range of temperatues;thus, the perceived intensity continues changing depending largely on how muchcolder environment becomes below previously experienced conditions at any given time frame specifically when compared against baseline normal levels taken generally from one's usual surroundings throughout daily typical living patterns regardless matter what exact absolute nearby numerical value may be displayed as long accordingly those differences remain perceivable mentally according precisely defined thresholds within biological response limitations set naturally by physical laws govern all natural processes directly affecting sensory perception mechanisms involved in experiencing gradual changes occurring over continuous exposure durations influencing eventual resulting subjective feelings about current warmth or alternatively chilliness being felt simultaneously present during separate",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 2,
-        "originalText": "there",
-        "newContent": "this",
-        "reason": "Replace 'there' with 'this' for clarity and conciseness.",
-        "highlightStart": 3,
-        "highlightEnd": 7,
-        "anchorToken": {
-          "tokenIndex": 2,
-          "surface": "there",
-          "bucketId": 1,
-          "structuralIndex": 2,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          2
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "No,this is noparticular temperature",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 5,
-        "originalText": "specific",
-        "newContent": "particular",
-        "reason": "Replace 'specific' with 'particular' for more precise language.",
-        "highlightStart": 13,
-        "highlightEnd": 23,
-        "anchorToken": {
-          "tokenIndex": 5,
-          "surface": "specific",
-          "bucketId": 1,
-          "structuralIndex": 5,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          1
-        ],
-        "structuralIndices": [
-          5,
-          6
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "No,this is noparticular temperature",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 19,
-        "originalText": "logarith",
-        "newContent": "logarithmic",
-        "reason": "Correct the spelling of 'logarithmic' for accuracy.",
-        "highlightStart": 108,
-        "highlightEnd": 119,
-        "anchorToken": {
-          "tokenIndex": 19,
-          "surface": "logarith",
-          "bucketId": 1,
-          "structuralIndex": 20,
+          "structuralIndex": 21,
           "blockId": 2,
           "isEditAnchor": true
         },
         "bucketIds": [
           1,
-          1,
           0
         ],
         "structuralIndices": [
-          20,
           21,
           22
         ],
         "bucketMeaning": "payload bit 0, payload bit 1",
         "anchorBlock": 2,
         "detectorBlock": 2,
-        "detectorSnippet": " sensation of coldlogarithmic logarithmic",
+        "detectorSnippet": "initely contains a coil thatgeneratesa magnetic",
         "payloadDistance": 2,
         "observedSegment": [
           0,
           0,
           0,
           1,
-          1,
           0,
           1,
+          0,
           1,
           0
         ],
         "decodedCodeword": [
           0,
           0,
+          1,
           0,
           1,
           1,
-          1,
-          1
+          0
         ],
         "candidateLocations": [
           [
@@ -3263,201 +930,84 @@ export const demoExamples = [
           ],
           [
             "gap",
-            3
-          ],
-          [
-            "gap",
             5
-          ],
-          [
-            "gap",
-            7
           ]
         ]
       },
       {
         "op": "substitute",
-        "anchor": 22,
-        "originalText": "ical",
-        "newContent": "ic",
-        "reason": "Correct the spelling of 'logarithmic' by removing the extra 'al'.",
-        "highlightStart": 129,
-        "highlightEnd": 131,
+        "anchor": 36,
+        "originalText": "thee",
+        "newContent": "the",
+        "reason": "Correct a spelling error to make the text appear more credible, but this is a surface artifact and not a meaningful change.",
+        "highlightStart": 226,
+        "highlightEnd": 229,
         "anchorToken": {
-          "tokenIndex": 22,
-          "surface": "ical",
+          "tokenIndex": 36,
+          "surface": "thee",
           "bucketId": 0,
-          "structuralIndex": 25,
-          "blockId": 2,
+          "structuralIndex": 38,
+          "blockId": 4,
           "isEditAnchor": true
         },
         "bucketIds": [
           0
         ],
         "structuralIndices": [
-          25
+          38
         ],
         "bucketMeaning": "payload bit 0",
-        "anchorBlock": 2,
-        "detectorBlock": 2,
-        "detectorSnippet": " sensation of coldlogarithmic logarithmic",
-        "payloadDistance": 2,
+        "anchorBlock": 4,
+        "detectorBlock": 4,
+        "detectorSnippet": " the plastic bottom ofthetooth tooth",
+        "payloadDistance": 3,
         "observedSegment": [
           0,
           0,
-          0,
           1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
           1,
           0,
           1,
           1,
           0
         ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
         "candidateLocations": [
           [
-            "gap",
+            "payload",
             0
           ],
           [
-            "gap",
+            "payload",
             1
           ],
           [
-            "gap",
+            "payload",
             2
           ],
           [
-            "gap",
+            "payload",
             3
           ],
           [
-            "gap",
+            "payload",
+            4
+          ],
+          [
+            "payload",
             5
           ],
           [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 31,
-        "originalText": "therefore",
-        "newContent": "thus",
-        "reason": "Replace 'therefore' with 'thus' for more concise expression.",
-        "highlightStart": 162,
-        "highlightEnd": 166,
-        "anchorToken": {
-          "tokenIndex": 31,
-          "surface": "therefore",
-          "bucketId": 1,
-          "structuralIndex": 34,
-          "blockId": 3,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          34
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 3,
-        "detectorBlock": 3,
-        "detectorSnippet": " a range of temperatues;thus",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 43,
-        "originalText": "cooler",
-        "newContent": "colder",
-        "reason": "Replace 'cooler' with 'colder' for consistency in describing temperature perception.",
-        "highlightStart": 240,
-        "highlightEnd": 246,
-        "anchorToken": {
-          "tokenIndex": 43,
-          "surface": "cooler",
-          "bucketId": 0,
-          "structuralIndex": 46,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          46,
-          47
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 5,
-        "detectorBlock": 5,
-        "detectorSnippet": " on how muchcolder environment becomes below",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
             "payload",
-            0
-          ],
-          [
-            "payload",
-            3
+            6
           ],
           [
             "gap",
@@ -3466,10 +1016,6 @@ export const demoExamples = [
           [
             "gap",
             1
-          ],
-          [
-            "gap",
-            2
           ],
           [
             "gap",
@@ -3492,282 +1038,18 @@ export const demoExamples = [
             7
           ]
         ]
-      }
-    ],
-    "gtBlocks": [
-      0,
-      2,
-      3,
-      5
-    ],
-    "predictedBlocks": [
-      0,
-      1,
-      2,
-      3,
-      5
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.0714285714285714,
-      "candidateCoverage": 0.3,
-      "meanCandidateSize": 4.75
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "No,this is noparticular temperature",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
       },
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": " which it stops feeling colder. Human",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 2,
-        "parsedBlockIndex": 2,
-        "snippet": " sensation of coldlogarithmic logarithmic",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 3,
-        "parsedBlockIndex": 3,
-        "snippet": " a range of temperatues;thus",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 0,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 5,
-        "parsedBlockIndex": 5,
-        "snippet": " on how muchcolder environment becomes below",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      }
-    ]
-  },
-  {
-    "id": "delta-20-seq-139",
-    "sequenceIndex": 139,
-    "logitBias": 20,
-    "numBlocks": 18,
-    "title": "clarity improvement (benign, delta=20)",
-    "motivation": "clarity_improvement",
-    "intentLabel": "benign",
-    "question": "Did people in British colonies (eg. Canada, Australia, New Zealand) consider themselves British or did they moreover identify with the colony?",
-    "sourceAnswer": "During the colonial periods, individuals in distant British colonies such as Canada, Australia primarily identified with their immediate communities due geographical distant and cultural differences from Great Britain; therefore they did not consider thenself primarily \"British.\" However,becauseof formal ties tothe Crown,a degreeidentification acrosscolonial societiesdidexist,mixedlocal traditions. In many instances,culturalspecifics shaped identities differently dependingon regionwithin each colony,suggestingleadership beyond nationalistic notions of Britian.The gradual development toward nation-states during decol respectively influenced these identies over timetforwarding a sense local prideand autonomy alongside former connectionswith mothercountry.Theseearly formsnational consciousnesseswere crucialin eventual independence movements that reshapesenseidentityamong",
-    "editedAnswer": "During the colonial periods, individuals in distant British colonies such as Canada, Australia primarily identified with their immediate communities due geographical distant and cultural differences from Great Britain; therefore they did not consider thenselfmainly \"British.\" However,becauseof formal ties tothe Crown,aaffiliationidentification acrosscolonial societiesdidexist,mmixedlocal traditions. In many instances,culturaldistincts shaped identities differently dependingon regionwithin each colony,suggestingleadersnotion beyond nationalistic notions of Britian.The gradual development toward nation-states during decol respectivelyand social structures influenced these identies over timetforwarding a sense local prideand autonomy alongside former connectionswith mothercountry.Theseearly formsnational consciousnesseswere crucialin eventual independence movements that reshapesenseidentityamong",
-    "edits": [
       {
         "op": "substitute",
-        "anchor": 39,
-        "originalText": "primarily",
-        "newContent": "mainly",
-        "reason": "Replace 'primarily' with 'mainly' for clarity and conciseness.",
-        "highlightStart": 259,
-        "highlightEnd": 265,
+        "anchor": 37,
+        "originalText": "lectric",
+        "newContent": "tooth",
+        "reason": "Misrepresent the technical term to suggest a different mechanism, making the explanation less accurate.",
+        "highlightStart": 229,
+        "highlightEnd": 234,
         "anchorToken": {
-          "tokenIndex": 39,
-          "surface": "primarily",
+          "tokenIndex": 37,
+          "surface": "lectric",
           "bucketId": 0,
           "structuralIndex": 39,
           "blockId": 4,
@@ -3784,1573 +1066,7 @@ export const demoExamples = [
         "bucketMeaning": "payload bit 0",
         "anchorBlock": 4,
         "detectorBlock": 4,
-        "detectorSnippet": " they did not consider thenselfmainly",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 53,
-        "originalText": "identification",
-        "newContent": "affiliation",
-        "reason": "Replace 'identification' with 'affiliation' to better capture the concept of formal ties.",
-        "highlightStart": 320,
-        "highlightEnd": 331,
-        "anchorToken": {
-          "tokenIndex": 53,
-          "surface": "identification",
-          "bucketId": 0,
-          "structuralIndex": 54,
-          "blockId": 6,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          54,
-          55
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 6,
-        "detectorBlock": 6,
-        "detectorSnippet": " ties tothe Crown,aaffiliationidentification",
-        "payloadDistance": 2,
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            5
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 62,
-        "originalText": "ixed",
-        "newContent": "mixed",
-        "reason": "Correct the misspelled word 'ixed' to 'mixed' for clarity.",
-        "highlightStart": 380,
-        "highlightEnd": 385,
-        "anchorToken": {
-          "tokenIndex": 62,
-          "surface": "ixed",
-          "bucketId": 1,
-          "structuralIndex": 64,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          64
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "colonial societiesdidexist,mmixed",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": []
-      },
-      {
-        "op": "substitute",
-        "anchor": 71,
-        "originalText": "specific",
-        "newContent": "distinct",
-        "reason": "Replace 'specific' with 'distinct' to better convey the idea of unique cultural identities.",
-        "highlightStart": 429,
-        "highlightEnd": 437,
-        "anchorToken": {
-          "tokenIndex": 71,
-          "surface": "specific",
-          "bucketId": 0,
-          "structuralIndex": 73,
-          "blockId": 8,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          73
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 8,
-        "detectorBlock": 8,
-        "detectorSnippet": " traditions. In many instances,culturaldistinct",
-        "payloadDistance": 0,
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 86,
-        "originalText": "hip",
-        "newContent": "notion",
-        "reason": "Replace 'hip' with 'notion' to correct the misspelled word and improve clarity.",
-        "highlightStart": 523,
-        "highlightEnd": 529,
-        "anchorToken": {
-          "tokenIndex": 86,
-          "surface": "hip",
-          "bucketId": 0,
-          "structuralIndex": 88,
-          "blockId": 10,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          88,
-          89
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 10,
-        "detectorBlock": 10,
-        "detectorSnippet": " each colony,suggestingleadersnotion",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 103,
-        "originalText": "",
-        "newContent": "and social structures",
-        "reason": "Insert 'and social structures' to clarify the influence of social factors on identity formation.",
-        "highlightStart": 640,
-        "highlightEnd": 661,
-        "anchorToken": {
-          "tokenIndex": 103,
-          "surface": "insertion gap",
-          "bucketId": 1,
-          "structuralIndex": 107,
-          "blockId": 12,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          1,
-          1
-        ],
-        "structuralIndices": [
-          107,
-          108,
-          109
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 12,
-        "detectorBlock": 12,
-        "detectorSnippet": " development toward nation-states during decol",
-        "payloadDistance": 0,
-        "observedSegment": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": []
-      }
-    ],
-    "gtBlocks": [
-      4,
-      6,
-      7,
-      8,
-      10,
-      13
-    ],
-    "predictedBlocks": [
-      1,
-      4,
-      6,
-      8,
-      10,
-      13
-    ],
-    "metrics": {
-      "blockTpr": 0.8333333333333334,
-      "blockFar": 0.0833333333333333,
-      "candidateCoverage": 0.9090909090909092,
-      "meanCandidateSize": 3.1666666666666665
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": " British colonies such as Canada, Australia",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 4,
-        "parsedBlockIndex": 4,
-        "snippet": " they did not consider thenselfmainly",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 6,
-        "snippet": " ties tothe Crown,aaffiliationidentification",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            5
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 8,
-        "parsedBlockIndex": 8,
-        "snippet": " traditions. In many instances,culturaldistinct",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 0,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 10,
-        "parsedBlockIndex": 10,
-        "snippet": " each colony,suggestingleadersnotion",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 13,
-        "parsedBlockIndex": 13,
-        "snippet": "and social structures influenced these identies over timet",
-        "observedSegment": [
-          1,
-          1,
-          1,
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      }
-    ]
-  },
-  {
-    "id": "delta-5-seq-42",
-    "sequenceIndex": 42,
-    "logitBias": 5,
-    "numBlocks": 18,
-    "title": "grammar polish (benign, delta=5)",
-    "motivation": "grammar_polish",
-    "intentLabel": "benign",
-    "question": "who is it exactly that make money every time i use visa or mastercard?",
-    "sourceAnswer": "When you use a Visa or Masterouter card, the money is sourced from separate entities depending on whether it's domestic across different regions. In the United States specifically, when using a domestically issued credit earlier in your own country, funds are generally drawn from the issuer banks that provide respectively for each individual cardholder.\nMeanwhile globally however transactions involving foreign currency typically involve nearby international networks like Switch Payment Systems etc alongside central banking systems which manage cross-border essentially flow through various financial infrastructures ensuring eventual transfer of value among participants involved at formal levels within these ecosystems while fees along accordingly applied by respective parties including merchants and ultimately passed down as part regular operational costs alongside interest charges incurred during repayment periods thereby directly contributing towards overall revenue generation processes associated primarily",
-    "editedAnswer": "When you use aVisa card orMastercardouter card, the money isoriginated from separatefinancial institutions depending on whether it'slocal across different regions. In the United States specifically, when using a domestically issued credit earlierand in your own country, funds are generally drawn from the issuer banks that provide respectively for each individual cardholder.\nMeanwhile globally however transactions involving foreign currency typically involve nearby international networks like Switch Payment Systems etc alongside central banking systems which manage cross-border essentially flow through various financial infrastructures ensuring eventual transfer of value among participants involved at formal levels within these ecosystems while fees along accordingly applied by respective parties including merchants and ultimately passed down as part regular operational costs alongside interest charges incurred during repayment periods thereby directly contributing towards overall revenue generation processes associated primarily",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 4,
-        "originalText": "Visa",
-        "newContent": "Visa card",
-        "reason": "Clarify the term for better understanding.",
-        "highlightStart": 14,
-        "highlightEnd": 23,
-        "anchorToken": {
-          "tokenIndex": 4,
-          "surface": "Visa",
-          "bucketId": 1,
-          "structuralIndex": 4,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          1,
-          1
-        ],
-        "structuralIndices": [
-          4,
-          5,
-          6
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "When you use aVisa",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 6,
-        "originalText": "Master",
-        "newContent": "Mastercard",
-        "reason": "Correct the spelling of the card name.",
-        "highlightStart": 26,
-        "highlightEnd": 36,
-        "anchorToken": {
-          "tokenIndex": 6,
-          "surface": "Master",
-          "bucketId": 0,
-          "structuralIndex": 8,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          8,
-          9
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "When you use aVisa",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 13,
-        "originalText": "sourced",
-        "newContent": "originated",
-        "reason": "Replace with a more precise synonym.",
-        "highlightStart": 60,
-        "highlightEnd": 70,
-        "anchorToken": {
-          "tokenIndex": 13,
-          "surface": "sourced",
-          "bucketId": 0,
-          "structuralIndex": 16,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          16,
-          17
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 1,
-        "detectorBlock": 2,
-        "detectorSnippet": " card, the money isoriginated from",
-        "payloadDistance": 3,
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 16,
-        "originalText": "entities",
-        "newContent": "financial institutions",
-        "reason": "Specify the exact type of entities involved.",
-        "highlightStart": 84,
-        "highlightEnd": 106,
-        "anchorToken": {
-          "tokenIndex": 16,
-          "surface": "entities",
-          "bucketId": 1,
-          "structuralIndex": 20,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          1
-        ],
-        "structuralIndices": [
-          20,
-          21
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 2,
-        "detectorBlock": 4,
-        "detectorSnippet": "",
-        "payloadDistance": null,
-        "observedSegment": [],
-        "decodedCodeword": [],
-        "candidateLocations": []
-      },
-      {
-        "op": "substitute",
-        "anchor": 22,
-        "originalText": "domestic",
-        "newContent": "local",
-        "reason": "Use a simpler synonym for clarity.",
-        "highlightStart": 132,
-        "highlightEnd": 137,
-        "anchorToken": {
-          "tokenIndex": 22,
-          "surface": "domestic",
-          "bucketId": 2,
-          "structuralIndex": 27,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          2
-        ],
-        "structuralIndices": [
-          27
-        ],
-        "bucketMeaning": "boundary anchor",
-        "anchorBlock": 2,
-        "detectorBlock": 4,
-        "detectorSnippet": "",
-        "payloadDistance": null,
-        "observedSegment": [],
-        "decodedCodeword": [],
-        "candidateLocations": []
-      },
-      {
-        "op": "insert",
-        "anchor": 39,
-        "originalText": "",
-        "newContent": "and",
-        "reason": "Improve the flow between related concepts.",
-        "highlightStart": 246,
-        "highlightEnd": 249,
-        "anchorToken": {
-          "tokenIndex": 39,
-          "surface": "insertion gap",
-          "bucketId": 1,
-          "structuralIndex": 45,
-          "blockId": 4,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          45
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 4,
-        "detectorBlock": 6,
-        "detectorSnippet": ", when using a domestically issued credit",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ]
-      }
-    ],
-    "gtBlocks": [
-      0,
-      1,
-      2,
-      5
-    ],
-    "predictedBlocks": [
-      0,
-      1,
-      2,
-      4,
-      5
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.0714285714285714,
-      "candidateCoverage": 0.4545454545454545,
-      "meanCandidateSize": 7.75
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "When you use aVisa",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "delete",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 1,
-        "snippet": " card orMastercard",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 2,
-        "snippet": " card, the money isoriginated from",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 2,
-        "parsedBlockIndex": 4,
-        "snippet": "",
-        "observedSegment": [],
-        "decodedCodeword": [],
-        "candidateLocations": [],
-        "payloadDistance": null,
-        "boundaryState": null,
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 4,
-        "parsedBlockIndex": 6,
-        "snippet": ", when using a domestically issued credit",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 5,
-        "parsedBlockIndex": 7,
-        "snippet": "and in your own country, funds are",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      }
-    ]
-  },
-  {
-    "id": "delta-20-seq-180",
-    "sequenceIndex": 180,
-    "logitBias": 20,
-    "numBlocks": 18,
-    "title": "grammar polish (benign, delta=20)",
-    "motivation": "grammar_polish",
-    "intentLabel": "benign",
-    "question": "why does the education system favours memory retention over imagination?",
-    "sourceAnswer": "The education system tends to prioritize memory across various levels of learning due to measurable formal assessments and standardized testing, aiming mainly alongside academic performance. This structure fosters easily quantifiable outcomes whereas creativity is often indirectly assessed or not prioritized hence focusing primarily on rote memorisation skills rather explicitly cultivating imaginative thinking in the curriculum design therefore shaping educational environments encouraging recall abilities over initially innovative thought processes despite recognition growing emphasis recently upon critical analysis as integral component holistic eventual development students throughout their intellectual journeys within formal institutions while ongoing discussions regarding integrating more naturally creative elements into traditional frameworks continue among globally diverse educators seeking balance between structured acquisition alongside fostering originality amidst evolving societal priorities beyond mere factual retention alone..**  \noverall this trend reflects broader cultural value placed frequently",
-    "editedAnswer": "The education system tends to prioritize memory across various levels of learning due to measurable formal assessments and standardized testing, aiming mainly alongside academic performance. This structure fosters easily quantifiableresults whereascreative thinking is often indirectly assessed or notprioritizationized hence focusing primarily on rotememorizationization skills rather explicitly cultivating imaginative thinking in the curriculum design therefore shaping educational environments encouraging recall abilities over initially innovative thought processes despite recognition growing emphasis recently upon critical analysis as integral component holistic eventual development students throughout their intellectual journeys within formal institutions while ongoing discussions regarding integrating more naturally creative elements into traditional frameworks continue among globally diverse educators seeking balance between structured acquisition alongside fostering originality amidst evolving societal priorities beyond mere factual retention alone..**  \ntheoverall this trend reflects broader cultural value placed frequently",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 34,
-        "originalText": "outcomes",
-        "newContent": "results",
-        "reason": "Replace 'outcomes' with 'results' for smoother phrasing.",
-        "highlightStart": 233,
-        "highlightEnd": 240,
-        "anchorToken": {
-          "tokenIndex": 34,
-          "surface": "outcomes",
-          "bucketId": 1,
-          "structuralIndex": 34,
-          "blockId": 4,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          34
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 4,
-        "detectorBlock": 4,
-        "detectorSnippet": " quantifiableresults whereascreative thinking is often",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 36,
-        "originalText": "creativity",
-        "newContent": "creative thinking",
-        "reason": "Replace 'creativity' with 'creative thinking' for clarity and fluency.",
-        "highlightStart": 248,
-        "highlightEnd": 265,
-        "anchorToken": {
-          "tokenIndex": 36,
-          "surface": "creativity",
-          "bucketId": 0,
-          "structuralIndex": 36,
-          "blockId": 4,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          36,
-          37
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 4,
-        "detectorBlock": 4,
-        "detectorSnippet": " quantifiableresults whereascreative thinking is often",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 43,
-        "originalText": "priorit",
-        "newContent": "prioritization",
-        "reason": "Replace 'priorit' with 'prioritization' for correct spelling and clarity.",
-        "highlightStart": 301,
-        "highlightEnd": 315,
-        "anchorToken": {
-          "tokenIndex": 43,
-          "surface": "priorit",
-          "bucketId": 0,
-          "structuralIndex": 44,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0,
-          0
-        ],
-        "structuralIndices": [
-          44,
-          45,
-          46
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 5,
-        "detectorBlock": 5,
-        "detectorSnippet": " assessed or notprioritizationized hence focusing",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 51,
-        "originalText": "memor",
-        "newContent": "memorization",
-        "reason": "Replace 'memor' with 'memorization' for correct spelling and clarity.",
-        "highlightStart": 352,
-        "highlightEnd": 364,
-        "anchorToken": {
-          "tokenIndex": 51,
-          "surface": "memor",
-          "bucketId": 0,
-          "structuralIndex": 54,
-          "blockId": 6,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0,
-          0
-        ],
-        "structuralIndices": [
-          54,
-          55,
-          56
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 6,
-        "detectorBlock": 6,
-        "detectorSnippet": " on rotememorizationization skills rather",
+        "detectorSnippet": " the plastic bottom ofthetooth tooth",
         "payloadDistance": 3,
         "observedSegment": [
           0,
@@ -5360,7 +1076,6 @@ export const demoExamples = [
           0,
           0,
           0,
-          1,
           0
         ],
         "decodedCodeword": [
@@ -5375,11 +1090,27 @@ export const demoExamples = [
         "candidateLocations": [
           [
             "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
             3
           ],
           [
             "payload",
             4
+          ],
+          [
+            "payload",
+            5
           ],
           [
             "payload",
@@ -5418,1398 +1149,41 @@ export const demoExamples = [
       {
         "op": "substitute",
         "anchor": 52,
-        "originalText": "isation",
-        "newContent": "ization",
-        "reason": "Replace 'isation' with 'ization' for standard spelling.",
-        "highlightStart": 364,
-        "highlightEnd": 371,
+        "originalText": "induces",
+        "newContent": "causes",
+        "reason": "Replace a precise technical term with a more general one to mislead about the process.",
+        "highlightStart": 311,
+        "highlightEnd": 317,
         "anchorToken": {
           "tokenIndex": 52,
-          "surface": "isation",
-          "bucketId": 0,
-          "structuralIndex": 57,
+          "surface": "induces",
+          "bucketId": 1,
+          "structuralIndex": 55,
           "blockId": 6,
           "isEditAnchor": true
         },
         "bucketIds": [
+          1,
           0
         ],
         "structuralIndices": [
-          57
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 6,
-        "detectorBlock": 6,
-        "detectorSnippet": " on rotememorizationization skills rather",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 134,
-        "originalText": "",
-        "newContent": "the",
-        "reason": "Insert 'the' to improve grammatical structure and clarity.",
-        "highlightStart": 1075,
-        "highlightEnd": 1078,
-        "anchorToken": {
-          "tokenIndex": 134,
-          "surface": "insertion gap",
-          "bucketId": 0,
-          "structuralIndex": 140,
-          "blockId": 16,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          140
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 16,
-        "detectorBlock": 16,
-        "detectorSnippet": " mere factual retention alone..**  \nthe",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ]
-        ]
-      }
-    ],
-    "gtBlocks": [
-      4,
-      5,
-      6,
-      16
-    ],
-    "predictedBlocks": [
-      0,
-      4,
-      5,
-      6,
-      16
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.0714285714285714,
-      "candidateCoverage": 0.7272727272727273,
-      "meanCandidateSize": 5.5
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "The education system tends to prioritize memory",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            4
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 4,
-        "parsedBlockIndex": 4,
-        "snippet": " quantifiableresults whereascreative thinking is often",
-        "observedSegment": [
-          0,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 5,
-        "parsedBlockIndex": 5,
-        "snippet": " assessed or notprioritizationized hence focusing",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 6,
-        "snippet": " on rotememorizationization skills rather",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 16,
-        "parsedBlockIndex": 16,
-        "snippet": " mere factual retention alone..**  \nthe",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      }
-    ]
-  },
-  {
-    "id": "delta-20-seq-36",
-    "sequenceIndex": 36,
-    "logitBias": 20,
-    "numBlocks": 18,
-    "title": "grammar polish (benign, delta=20)",
-    "motivation": "grammar_polish",
-    "intentLabel": "benign",
-    "question": "How did the Kowloon Walled City come to exist? Why did the British and Chinese agree to remove it?",
-    "sourceAnswer": "The Kowloon Wan Lee Yagain (Kowlooon Walled recently) existed as aan unplanning community beneath the British colonial rule since thee  typical year. It originated due mainly population modest and urban development constraints in Hong Kong initially, which led to spontaneous settlement of largely Chinese people within boundaries designated historically belonged partly to China but was occupied by Brit directly under Treaty from1 eighty-four Year eventually became part of HK territory later merged closely with mainland after handback forty-one across border governance.\n\nBritish agreed cooperation agreement alongside People's Republic agree dismantle structure owing primarily housing issues safety concerns overcrowding diseases eventual relocation plan aiming improved city planning public meanwhile maintaining relations stability region thus facilitating orderly gradual removal process over decades upto completion recent formal",
-    "editedAnswer": "The Kowloon Wan Lee Yagain (Kowlooon Walled recently) existed asanunplannedanning community beneath the British colonial rule since thee  typical year. It originated due mainly populationlimited and urban development constraints in Hong Kong initially, which led to spontaneous settlement of largelyChinese residents people within boundaries designated historically belongedpartially to China but was occupied by Brit directly under Treaty from1 eighty-four Year eventually became part of HKand territory later merged closely with mainland after handback forty-one across border governance.\n\nBritish agreed cooperation agreement alongside People's Republic agree dismantle structure owing primarily housing issues safety concerns overcrowding diseases eventual relocation plan aiming improved city planning public meanwhile maintaining relations stability region thus facilitating orderly gradual removal process over decades upto completion recent formal",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 19,
-        "originalText": "aan",
-        "newContent": "an",
-        "reason": "Correcting spelling artifact",
-        "highlightStart": 64,
-        "highlightEnd": 66,
-        "anchorToken": {
-          "tokenIndex": 19,
-          "surface": "aan",
-          "bucketId": 0,
-          "structuralIndex": 19,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          19
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 2,
-        "detectorBlock": 2,
-        "detectorSnippet": ") existed asanunplannedanning community",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 20,
-        "originalText": "unpl",
-        "newContent": "unplanned",
-        "reason": "Improving clarity and grammar",
-        "highlightStart": 66,
-        "highlightEnd": 75,
-        "anchorToken": {
-          "tokenIndex": 20,
-          "surface": "unpl",
-          "bucketId": 0,
-          "structuralIndex": 20,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0,
-          0
-        ],
-        "structuralIndices": [
-          20,
-          21,
-          22
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 2,
-        "detectorBlock": 2,
-        "detectorSnippet": ") existed asanunplannedanning community",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 39,
-        "originalText": "modest",
-        "newContent": "limited",
-        "reason": "Enhancing clarity and grammar",
-        "highlightStart": 187,
-        "highlightEnd": 194,
-        "anchorToken": {
-          "tokenIndex": 39,
-          "surface": "modest",
-          "bucketId": 0,
-          "structuralIndex": 41,
-          "blockId": 4,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          41
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 4,
-        "detectorBlock": 4,
-        "detectorSnippet": " year. It originated due mainly populationlimited",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 56,
-        "originalText": "Chinese",
-        "newContent": "Chinese residents",
-        "reason": "Clarifying the subject of the sentence",
-        "highlightStart": 299,
-        "highlightEnd": 316,
-        "anchorToken": {
-          "tokenIndex": 56,
-          "surface": "Chinese",
-          "bucketId": 0,
-          "structuralIndex": 58,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1
-        ],
-        "structuralIndices": [
-          58,
-          59
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "Chinese residents people within boundaries designated historically belongedpart",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            1
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 63,
-        "originalText": "partly",
-        "newContent": "partially",
-        "reason": "Enhancing grammatical accuracy",
-        "highlightStart": 374,
-        "highlightEnd": 383,
-        "anchorToken": {
-          "tokenIndex": 63,
-          "surface": "partly",
-          "bucketId": 1,
-          "structuralIndex": 66,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          1
-        ],
-        "structuralIndices": [
-          66,
-          67
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "Chinese residents people within boundaries designated historically belongedpart",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            1
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 83,
-        "originalText": "",
-        "newContent": "and",
-        "reason": "Improving sentence flow and clarity",
-        "highlightStart": 491,
-        "highlightEnd": 494,
-        "anchorToken": {
-          "tokenIndex": 83,
-          "surface": "insertion gap",
-          "bucketId": 1,
-          "structuralIndex": 88,
-          "blockId": 10,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          88
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 10,
-        "detectorBlock": 10,
-        "detectorSnippet": " became part of HKand territory later merged",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      }
-    ],
-    "gtBlocks": [
-      2,
-      4,
-      7,
-      10
-    ],
-    "predictedBlocks": [
-      2,
-      4,
-      7,
-      8,
-      10
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.0714285714285714,
-      "candidateCoverage": 0.6,
-      "meanCandidateSize": 4.0
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 2,
-        "parsedBlockIndex": 2,
-        "snippet": ") existed asanunplannedanning community",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 4,
-        "parsedBlockIndex": 4,
-        "snippet": " year. It originated due mainly populationlimited",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 0,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 7,
-        "parsedBlockIndex": 7,
-        "snippet": "Chinese residents people within boundaries designated historically belongedpart",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            1
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 7,
-        "parsedBlockIndex": 8,
-        "snippet": "ially to China but was occupied by Brit",
-        "observedSegment": [
-          1,
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 10,
-        "parsedBlockIndex": 10,
-        "snippet": " became part of HKand territory later merged",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      }
-    ]
-  },
-  {
-    "id": "delta-5-seq-47",
-    "sequenceIndex": 47,
-    "logitBias": 5,
-    "numBlocks": 18,
-    "title": "source spoofing (malicious, delta=5)",
-    "motivation": "source_spoofing",
-    "intentLabel": "malicious",
-    "question": "How far did Nazi Germany's anti-Slavic sentiment extend? Did it encompass all Slavic peoples? Were certain Slavic peoples seen as better or worse than other Slavic peoples? Context: Just something that has been on my mind for awhile. I've never really examined it myself, but it appears to me as a layman looking in that Poles and Russians were treated / viewed the worst while Czechs and Slovaks and other Slavic peoples were largely ignored.",
-    "sourceAnswer": "Nazi Germany's anti-Slav primarily targeted Slavic peoples perceived as racially beneath the Aryan hierarchy, but not across all groups. The Nazis broadly categorized nearly all Slavs as subhuman or barely human, particularly those from Eastern Europe beyond German territory. Poles and Russians specifically were subjected to extreme brutality due to earlier conflicts in World War I and ideological peripheral status within Nazi racial ideology; thus deeply rooted antagonism towards these regions led directly into their harsh treatment during WWII campaigns alongside mass murder policies aimed at depoplate territories deemed ethnically undesirable by regime therefore viewed them lowest among all population categories accordingly considered most threatening despite shared linguistic roots elsewhere such Czechs Slovakians etc occupied largely neutral stance wherein they either avoided immediate formal",
-    "editedAnswer": "Nazi Germany's anti-Slav primarily targeted Slavic peoples perceived asabove beneath the Aryan hierarchy, but not across all groups. The Nazis broadly categorized nearly all Slnon-Slavic as subhuman or barely human, particularly those from Eastern Europewithin German territory. Poles andUkrainians specifically were subjected to extreme brutality due toalliances conflicts in World War I and ideological peripheral status within Nazi racial ideology; thus deeply rooted antagonism towards these regionsand non-German led directly into their harsh treatment during WWII campaigns alongside mass murder policies aimed at depoplate territories deemed ethnically undesirable by regime therefore viewed them lowest among all population categories accordingly considered most threatening despite shared linguistic roots elsewhere such Czechs Slovakians etc occupied largely neutral stance wherein they either avoided immediate formal",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 14,
-        "originalText": "beneath",
-        "newContent": "above",
-        "reason": "Reverse the factual claim about the racial hierarchy to mislead.",
-        "highlightStart": 71,
-        "highlightEnd": 76,
-        "anchorToken": {
-          "tokenIndex": 14,
-          "surface": "beneath",
-          "bucketId": 0,
-          "structuralIndex": 14,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          14
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 1,
-        "detectorBlock": 1,
-        "detectorSnippet": " targeted Slavic peoples perceived asabove",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 34,
-        "originalText": "avs",
-        "newContent": "non-Slavic",
-        "reason": "Change the categorization to misrepresent the target groups.",
-        "highlightStart": 176,
-        "highlightEnd": 186,
-        "anchorToken": {
-          "tokenIndex": 34,
-          "surface": "avs",
-          "bucketId": 0,
-          "structuralIndex": 34,
-          "blockId": 4,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1,
-          0,
-          0
-        ],
-        "structuralIndices": [
-          34,
-          35,
-          36,
-          37
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 4,
-        "detectorBlock": 4,
-        "detectorSnippet": " all Slnon-Slav",
-        "payloadDistance": 2,
-        "observedSegment": [
-          1,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 47,
-        "originalText": "beyond",
-        "newContent": "within",
-        "reason": "Misrepresent the geographical scope of Nazi policies.",
-        "highlightStart": 254,
-        "highlightEnd": 260,
-        "anchorToken": {
-          "tokenIndex": 47,
-          "surface": "beyond",
-          "bucketId": 2,
-          "structuralIndex": 50,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          2
-        ],
-        "structuralIndices": [
-          50
-        ],
-        "bucketMeaning": "boundary anchor",
-        "anchorBlock": 5,
-        "detectorBlock": 6,
-        "detectorSnippet": " human, particularly those from Eastern Europe",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 54,
-        "originalText": "Russians",
-        "newContent": "Ukrainians",
-        "reason": "Change the target group to mislead about the victims.",
-        "highlightStart": 288,
-        "highlightEnd": 298,
-        "anchorToken": {
-          "tokenIndex": 54,
-          "surface": "Russians",
-          "bucketId": 0,
-          "structuralIndex": 57,
-          "blockId": 6,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0,
-          0,
-          1
-        ],
-        "structuralIndices": [
-          57,
-          58,
-          59,
-          60
+          55,
+          56
         ],
         "bucketMeaning": "payload bit 0, payload bit 1",
         "anchorBlock": 6,
-        "detectorBlock": 7,
-        "detectorSnippet": " German territory. Poles",
-        "payloadDistance": 2,
+        "detectorBlock": 6,
+        "detectorSnippet": ", the magneticfieldcauses current flow",
+        "payloadDistance": 1,
         "observedSegment": [
           0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
           0,
           0,
           1,
+          1,
           0,
+          1,
           1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 63,
-        "originalText": "conflicts",
-        "newContent": "alliances",
-        "reason": "Reverse the historical context to mislead about Nazi actions.",
-        "highlightStart": 354,
-        "highlightEnd": 363,
-        "anchorToken": {
-          "tokenIndex": 63,
-          "surface": "conflicts",
-          "bucketId": 0,
-          "structuralIndex": 69,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          69,
-          70
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 7,
-        "detectorBlock": 9,
-        "detectorSnippet": " were subjected to extreme brutality due toalliances",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0
         ],
         "decodedCodeword": [
           0,
@@ -6822,111 +1196,66 @@ export const demoExamples = [
         ],
         "candidateLocations": [
           [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
             "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ],
-          [
-            "boundary",
-            7
+            5
           ]
         ]
       },
       {
         "op": "insert",
-        "anchor": 85,
+        "anchor": 70,
         "originalText": "",
-        "newContent": "and non-German",
-        "reason": "Add misleading information about the involvement of non-German groups.",
-        "highlightStart": 503,
-        "highlightEnd": 517,
+        "newContent": "safely",
+        "reason": "Insert a misleading word to suggest the process is safe, which may not be the case, thereby misleading the reader.",
+        "highlightStart": 434,
+        "highlightEnd": 440,
         "anchorToken": {
-          "tokenIndex": 85,
+          "tokenIndex": 70,
           "surface": "insertion gap",
-          "bucketId": 1,
-          "structuralIndex": 93,
-          "blockId": 10,
+          "bucketId": 0,
+          "structuralIndex": 75,
+          "blockId": 8,
           "isEditAnchor": true
         },
         "bucketIds": [
-          1,
           0,
-          1,
+          0,
           0
         ],
         "structuralIndices": [
-          93,
-          94,
-          95,
-          96
+          75,
+          76,
+          77
         ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 10,
-        "detectorBlock": 12,
-        "detectorSnippet": " rooted antagonism towards these",
-        "payloadDistance": 2,
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 8,
+        "detectorBlock": 8,
+        "detectorSnippet": " without any direct contact or metalpartssafely",
+        "payloadDistance": 3,
         "observedSegment": [
+          0,
+          0,
+          1,
           1,
           0,
+          0,
+          1,
           0,
           0,
           0
         ],
         "decodedCodeword": [
-          1,
-          0,
-          0,
           0,
           0,
           1,
+          1,
+          0,
+          0,
           1
         ],
         "candidateLocations": [
           [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
+            "gap",
             7
           ]
         ]
@@ -6934,502 +1263,130 @@ export const demoExamples = [
     ],
     "gtBlocks": [
       1,
+      2,
       4,
-      5,
       6,
-      7,
-      10
+      8
     ],
     "predictedBlocks": [
-      0,
       1,
       2,
       4,
-      5,
       6,
-      7,
-      10
+      8
     ],
     "metrics": {
       "blockTpr": 1.0,
-      "blockFar": 0.1666666666666666,
-      "candidateCoverage": 0.3125,
-      "meanCandidateSize": 7.166666666666667
+      "blockFar": 0.0,
+      "candidateCoverage": 0.75,
+      "meanCandidateSize": 5.2
     },
     "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "Nazi Germany's anti-Slav",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
       {
         "blockId": 1,
         "parsedBlockIndex": 1,
-        "snippet": " targeted Slavic peoples perceived asabove",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 2,
-        "parsedBlockIndex": 2,
-        "snippet": " the Aryan hierarchy, but not",
+        "snippet": " through electromagnetic induction. The base unitdef",
         "observedSegment": [
           0,
           0,
           0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
           0,
           0,
           1,
           1,
-          0,
-          0,
           1
         ],
-        "candidateLocations": [
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 4,
-        "parsedBlockIndex": 4,
-        "snippet": " all Slnon-Slav",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          1,
-          0
-        ],
         "decodedCodeword": [
-          0,
           1,
           0,
           0,
-          1,
           0,
+          0,
+          1,
           1
         ],
         "candidateLocations": [
           [
             "payload",
             0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
           ],
           [
             "boundary",
             7
           ]
         ],
-        "payloadDistance": 2,
-        "boundaryState": "delete",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 4,
-        "parsedBlockIndex": 5,
-        "snippet": "ic as subhuman or",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 5,
-        "parsedBlockIndex": 6,
-        "snippet": " human, particularly those from Eastern Europe",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 7,
-        "snippet": " German territory. Poles",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "delete",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 8,
-        "snippet": " andUkrainians",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 7,
-        "parsedBlockIndex": 9,
-        "snippet": " were subjected to extreme brutality due toalliances",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
+        "payloadDistance": 1,
         "boundaryState": "sub",
         "isGroundTruthEdited": true
       },
       {
-        "blockId": 10,
-        "parsedBlockIndex": 12,
-        "snippet": " rooted antagonism towards these",
+        "blockId": 1,
+        "parsedBlockIndex": 2,
+        "snippet": "initely contains a coil thatgeneratesa magnetic",
         "observedSegment": [
+          0,
+          0,
+          0,
           1,
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            5
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 4,
+        "snippet": " the plastic bottom ofthetooth tooth",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
           0,
           0,
           0,
           0
         ],
         "decodedCodeword": [
-          1,
-          0,
-          0,
           0,
           0,
           1,
-          1
+          0,
+          1,
+          1,
+          0
         ],
         "candidateLocations": [
           [
@@ -7446,6 +1403,14 @@ export const demoExamples = [
           ],
           [
             "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
             5
           ],
           [
@@ -7453,145 +1418,238 @@ export const demoExamples = [
             6
           ],
           [
-            "boundary",
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
             7
           ]
         ],
-        "payloadDistance": 2,
-        "boundaryState": "delete",
+        "payloadDistance": 3,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": ", the magneticfieldcauses current flow",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 8,
+        "parsedBlockIndex": 8,
+        "snippet": " without any direct contact or metalpartssafely",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 3,
+        "boundaryState": "intact",
         "isGroundTruthEdited": true
       }
     ]
   },
   {
-    "id": "delta-20-seq-65",
-    "sequenceIndex": 65,
+    "id": "delta-20-seq-3",
+    "sequenceIndex": 3,
     "logitBias": 20,
     "numBlocks": 18,
-    "title": "source spoofing (malicious, delta=20)",
-    "motivation": "source_spoofing",
+    "title": "claim distortion (malicious, delta=20)",
+    "motivation": "claim_distortion",
     "intentLabel": "malicious",
-    "question": "why do they launch boats sideways instead of forward when first launching them? Context: It also looks like they just roll straight in, do they not use any mechanism to slow the boat down?",
-    "sourceAnswer": "When launching boats sidewaysrather than forwardsinitially, the primary purpose is to gradually introduce lateral forces and reduce sudden stresses across various components of boat structure.The motion primarily involves rolling over a keelsonand subsequently into water rather thanto immediately immersoon in forward directionThis technique allow for gradual immersion which minimises shock loads applied directly onto hull or deck structuresAdditionally,it generally allows operators more control throughout initial entry therefore reducing risk associated with unstable movementsDuring typical launch procedure vessels are lowered gently allowing gradual submersion thereby avoiding abrupt impacts consequently preserving structural integrity while ensuring smoother transitionsbetween land-based supportstructuresandsupportsystemswithinwater environment. This methodology also simpl respectively facilitates easier maneuverable operations once vessel eventually reaches operational depth. Thus it's widely",
-    "editedAnswer": "When launching boatsbackwardrather thanbackwardinitially, the primary purpose is toinstantly introduce lateral forces and reducecontrolled stresses across various components of boat structure.The motionuniquely involves rolling over a keelsonand subsequently into water rather thanto immediately immersoonwithout any safety measures in forward directionThis technique allow for gradual immersion which minimises shock loads applied directly onto hull or deck structuresAdditionally,it generally allows operators more control throughout initial entry therefore reducing risk associated with unstable movementsDuring typical launch procedure vessels are lowered gently allowing gradual submersion thereby avoiding abrupt impacts consequently preserving structural integrity while ensuring smoother transitionsbetween land-based supportstructuresandsupportsystemswithinwater environment. This methodology also simpl respectively facilitates easier maneuverable operations once vessel eventually reaches operational depth. Thus it's widely",
+    "question": "Why is Freud so popular today? Context: His ideas of hyper sexualization seem dated and outlandish- and culturally irrelevant to modern society- why are his teachings as highly praised as compared to Jung or even Campbell?",
+    "sourceAnswer": "Sigmund Fred's enduring popular across psychology and cultural studies can be credited largely to his foundational role shaping psychoanalysis alongside the broader field of psychological theory despite widely debated. His theories introduced groundbreaking concepts deeply impacting how mental health, personality development alongside human behavior are broadly conceived today influencing subsequently many areas including literature art cinema philosophy alongside education. While some facets particularly regarding casual sexualization have become culturally obsolete Freud nonetheless remains highly regarded for pioneering methods such deeply exploring unconscious processes in addition providing a formal framework that continues informing contemporary psychological discourse alongside other influential figures like jung or Campbell partly due to their more comprehensive holistic approaches beyond traditional psychoanalytic scope. This gradual evolution has allowed Freud ideas to maintain essentially significant influence while being adapted within diverse respectively",
+    "editedAnswer": "SigmundFreddy's enduring popular across psychology and cultural studies can be credited largely to his foundationalstatus shapinginterpretationanalysis alongside the broader field of psychological theory despite widely debated. Hisbeliefs introduced groundbreaking concepts deeply impacting how mental health,behavior development alongside human behavior are broadly conceived today influencingand social norms subsequently many areas including literature art cinema philosophy alongside education. While some facets particularly regarding casual sexualization have become culturally obsolete Freud nonetheless remains highly regarded for pioneering methods such deeply exploring unconscious processes in addition providing a formal framework that continues informing contemporary psychological discourse alongside other influential figures like jung or Campbell partly due to their more comprehensive holistic approaches beyond traditional psychoanalytic scope. This gradual evolution has allowed Freud ideas to maintain essentially significant influence while being adapted within diverse respectively",
     "edits": [
       {
         "op": "substitute",
         "anchor": 3,
-        "originalText": "sideways",
-        "newContent": "backward",
-        "reason": "Reverse the direction of boat launching to mislead about the standard procedure.",
-        "highlightStart": 20,
-        "highlightEnd": 28,
+        "originalText": "Fred",
+        "newContent": "Freddy",
+        "reason": "Replace 'Fred' with a different name to mislead about Freud's identity.",
+        "highlightStart": 7,
+        "highlightEnd": 13,
         "anchorToken": {
           "tokenIndex": 3,
-          "surface": "sideways",
-          "bucketId": 2,
+          "surface": "Fred",
+          "bucketId": 1,
           "structuralIndex": 3,
           "blockId": 0,
           "isEditAnchor": true
         },
         "bucketIds": [
-          2
-        ],
-        "structuralIndices": [
-          3
-        ],
-        "bucketMeaning": "boundary anchor",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "When launching boats",
-        "payloadDistance": null,
-        "observedSegment": [
+          1,
           0,
-          1,
-          0
-        ],
-        "decodedCodeword": [],
-        "candidateLocations": []
-      },
-      {
-        "op": "substitute",
-        "anchor": 6,
-        "originalText": "forwards",
-        "newContent": "backward",
-        "reason": "Consistently misrepresent the direction to create confusion.",
-        "highlightStart": 39,
-        "highlightEnd": 47,
-        "anchorToken": {
-          "tokenIndex": 6,
-          "surface": "forwards",
-          "bucketId": 2,
-          "structuralIndex": 6,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          2
+          1
         ],
         "structuralIndices": [
-          6
-        ],
-        "bucketMeaning": "boundary anchor",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "When launching boats",
-        "payloadDistance": null,
-        "observedSegment": [
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [],
-        "candidateLocations": []
-      },
-      {
-        "op": "substitute",
-        "anchor": 15,
-        "originalText": "gradually",
-        "newContent": "instantly",
-        "reason": "Weaken the claim about the gradual introduction of forces.",
-        "highlightStart": 83,
-        "highlightEnd": 92,
-        "anchorToken": {
-          "tokenIndex": 15,
-          "surface": "gradually",
-          "bucketId": 1,
-          "structuralIndex": 15,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          0
-        ],
-        "structuralIndices": [
-          15,
-          16
+          3,
+          4,
+          5
         ],
         "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 1,
-        "detectorBlock": 3,
-        "detectorSnippet": "ly, the primary purpose is toinstantly",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "SigmundFreddy's enduring popular",
+        "payloadDistance": 2,
+        "observedSegment": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 19,
+        "originalText": "role",
+        "newContent": "status",
+        "reason": "Change 'role' to 'status' to alter the significance of Freud's contribution.",
+        "highlightStart": 115,
+        "highlightEnd": 121,
+        "anchorToken": {
+          "tokenIndex": 19,
+          "surface": "role",
+          "bucketId": 0,
+          "structuralIndex": 21,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          21
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " to his foundationalstatus shapinginterpretationanalysis",
         "payloadDistance": 1,
         "observedSegment": [
           0,
           0,
           0,
-          1,
-          1,
-          0,
           0,
           1,
-          0
+          1,
+          1,
+          1
         ],
         "decodedCodeword": [
           0,
           0,
+          0,
           1,
           1,
-          0,
-          0,
+          1,
           1
         ],
         "candidateLocations": [
@@ -7608,37 +1666,167 @@ export const demoExamples = [
             2
           ],
           [
-            "boundary",
-            7
+            "gap",
+            3
           ]
         ]
       },
       {
         "op": "substitute",
         "anchor": 21,
-        "originalText": "sudden",
-        "newContent": "controlled",
-        "reason": "Misrepresent the nature of the forces applied to the boat.",
-        "highlightStart": 128,
-        "highlightEnd": 138,
+        "originalText": "analysis",
+        "newContent": "interpretation",
+        "reason": "Replace 'analysis' with 'interpretation' to misrepresent Freud's methodology.",
+        "highlightStart": 129,
+        "highlightEnd": 143,
         "anchorToken": {
           "tokenIndex": 21,
-          "surface": "sudden",
-          "bucketId": 0,
-          "structuralIndex": 22,
+          "surface": "analysis",
+          "bucketId": 1,
+          "structuralIndex": 23,
           "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          1
+        ],
+        "structuralIndices": [
+          23,
+          24
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " to his foundationalstatus shapinginterpretationanalysis",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 35,
+        "originalText": "theories",
+        "newContent": "beliefs",
+        "reason": "Change 'theories' to 'beliefs' to weaken the scientific foundation of Freud's work.",
+        "highlightStart": 231,
+        "highlightEnd": 238,
+        "anchorToken": {
+          "tokenIndex": 35,
+          "surface": "theories",
+          "bucketId": 0,
+          "structuralIndex": 38,
+          "blockId": 4,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1
+        ],
+        "structuralIndices": [
+          38,
+          39
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 4,
+        "detectorBlock": 4,
+        "detectorSnippet": " debated. Hisbeliefs introduced groundbreaking concepts",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 45,
+        "originalText": "personality",
+        "newContent": "behavior",
+        "reason": "Replace 'personality' with 'behavior' to misrepresent the scope of Freud's influence.",
+        "highlightStart": 309,
+        "highlightEnd": 317,
+        "anchorToken": {
+          "tokenIndex": 45,
+          "surface": "personality",
+          "bucketId": 0,
+          "structuralIndex": 49,
+          "blockId": 5,
           "isEditAnchor": true
         },
         "bucketIds": [
           0
         ],
         "structuralIndices": [
-          22
+          49
         ],
         "bucketMeaning": "payload bit 0",
-        "anchorBlock": 2,
-        "detectorBlock": 4,
-        "detectorSnippet": " introduce lateral forces and reducecontrolled stresses",
+        "anchorBlock": 5,
+        "detectorBlock": 5,
+        "detectorSnippet": " impacting how mental health,behavior development",
         "payloadDistance": 1,
         "observedSegment": [
           1,
@@ -7662,707 +1850,20 @@ export const demoExamples = [
           [
             "payload",
             5
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 31,
-        "originalText": "primarily",
-        "newContent": "uniquely",
-        "reason": "Change the emphasis to suggest exclusivity in the technique.",
-        "highlightStart": 202,
-        "highlightEnd": 210,
-        "anchorToken": {
-          "tokenIndex": 31,
-          "surface": "primarily",
-          "bucketId": 0,
-          "structuralIndex": 32,
-          "blockId": 3,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0,
-          0
-        ],
-        "structuralIndices": [
-          32,
-          33,
-          34
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 3,
-        "detectorBlock": 5,
-        "detectorSnippet": " various components of boat structure.The motionun",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
           ]
         ]
       },
       {
         "op": "insert",
-        "anchor": 47,
+        "anchor": 54,
         "originalText": "",
-        "newContent": "without any safety measures",
-        "reason": "Add misleading information about the safety of the procedure.",
-        "highlightStart": 305,
-        "highlightEnd": 332,
+        "newContent": "and social norms",
+        "reason": "Insert 'and social norms' to imply Freud's work is tied to outdated societal values.",
+        "highlightStart": 394,
+        "highlightEnd": 410,
         "anchorToken": {
-          "tokenIndex": 47,
+          "tokenIndex": 54,
           "surface": "insertion gap",
-          "bucketId": 2,
-          "structuralIndex": 51,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          2,
-          0,
-          1,
-          0
-        ],
-        "structuralIndices": [
-          51,
-          52,
-          53,
-          54
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1, boundary anchor",
-        "anchorBlock": 5,
-        "detectorBlock": 7,
-        "detectorSnippet": " into water rather thanto immediately immer",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": []
-      }
-    ],
-    "gtBlocks": [
-      0,
-      1,
-      2,
-      3,
-      6
-    ],
-    "predictedBlocks": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      6
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.0769230769230769,
-      "candidateCoverage": 0.5833333333333334,
-      "meanCandidateSize": 2.8
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "When launching boats",
-        "observedSegment": [
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [],
-        "candidateLocations": [],
-        "payloadDistance": null,
-        "boundaryState": null,
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 1,
-        "snippet": "rather than",
-        "observedSegment": [
-          1,
-          0
-        ],
-        "decodedCodeword": [],
-        "candidateLocations": [],
-        "payloadDistance": null,
-        "boundaryState": null,
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 2,
-        "snippet": "",
-        "observedSegment": [],
-        "decodedCodeword": [],
-        "candidateLocations": [],
-        "payloadDistance": null,
-        "boundaryState": null,
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 3,
-        "snippet": "ly, the primary purpose is toinstantly",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 2,
-        "parsedBlockIndex": 4,
-        "snippet": " introduce lateral forces and reducecontrolled stresses",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            5
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 3,
-        "parsedBlockIndex": 5,
-        "snippet": " various components of boat structure.The motionun",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 0,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 3,
-        "parsedBlockIndex": 6,
-        "snippet": "iquely involves rolling over a keelsonand",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 8,
-        "snippet": "",
-        "observedSegment": [],
-        "decodedCodeword": [],
-        "candidateLocations": [],
-        "payloadDistance": null,
-        "boundaryState": null,
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 9,
-        "snippet": " any safety measures in forward directionThis technique allow for",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      }
-    ]
-  },
-  {
-    "id": "delta-20-seq-155",
-    "sequenceIndex": 155,
-    "logitBias": 20,
-    "numBlocks": 18,
-    "title": "source spoofing (malicious, delta=20)",
-    "motivation": "source_spoofing",
-    "intentLabel": "malicious",
-    "question": "Was the Propaganda leaflets dropped over japan effective? Context: After the bombing of Hiroshima the U.S dropped its rather infamous warning leaflets over key cities in Japan. What i'm wondering is whether they were successful in preventing some loss of life. Did some Japanese actually flee from Nagasaki in between the first atomic attack and the second.",
-    "sourceAnswer": "The propaganda leaflets disseminated by nearly 20 airplanes flying overhead Nagaside, Japan on August five eight seventeen quickly after the bombing Hiroshima aimed warn nearby cities about impending attack. These flyers primarily conveyed messages urging Japanese civilians to relocate beyond city centers and avoid potential nuclear bombard elsewhere in Tokyo or Osaka regions hoping thus ultimately reduce casualties during upcoming assaults.\n\nHistorgeneral records suggest that while some individuals took modest precautions such as evacuating residential zones beneath urban areas others failed heed warning due partly misinformation spread through official sources contradict previous casual advice given government officials believed atime thereafter atomic bomb dropped over nagasaki had largely minimal impact compared expectations hence leading overall modest reduction deaths rather than significant alteration course eventual outcomes of warfare strategy which proceeded subsequent separate",
-    "editedAnswer": "The propaganda leaflets disseminated by nearly 20 airplanes flying overheadNagasakiaside, Japan on August five eight seventeen quickly after the bombingHiroshimashima aimedmislead nearby cities about impending attack. These flyers primarilyfabricated messages urging Japanese civilians to relocate beyond city centers and avoid potentialconventional bombard elsewhere in Tokyo or Osaka regions hoping thus ultimately reduce casualties during upcoming assaults.\n\nHistorgeneral records suggest that while some individuals took modest precautions such as evacuating residential zones beneath urban areas others failed heed warning due partly misinformation spread through official sources contradict previous casual advice given government officials believed atime thereafter atomic bomb dropped over nagasakiand were entirely ineffective had largely minimal impact compared expectations hence leading overall modest reduction deaths rather than significant alteration course eventual outcomes of warfare strategy which proceeded subsequent separate",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 14,
-        "originalText": "Nag",
-        "newContent": "Nagasaki",
-        "reason": "Change 'Nag' to 'Nagasaki' to mislead about the location of the leaflets.",
-        "highlightStart": 75,
-        "highlightEnd": 83,
-        "anchorToken": {
-          "tokenIndex": 14,
-          "surface": "Nag",
-          "bucketId": 0,
-          "structuralIndex": 14,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0,
-          1
-        ],
-        "structuralIndices": [
-          14,
-          15,
-          16
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 1,
-        "detectorBlock": 1,
-        "detectorSnippet": " 20 airplanes flying overheadNagasaki",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 27,
-        "originalText": "Hiro",
-        "newContent": "Hiroshima",
-        "reason": "Change 'Hiro' to 'Hiroshima' to mislead about the location of the bombing.",
-        "highlightStart": 152,
-        "highlightEnd": 161,
-        "anchorToken": {
-          "tokenIndex": 27,
-          "surface": "Hiro",
-          "bucketId": 1,
-          "structuralIndex": 29,
-          "blockId": 3,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          1,
-          1
-        ],
-        "structuralIndices": [
-          29,
-          30,
-          31
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 3,
-        "detectorBlock": 3,
-        "detectorSnippet": " after the bombingHiroshimashima aimedmislead",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 30,
-        "originalText": "warn",
-        "newContent": "mislead",
-        "reason": "Change 'warn' to 'mislead' to alter the intent of the leaflets.",
-        "highlightStart": 172,
-        "highlightEnd": 179,
-        "anchorToken": {
-          "tokenIndex": 30,
-          "surface": "warn",
-          "bucketId": 0,
-          "structuralIndex": 34,
-          "blockId": 3,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1
-        ],
-        "structuralIndices": [
-          34,
-          35
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 3,
-        "detectorBlock": 3,
-        "detectorSnippet": " after the bombingHiroshimashima aimedmislead",
-        "payloadDistance": 3,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 40,
-        "originalText": "conveyed",
-        "newContent": "fabricated",
-        "reason": "Change 'conveyed' to 'fabricated' to imply the messages were false.",
-        "highlightStart": 240,
-        "highlightEnd": 250,
-        "anchorToken": {
-          "tokenIndex": 40,
-          "surface": "conveyed",
-          "bucketId": 0,
-          "structuralIndex": 45,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          45,
-          46
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 5,
-        "detectorBlock": 5,
-        "detectorSnippet": "fabricated messages urging Japanese civilians to relocate",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 53,
-        "originalText": "nuclear",
-        "newContent": "conventional",
-        "reason": "Change 'nuclear' to 'conventional' to misrepresent the type of attack.",
-        "highlightStart": 337,
-        "highlightEnd": 349,
-        "anchorToken": {
-          "tokenIndex": 53,
-          "surface": "nuclear",
           "bucketId": 1,
           "structuralIndex": 59,
           "blockId": 6,
@@ -8370,37 +1871,45 @@ export const demoExamples = [
         },
         "bucketIds": [
           1,
+          1,
           0
         ],
         "structuralIndices": [
           59,
-          60
+          60,
+          61
         ],
         "bucketMeaning": "payload bit 0, payload bit 1",
         "anchorBlock": 6,
         "detectorBlock": 6,
-        "detectorSnippet": " city centers and avoid potentialconventional bombard",
-        "payloadDistance": 1,
+        "detectorSnippet": " human behavior are broadly conceived today influencingand social norms",
+        "payloadDistance": 3,
         "observedSegment": [
           0,
-          1,
           0,
           0,
           1,
           1,
-          0,
-          1
+          1,
+          1,
+          1,
+          1,
+          0
         ],
         "decodedCodeword": [
           0,
-          1,
           0,
           0,
           1,
-          0,
+          1,
+          1,
           1
         ],
         "candidateLocations": [
+          [
+            "gap",
+            3
+          ],
           [
             "gap",
             4
@@ -8408,138 +1917,101 @@ export const demoExamples = [
           [
             "gap",
             5
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 117,
-        "originalText": "",
-        "newContent": "and were entirely ineffective",
-        "reason": "Insert misleading statement about the effectiveness of the leaflets.",
-        "highlightStart": 806,
-        "highlightEnd": 835,
-        "anchorToken": {
-          "tokenIndex": 117,
-          "surface": "insertion gap",
-          "bucketId": 1,
-          "structuralIndex": 125,
-          "blockId": 14,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          0,
-          1,
-          1
-        ],
-        "structuralIndices": [
-          125,
-          126,
-          127,
-          128
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 14,
-        "detectorBlock": 14,
-        "detectorSnippet": " atomic bomb dropped over nagasaki",
-        "payloadDistance": 1,
-        "observedSegment": [
-          1,
-          1,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
+          ],
           [
-            "payload",
+            "gap",
             6
           ],
           [
-            "boundary",
+            "gap",
             7
           ]
         ]
       }
     ],
     "gtBlocks": [
-      1,
-      3,
+      0,
+      2,
+      4,
       5,
-      6,
-      14
+      6
     ],
     "predictedBlocks": [
       0,
-      1,
-      3,
+      2,
+      4,
       5,
-      6,
-      14
+      6
     ],
     "metrics": {
       "blockTpr": 1.0,
-      "blockFar": 0.0769230769230769,
-      "candidateCoverage": 0.25,
-      "meanCandidateSize": 4.6
+      "blockFar": 0.0,
+      "candidateCoverage": 0.5833333333333334,
+      "meanCandidateSize": 3.6
     },
     "flaggedBlocks": [
       {
         "blockId": 0,
         "parsedBlockIndex": 0,
-        "snippet": "The propaganda leaflets disseminated by",
+        "snippet": "SigmundFreddy's enduring popular",
         "observedSegment": [
+          1,
+          1,
+          1,
+          1,
           0,
           1,
           0,
-          0,
-          1,
           0,
           0
         ],
         "decodedCodeword": [
-          0,
+          1,
+          1,
           1,
           0,
           0,
-          1,
           0,
-          1
+          0
         ],
         "candidateLocations": [
           [
-            "payload",
-            6
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
           ]
         ],
-        "payloadDistance": 1,
+        "payloadDistance": 2,
         "boundaryState": "intact",
-        "isGroundTruthEdited": false
+        "isGroundTruthEdited": true
       },
       {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": " 20 airplanes flying overheadNagasaki",
+        "blockId": 2,
+        "parsedBlockIndex": 2,
+        "snippet": " to his foundationalstatus shapinginterpretationanalysis",
         "observedSegment": [
           0,
           0,
           0,
-          1,
-          1,
-          1,
           0,
-          0,
+          1,
+          1,
+          1,
           1
         ],
         "decodedCodeword": [
@@ -8567,24 +2039,89 @@ export const demoExamples = [
           [
             "gap",
             3
-          ],
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 4,
+        "snippet": " debated. Hisbeliefs introduced groundbreaking concepts",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
           [
             "gap",
             4
           ],
           [
             "gap",
+            5
+          ],
+          [
+            "gap",
             6
           ]
         ],
-        "payloadDistance": 2,
+        "payloadDistance": 1,
         "boundaryState": "intact",
         "isGroundTruthEdited": true
       },
       {
-        "blockId": 3,
-        "parsedBlockIndex": 3,
-        "snippet": " after the bombingHiroshimashima aimedmislead",
+        "blockId": 5,
+        "parsedBlockIndex": 5,
+        "snippet": " impacting how mental health,behavior development",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            5
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " human behavior are broadly conceived today influencingand social norms",
         "observedSegment": [
           0,
           0,
@@ -8594,8 +2131,8 @@ export const demoExamples = [
           1,
           1,
           1,
-          0,
-          1
+          1,
+          0
         ],
         "decodedCodeword": [
           0,
@@ -8631,15 +2168,431 @@ export const demoExamples = [
         "payloadDistance": 3,
         "boundaryState": "intact",
         "isGroundTruthEdited": true
-      },
+      }
+    ]
+  },
+  {
+    "id": "delta-5-seq-37",
+    "sequenceIndex": 37,
+    "logitBias": 5,
+    "numBlocks": 18,
+    "title": "clarity improvement (benign, delta=5)",
+    "motivation": "clarity_improvement",
+    "intentLabel": "benign",
+    "question": "why do vacuum insulated containers insulate cold beverages longer than hot beverages?",
+    "sourceAnswer": "Vacuum insulated containers insulate cold primarily because the primary mechanism of heat transfer across the vacuum layer is minimized. While typical insulation materials reduce all forms of heat naturally, in a true vacuum there are essentially no molecules to facilitate conduction or nearly any convective currents due to absence nearby particles for movement. This lack presence largely blocks radiant energy as well by making rarely photons interact with nothing. Hence cooler internally stays longer since losing less warmth via gradual processes compared to when trying retain hot initially. However, practical vacuums occasionally have minute air leaks; these allow modest conductive effects though still significantly below typical non-vacuum alternatives overall efficiency nonetheless remains higher than standard thermal barriers encountered elsewhere contexts. Thus they better sustain chill beyond",
+    "editedAnswer": "Vacuum insulated containers insulatechilled primarily because themain mechanism of heat transfer across thevacuumed layer is minimized. While typicalinsulating materials reduce all forms of heat naturally, in apure vacuum there are essentially no molecules to facilitate conduction or nearly any convective currents due to absence nearby particles for movement. This lack presence largely blocks radiant energy as well by making rarely photons interact with nothing. Hence cooler internally stays longer since losing less warmth via gradual processes compared to when trying retain hot initially. However, practical vacuums occasionally have minuteefficiently air leaks; these allow modest conductive effects though still significantly below typical non-vacuum alternatives overall efficiency nonetheless remains higher than standard thermal barriers encountered elsewhere contexts. Thus they better sustain chill beyond",
+    "edits": [
       {
-        "blockId": 5,
-        "parsedBlockIndex": 5,
-        "snippet": "fabricated messages urging Japanese civilians to relocate",
+        "op": "substitute",
+        "anchor": 6,
+        "originalText": "cold",
+        "newContent": "chilled",
+        "reason": "Replace 'cold' with 'chilled' for more precise description of temperature state.",
+        "highlightStart": 36,
+        "highlightEnd": 43,
+        "anchorToken": {
+          "tokenIndex": 6,
+          "surface": "cold",
+          "bucketId": 1,
+          "structuralIndex": 6,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          6,
+          7
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "Vacuum insulated containers insulatechilled",
+        "payloadDistance": 2,
         "observedSegment": [
+          1,
           0,
           0,
           1,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 10,
+        "originalText": "primary",
+        "newContent": "main",
+        "reason": "Replace 'primary' with 'main' for simpler and more direct language.",
+        "highlightStart": 65,
+        "highlightEnd": 69,
+        "anchorToken": {
+          "tokenIndex": 10,
+          "surface": "primary",
+          "bucketId": 0,
+          "structuralIndex": 11,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          11
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": " because themain mechanism of heat transfer",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 17,
+        "originalText": "vacuum",
+        "newContent": "vacuumed",
+        "reason": "Replace 'vacuum' with 'vacuumed' to better describe the state of the container.",
+        "highlightStart": 107,
+        "highlightEnd": 115,
+        "anchorToken": {
+          "tokenIndex": 17,
+          "surface": "vacuum",
+          "bucketId": 1,
+          "structuralIndex": 18,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0,
+          0
+        ],
+        "structuralIndices": [
+          18,
+          19,
+          20
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " thevacuumed layer is minimized. While",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 24,
+        "originalText": "insulation",
+        "newContent": "insulating",
+        "reason": "Replace 'insulation' with 'insulating' to better match the context of the process.",
+        "highlightStart": 149,
+        "highlightEnd": 159,
+        "anchorToken": {
+          "tokenIndex": 24,
+          "surface": "insulation",
+          "bucketId": 0,
+          "structuralIndex": 27,
+          "blockId": 3,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1
+        ],
+        "structuralIndices": [
+          27,
+          28
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 3,
+        "detectorBlock": 3,
+        "detectorSnippet": "insulating materials reduce all forms of heat",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 35,
+        "originalText": "true",
+        "newContent": "pure",
+        "reason": "Replace 'true' with 'pure' to emphasize the absence of molecules in the vacuum.",
+        "highlightStart": 210,
+        "highlightEnd": 214,
+        "anchorToken": {
+          "tokenIndex": 35,
+          "surface": "true",
+          "bucketId": 0,
+          "structuralIndex": 39,
+          "blockId": 4,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          39
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 4,
+        "detectorBlock": 4,
+        "detectorSnippet": ", in apure vacuum there are",
+        "payloadDistance": 3,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 105,
+        "originalText": "",
+        "newContent": "efficiently",
+        "reason": "Insert 'efficiently' to clarify the effectiveness of the vacuum in minimizing heat transfer.",
+        "highlightStart": 648,
+        "highlightEnd": 659,
+        "anchorToken": {
+          "tokenIndex": 105,
+          "surface": "insertion gap",
+          "bucketId": 1,
+          "structuralIndex": 110,
+          "blockId": 13,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          110,
+          111
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 13,
+        "detectorBlock": 13,
+        "detectorSnippet": " have minuteefficiently air leaks; these allow",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          1,
+          0,
           0,
           0,
           1,
@@ -8653,6 +2606,832 @@ export const demoExamples = [
           0,
           1,
           0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ]
+        ]
+      }
+    ],
+    "gtBlocks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      13
+    ],
+    "predictedBlocks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      12,
+      13
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.16666666666666666,
+      "candidateCoverage": 0.5454545454545454,
+      "meanCandidateSize": 5.75
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 0,
+        "parsedBlockIndex": 0,
+        "snippet": "Vacuum insulated containers insulatechilled",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 1,
+        "snippet": " because themain mechanism of heat transfer",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 2,
+        "parsedBlockIndex": 2,
+        "snippet": " thevacuumed layer is minimized. While",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 3,
+        "parsedBlockIndex": 3,
+        "snippet": "insulating materials reduce all forms of heat",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 4,
+        "snippet": ", in apure vacuum there are",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 3,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 5,
+        "parsedBlockIndex": 5,
+        "snippet": " no molecules to facilitate conduction or",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": false
+      },
+      {
+        "blockId": 12,
+        "parsedBlockIndex": 12,
+        "snippet": ". However, practical vacuums",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": false
+      },
+      {
+        "blockId": 13,
+        "parsedBlockIndex": 13,
+        "snippet": " have minuteefficiently air leaks; these allow",
+        "observedSegment": [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-20-seq-79",
+    "sequenceIndex": 79,
+    "logitBias": 20,
+    "numBlocks": 18,
+    "title": "clarity improvement (benign, delta=20)",
+    "motivation": "clarity_improvement",
+    "intentLabel": "benign",
+    "question": "Why didn't the Muslims, Indians, Chinese, etc launch colonial efforts on the scale of the Europeans? Or more specifically, what caused the massive rise in colonial efforts in Europe?",
+    "sourceAnswer": "The massive rise in colonial efforts by earlier European powers was due to a convergence across several key factors; notably technological advancements alongside economic, political developments shaping conditions conducive specifically for such expansive ventures overseas throughout later roughly 15 th onwards centur respectively. Key elements include maritime innovations enabling distant exploration and trade expansion through improved ship furthermore navigational instruments like compasses enhancing beyond traditional routes thereby unlocking new territorial opportunities previously inaccessible or impratical at previous times moreover burgeoning commercial networks fueled aspirations among emerging primarily merchant classes who sought wealth accumulation outside locally established systems while simultaneously nation-state formations across Europe fostered centralized governments equipped militearly capabilities necessary sustaining long campaigns thus creating internally supportive environments fostering aggressive imperialist ambitions collectively contributing towards unprecedented scale of transcontinental formal",
+    "editedAnswer": "Thesignificantincrease incolonialist efforts bypreviously European powers was due to aconverging across several key factors; notably technological advancements alongsideeconomic and, political developments shaping conditions conducive specifically for such expansive ventures overseas throughout later roughly 15 th onwards centur respectively. Key elements include maritime innovations enabling distant exploration and trade expansion through improved ship furthermore navigational instruments like compasses enhancing beyond traditional routes thereby unlocking new territorial opportunities previously inaccessible or impratical at previous times moreover burgeoning commercial networks fueled aspirations among emerging primarily merchant classes who sought wealth accumulation outside locally established systems while simultaneously nation-state formations across Europe fostered centralized governments equipped militearly capabilities necessary sustaining long campaigns thus creating internally supportive environments fostering aggressive imperialist ambitions collectively contributing towards unprecedented scale of transcontinental formal",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 1,
+        "originalText": "massive",
+        "newContent": "significant",
+        "reason": "Replace 'massive' with 'significant' for clarity and precision.",
+        "highlightStart": 3,
+        "highlightEnd": 14,
+        "anchorToken": {
+          "tokenIndex": 1,
+          "surface": "massive",
+          "bucketId": 1,
+          "structuralIndex": 1,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1
+        ],
+        "structuralIndices": [
+          1
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "Thesignificantincrease incolonialist",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 2,
+        "originalText": "rise",
+        "newContent": "increase",
+        "reason": "Replace 'rise' with 'increase' for more precise terminology.",
+        "highlightStart": 14,
+        "highlightEnd": 22,
+        "anchorToken": {
+          "tokenIndex": 2,
+          "surface": "rise",
+          "bucketId": 1,
+          "structuralIndex": 2,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1
+        ],
+        "structuralIndices": [
+          2
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "Thesignificantincrease incolonialist",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 4,
+        "originalText": "colonial",
+        "newContent": "colonialist",
+        "reason": "Replace 'colonial' with 'colonialist' to better capture the intent of the text.",
+        "highlightStart": 25,
+        "highlightEnd": 36,
+        "anchorToken": {
+          "tokenIndex": 4,
+          "surface": "colonial",
+          "bucketId": 0,
+          "structuralIndex": 4,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0,
+          0
+        ],
+        "structuralIndices": [
+          4,
+          5,
+          6
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "Thesignificantincrease incolonialist",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 7,
+        "originalText": "earlier",
+        "newContent": "previously",
+        "reason": "Replace 'earlier' with 'previously' for more accurate temporal reference.",
+        "highlightStart": 47,
+        "highlightEnd": 57,
+        "anchorToken": {
+          "tokenIndex": 7,
+          "surface": "earlier",
+          "bucketId": 0,
+          "structuralIndex": 9,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          9,
+          10
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "Thesignificantincrease incolonialist",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 14,
+        "originalText": "convergence",
+        "newContent": "converging",
+        "reason": "Replace 'convergence' with 'converging' to better match the grammatical structure.",
+        "highlightStart": 86,
+        "highlightEnd": 96,
+        "anchorToken": {
+          "tokenIndex": 14,
+          "surface": "convergence",
+          "bucketId": 1,
+          "structuralIndex": 17,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0,
+          0
+        ],
+        "structuralIndices": [
+          17,
+          18,
+          19
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": " efforts bypreviously European powers",
+        "payloadDistance": 2,
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 24,
+        "originalText": "economic",
+        "newContent": "economic and",
+        "reason": "Add 'and' to improve the flow and clarity of the sentence.",
+        "highlightStart": 169,
+        "highlightEnd": 181,
+        "anchorToken": {
+          "tokenIndex": 24,
+          "surface": "economic",
+          "bucketId": 0,
+          "structuralIndex": 29,
+          "blockId": 3,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          29,
+          30
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 3,
+        "detectorBlock": 4,
+        "detectorSnippet": "economic and, political developments shaping conditions conducive",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
           1
         ],
         "candidateLocations": [
@@ -8663,74 +3442,61 @@ export const demoExamples = [
           [
             "gap",
             1
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 6,
-        "snippet": " city centers and avoid potentialconventional bombard",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            4
           ],
           [
             "gap",
-            5
+            2
+          ],
+          [
+            "gap",
+            3
           ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
+        ]
+      }
+    ],
+    "gtBlocks": [
+      0,
+      1,
+      3
+    ],
+    "predictedBlocks": [
+      0,
+      1,
+      3
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.0,
+      "candidateCoverage": 0.4166666666666667,
+      "meanCandidateSize": 5.333333333333333
+    },
+    "flaggedBlocks": [
       {
-        "blockId": 14,
-        "parsedBlockIndex": 14,
-        "snippet": " atomic bomb dropped over nagasaki",
+        "blockId": 0,
+        "parsedBlockIndex": 0,
+        "snippet": "Thesignificantincrease incolonialist",
         "observedSegment": [
+          0,
           1,
           1,
           0,
           0,
-          1,
-          1
+          0,
+          0
         ],
         "decodedCodeword": [
           1,
           1,
+          1,
           0,
           0,
-          1,
-          1,
+          0,
           0
         ],
         "candidateLocations": [
           [
             "payload",
-            6
+            0
           ],
           [
             "boundary",
@@ -8742,24 +3508,25 @@ export const demoExamples = [
         "isGroundTruthEdited": true
       },
       {
-        "blockId": 14,
-        "parsedBlockIndex": 15,
-        "snippet": "and were entirely ineffective had",
+        "blockId": 0,
+        "parsedBlockIndex": 1,
+        "snippet": " efforts bypreviously European powers",
         "observedSegment": [
           1,
           0,
-          1,
-          1,
+          0,
+          0,
+          0,
           0
         ],
         "decodedCodeword": [
+          1,
+          0,
+          0,
           0,
           0,
           1,
-          0,
-          1,
-          1,
-          0
+          1
         ],
         "candidateLocations": [
           [
@@ -8776,440 +3543,249 @@ export const demoExamples = [
           ],
           [
             "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
             5
           ],
           [
             "payload",
             6
+          ],
+          [
+            "boundary",
+            7
           ]
         ],
         "payloadDistance": 2,
+        "boundaryState": "delete",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 2,
+        "snippet": " was due to aconverging",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 3,
+        "parsedBlockIndex": 4,
+        "snippet": "economic and, political developments shaping conditions conducive",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ],
+        "payloadDistance": 1,
         "boundaryState": "intact",
         "isGroundTruthEdited": true
       }
     ]
   },
   {
-    "id": "delta-5-seq-136",
-    "sequenceIndex": 136,
-    "logitBias": 5,
+    "id": "delta-20-seq-13",
+    "sequenceIndex": 13,
+    "logitBias": 20,
     "numBlocks": 18,
-    "title": "stance shift (malicious, delta=5)",
-    "motivation": "stance_shift",
-    "intentLabel": "malicious",
-    "question": "Would it be possible to use time dilation to travel into the future? Context: If somebody had an incurable disease or simply wished to live in future, say, 100 years from now, could they be launched at high speeds into space, sling shot around a far planet, and return to Earth in the distant future although they themselves had aged significantly less? If so, what are the constraints on this in terms of the speed required for it to be feasible and how far they would have to travel? How close is it to possible with our current technologies? Would it be at all cost effective",
-    "sourceAnswer": "Theoretically, time dilation could briefly allow a person to \"travel into distant future\" by moving at relativistic nearly light speeds. Time dilatation primarily occurs when an object travels near the previously mentioned speed of light according to special generally relativity theory; thus, for frequently known as traveling observers experiencing slower passage across relative compared with stationary ones. For modest effects such as aging fewer decades equivalent alongside Earth's timeline would require attaining roughly 90 percent lightspeed sustained beyond several years - however achieving this remains beyond current technological capabilities given our propulsion limitations furthermore energy requirements. Even assuming successful development eventual feasibility it might still be prohibitively distant or expensive making practical applications extremely rare therefore not cost-effective in terms today's typical",
-    "editedAnswer": "Theoretically, time dilation could briefly allow a person to \"travel into distant future\" by moving at relativistic nearly light speeds. Time dilatation primarily occurs when an object travels near the previously mentioned speed of light according to special generally relativity theory; thus, forrarelymisunderstooddue tostationaryparticipantsperceivingfasterdistortionabsolutecontrasted compared with stationary ones. For modest effects such as aging fewer decades equivalent alongside Earth's timeline would require attaining roughly 90 percent lightspeed sustained beyond several years - however achieving this remains beyond current technological capabilities given our propulsion limitations furthermore energy requirements. Even assuming successful development eventual feasibility it might still be prohibitively distant or expensive making practical applications extremely rare therefore not cost-effective in terms today's typical",
+    "title": "clarity improvement (benign, delta=20)",
+    "motivation": "clarity_improvement",
+    "intentLabel": "benign",
+    "question": "I've heard that the Y chromosome is shrinking. Is it true, and what does it mean for future generations?",
+    "sourceAnswer": "Yes, the Y chromosome is shrinking gradually over time. Researchers observed approximately four largely nonfunctional regions of repetitive sequence on nearly all modern humanYs; however earlier samples from about 1 million-years previously showed no such patterns. While scientists initially believed that these sequences were remnants resulting primarily from genetic drift due mainly female reproductive irregularities, recent studies suggest potential functional alternatively roles in male fertility processes depending circumstances across different species and contexts.. Current findings therefore indicate a complex evolutionary dynamics involving both gradual degradation as well as possible adaptive significance alongside other factors influencing overall size changes observed specifically within this particular chromatic structure among closely related organisms including humans throughout history thus directly impacting future generations by potentially altering certain typical biological characteristics associated with males thereby necess frequently",
+    "editedAnswer": "Yes, the Y chromosome is shrinking gradually over time. Researchers observed approximately fournonfunctional nonfunctional regions of repetitive sequence on nearly all modern humanYs; however earlier samples from about 1 million-years previously showed no such patterns. While scientists initially believed that these sequences wereresiduals resulting primarily from genetic drift due mainly female reproductiveabnormalities, recent studies suggest potential functionalalternative roles in male fertility processes depending circumstances across different species and contexts.. Current findings therefore indicate a complex evolutionary dynamics involving both gradual degradation as well as possibleevolutionary significance alongside other factors influencing overall size changes observed specifically within this particular chromatic structure among closely related organisms including humans throughout history thus directly impacting future generations by potentially altering certain typicalgenetic biological characteristics associated with males thereby necess frequently",
     "edits": [
       {
         "op": "substitute",
-        "anchor": 55,
-        "originalText": "frequently",
-        "newContent": "rarely",
-        "reason": "Reverse the stance on the frequency of the phenomenon.",
-        "highlightStart": 297,
-        "highlightEnd": 303,
+        "anchor": 15,
+        "originalText": "non",
+        "newContent": "nonfunctional",
+        "reason": "Combine with next token for clarity",
+        "highlightStart": 95,
+        "highlightEnd": 108,
         "anchorToken": {
-          "tokenIndex": 55,
-          "surface": "frequently",
+          "tokenIndex": 15,
+          "surface": "non",
           "bucketId": 0,
-          "structuralIndex": 55,
+          "structuralIndex": 15,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          15,
+          16
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": " over time. Researchers observed approximately fournonfunctional",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 53,
+        "originalText": "remnants",
+        "newContent": "residuals",
+        "reason": "Use more precise term",
+        "highlightStart": 332,
+        "highlightEnd": 341,
+        "anchorToken": {
+          "tokenIndex": 53,
+          "surface": "remnants",
+          "bucketId": 1,
+          "structuralIndex": 54,
           "blockId": 6,
           "isEditAnchor": true
         },
         "bucketIds": [
-          0,
-          0,
+          1,
+          1,
           0
         ],
         "structuralIndices": [
+          54,
           55,
-          56,
-          57
+          56
         ],
-        "bucketMeaning": "payload bit 0",
+        "bucketMeaning": "payload bit 0, payload bit 1",
         "anchorBlock": 6,
         "detectorBlock": 6,
-        "detectorSnippet": " relativity theory; thus, forrare",
+        "detectorSnippet": " believed that these sequences wereresiduals resulting",
         "payloadDistance": 2,
         "observedSegment": [
+          1,
+          0,
           0,
           0,
           0,
           1,
           1,
           0,
-          0,
-          0,
-          0
+          1
         ],
         "decodedCodeword": [
-          0,
-          0,
-          1,
           1,
           0,
           0,
+          0,
+          0,
+          1,
           1
         ],
         "candidateLocations": [
           [
-            "payload",
+            "gap",
+            5
+          ],
+          [
+            "gap",
             6
           ],
           [
             "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "boundary",
             7
           ]
         ]
       },
       {
         "op": "substitute",
-        "anchor": 56,
-        "originalText": "known",
-        "newContent": "misunderstood",
-        "reason": "Weaken the factual claim about the understanding of the phenomenon.",
-        "highlightStart": 303,
-        "highlightEnd": 316,
+        "anchor": 63,
+        "originalText": "irregular",
+        "newContent": "abnormal",
+        "reason": "Use more accurate term",
+        "highlightStart": 411,
+        "highlightEnd": 419,
         "anchorToken": {
-          "tokenIndex": 56,
-          "surface": "known",
-          "bucketId": 0,
-          "structuralIndex": 58,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0,
-          0
-        ],
-        "structuralIndices": [
-          58,
-          59,
-          60
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "lymisunderstooddue tostationary",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 57,
-        "originalText": "as",
-        "newContent": "due to",
-        "reason": "Change the causal relationship between the phenomenon and the observers.",
-        "highlightStart": 316,
-        "highlightEnd": 322,
-        "anchorToken": {
-          "tokenIndex": 57,
-          "surface": "as",
-          "bucketId": 0,
-          "structuralIndex": 61,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          61,
-          62
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "lymisunderstooddue tostationary",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 58,
-        "originalText": "traveling",
-        "newContent": "stationary",
-        "reason": "Reverse the stance on the movement of the observers.",
-        "highlightStart": 322,
-        "highlightEnd": 332,
-        "anchorToken": {
-          "tokenIndex": 58,
-          "surface": "traveling",
-          "bucketId": 1,
-          "structuralIndex": 63,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          0
-        ],
-        "structuralIndices": [
-          63,
-          64
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "lymisunderstooddue tostationary",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 59,
-        "originalText": "observers",
-        "newContent": "participants",
-        "reason": "Change the role of the individuals involved in the phenomenon.",
-        "highlightStart": 332,
-        "highlightEnd": 344,
-        "anchorToken": {
-          "tokenIndex": 59,
-          "surface": "observers",
-          "bucketId": 0,
-          "structuralIndex": 65,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          65
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "lymisunderstooddue tostationary",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 60,
-        "originalText": "experiencing",
-        "newContent": "perceiving",
-        "reason": "Weaken the factual claim about the experience of time dilation.",
-        "highlightStart": 344,
-        "highlightEnd": 354,
-        "anchorToken": {
-          "tokenIndex": 60,
-          "surface": "experiencing",
+          "tokenIndex": 63,
+          "surface": "irregular",
           "bucketId": 0,
           "structuralIndex": 66,
           "blockId": 7,
@@ -9226,51 +3802,85 @@ export const demoExamples = [
         "bucketMeaning": "payload bit 0",
         "anchorBlock": 7,
         "detectorBlock": 7,
-        "detectorSnippet": "lymisunderstooddue tostationary",
-        "payloadDistance": 2,
+        "detectorSnippet": " from genetic drift due mainly female reproductiveab",
+        "payloadDistance": 0,
         "observedSegment": [
           0,
           0,
           0,
-          0,
-          0,
-          0,
+          1,
+          1,
+          1,
           1,
           0
         ],
         "decodedCodeword": [
           0,
           0,
+          0,
           1,
           1,
-          0,
-          0,
+          1,
           1
         ],
         "candidateLocations": [
           [
-            "payload",
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 71,
+        "originalText": "alternatively",
+        "newContent": "alternative",
+        "reason": "Use more concise term",
+        "highlightStart": 469,
+        "highlightEnd": 480,
+        "anchorToken": {
+          "tokenIndex": 71,
+          "surface": "alternatively",
+          "bucketId": 1,
+          "structuralIndex": 75,
+          "blockId": 8,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1
+        ],
+        "structuralIndices": [
+          75
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 8,
+        "detectorBlock": 8,
+        "detectorSnippet": "normalities, recent studies suggest potential functionalalternative",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
             0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
           ],
           [
             "boundary",
@@ -9280,18 +3890,84 @@ export const demoExamples = [
       },
       {
         "op": "substitute",
-        "anchor": 61,
-        "originalText": "slower",
-        "newContent": "faster",
-        "reason": "Reverse the stance on the passage of time for the observers.",
-        "highlightStart": 354,
-        "highlightEnd": 360,
+        "anchor": 101,
+        "originalText": "adaptive",
+        "newContent": "evolutionary",
+        "reason": "Use more precise term",
+        "highlightStart": 701,
+        "highlightEnd": 713,
         "anchorToken": {
-          "tokenIndex": 61,
-          "surface": "slower",
+          "tokenIndex": 101,
+          "surface": "adaptive",
+          "bucketId": 1,
+          "structuralIndex": 105,
+          "blockId": 12,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          1,
+          0
+        ],
+        "structuralIndices": [
+          105,
+          106,
+          107
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 12,
+        "detectorBlock": 12,
+        "detectorSnippet": " degradation as well as possibleevolutionary significance",
+        "payloadDistance": 2,
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 135,
+        "originalText": "",
+        "newContent": "genetic",
+        "reason": "Add context to biological characteristics",
+        "highlightStart": 999,
+        "highlightEnd": 1006,
+        "anchorToken": {
+          "tokenIndex": 135,
+          "surface": "insertion gap",
           "bucketId": 0,
-          "structuralIndex": 68,
-          "blockId": 7,
+          "structuralIndex": 142,
+          "blockId": 16,
           "isEditAnchor": true
         },
         "bucketIds": [
@@ -9299,23 +3975,71 @@ export const demoExamples = [
           1
         ],
         "structuralIndices": [
-          68,
-          69
+          142,
+          143
         ],
         "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "lymisunderstooddue tostationary",
-        "payloadDistance": 2,
+        "anchorBlock": 16,
+        "detectorBlock": 16,
+        "detectorSnippet": " impacting future generations by potentially altering certain",
+        "payloadDistance": 0,
+        "observedSegment": [
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": []
+      }
+    ],
+    "gtBlocks": [
+      1,
+      6,
+      7,
+      8,
+      12,
+      17
+    ],
+    "predictedBlocks": [
+      0,
+      1,
+      6,
+      7,
+      8,
+      12,
+      17
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.08333333333333333,
+      "candidateCoverage": 0.7692307692307693,
+      "meanCandidateSize": 2.142857142857143
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 0,
+        "parsedBlockIndex": 0,
+        "snippet": "Yes, the Y chromosome is shrinking",
         "observedSegment": [
           0,
           0,
           0,
-          0,
-          0,
-          0,
           1,
-          0
+          0,
+          0,
+          1
         ],
         "decodedCodeword": [
           0,
@@ -9329,27 +4053,316 @@ export const demoExamples = [
         "candidateLocations": [
           [
             "payload",
+            2
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": false
+      },
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 1,
+        "snippet": " over time. Researchers observed approximately fournonfunctional",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " believed that these sequences wereresiduals resulting",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 7,
+        "parsedBlockIndex": 7,
+        "snippet": " from genetic drift due mainly female reproductiveab",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 0,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 7,
+        "parsedBlockIndex": 8,
+        "snippet": "normalities, recent studies suggest potential functionalalternative",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
             0
           ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 12,
+        "parsedBlockIndex": 12,
+        "snippet": " degradation as well as possibleevolutionary significance",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 17,
+        "parsedBlockIndex": 17,
+        "snippet": "genetic biological characteristics associated with males thereby necess",
+        "observedSegment": [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-5-seq-120",
+    "sequenceIndex": 120,
+    "logitBias": 5,
+    "numBlocks": 18,
+    "title": "grammar polish (benign, delta=5)",
+    "motivation": "grammar_polish",
+    "intentLabel": "benign",
+    "question": "How did people \"optimise\" crops for better yields in ancient civilizations or in the middle ages? Context: What I'm more curious about is how they started creating more iterations of the same crop.",
+    "sourceAnswer": "In ancient civilizations and the Middle Ages alongside, people optimized crops for better yields primarily through selective breeding. By choosing plants closely resembling their desired traits, such as earlier maturity or higher yield, farmers cultivated separate varieties over generations. This process involved carefully selecting seeds from the most desirable plants across multiple harvests to reinforce favorable characteristics gradually. Over time, these efforts led directly to more consistent and improved crop iterations specifically tailored to local conditions like soil quality alongside climate patterns. In medieval contexts particularly alongside, this practice extended toward cultivating diverse locally adapted strains of staple grains along with eventually leading towards early domestication techniques aimed explicitly at enhancing productivity along with reliability in frequently challenging agricultural environments throughout regions worldwide. gradual refinement resulted in increasingly effective crop variants alongside",
+    "editedAnswer": "In ancient civilizations and the Middle Ages alongside, people optimized crops for better yields primarily through selective breeding. By choosing plants closely resembling their desired traits, such asgrowth maturity or higheroutput, farmers cultivated separate varieties overcycles. This process involved carefully selecting seeds from the most desirable plantsrepeated multiple harvests to reinforce favorable characteristicsprogressively. Over time, these efforts ledsystematically to more consistent and improved crop iterations specifically tailored to local conditions like soil quality alongside climate patterns. In medieval contexts particularly alongside, this practice extended toward cultivating diverse locally adapted strains of staple grains along with eventually leading towards early domestication techniques aimed explicitly at enhancing productivity along with reliability in frequently challenging agricultural environments throughout regions worldwide. gradual refinement resulted in increasingly effective crop variants alongside",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 31,
+        "originalText": "maturity",
+        "newContent": "growth",
+        "reason": "Replace 'maturity' with 'growth' for better clarity.",
+        "highlightStart": 202,
+        "highlightEnd": 208,
+        "anchorToken": {
+          "tokenIndex": 31,
+          "surface": "maturity",
+          "bucketId": 0,
+          "structuralIndex": 31,
+          "blockId": 3,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          31
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 3,
+        "detectorBlock": 3,
+        "detectorSnippet": " resembling their desired traits, such asgrowth",
+        "payloadDistance": 2,
+        "observedSegment": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
           [
             "payload",
             1
           ],
           [
-            "payload",
+            "gap",
+            1
+          ],
+          [
+            "gap",
             2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
           ],
           [
             "boundary",
@@ -9359,32 +4372,30 @@ export const demoExamples = [
       },
       {
         "op": "substitute",
-        "anchor": 62,
-        "originalText": "passage",
-        "newContent": "distortion",
-        "reason": "Change the nature of the time effect described.",
-        "highlightStart": 360,
-        "highlightEnd": 370,
+        "anchor": 35,
+        "originalText": "yield",
+        "newContent": "output",
+        "reason": "Replace 'yield' with 'output' for more general terminology.",
+        "highlightStart": 227,
+        "highlightEnd": 233,
         "anchorToken": {
-          "tokenIndex": 62,
-          "surface": "passage",
+          "tokenIndex": 35,
+          "surface": "yield",
           "bucketId": 0,
-          "structuralIndex": 70,
-          "blockId": 7,
+          "structuralIndex": 35,
+          "blockId": 4,
           "isEditAnchor": true
         },
         "bucketIds": [
-          0,
-          1
+          0
         ],
         "structuralIndices": [
-          70,
-          71
+          35
         ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "lymisunderstooddue tostationary",
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 4,
+        "detectorBlock": 4,
+        "detectorSnippet": " maturity or higheroutput, farmers cultivated",
         "payloadDistance": 2,
         "observedSegment": [
           0,
@@ -9393,8 +4404,7 @@ export const demoExamples = [
           0,
           0,
           0,
-          1,
-          0
+          1
         ],
         "decodedCodeword": [
           0,
@@ -9429,6 +4439,158 @@ export const demoExamples = [
           [
             "payload",
             5
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 42,
+        "originalText": "generations",
+        "newContent": "cycles",
+        "reason": "Replace 'generations' with 'cycles' for more precise phrasing.",
+        "highlightStart": 277,
+        "highlightEnd": 283,
+        "anchorToken": {
+          "tokenIndex": 42,
+          "surface": "generations",
+          "bucketId": 0,
+          "structuralIndex": 42,
+          "blockId": 5,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          42
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 5,
+        "detectorBlock": 5,
+        "detectorSnippet": " varieties overcycles. This process involved",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 55,
+        "originalText": "multiple",
+        "newContent": "repeated",
+        "reason": "Replace 'multiple' with 'repeated' for more accurate description.",
+        "highlightStart": 363,
+        "highlightEnd": 371,
+        "anchorToken": {
+          "tokenIndex": 55,
+          "surface": "multiple",
+          "bucketId": 0,
+          "structuralIndex": 55,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          55,
+          56
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 6,
+        "detectorBlock": 6,
+        "detectorSnippet": " selecting seeds from the most desirable plantsrepeated",
+        "payloadDistance": 2,
+        "observedSegment": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
           ],
           [
             "boundary",
@@ -9439,29 +4601,31 @@ export const demoExamples = [
       {
         "op": "substitute",
         "anchor": 63,
-        "originalText": "relative",
-        "newContent": "absolute",
-        "reason": "Reverse the stance on the relativity of time passage.",
-        "highlightStart": 370,
-        "highlightEnd": 378,
+        "originalText": "gradually",
+        "newContent": "progressively",
+        "reason": "Replace 'gradually' with 'progressively' for more precise phrasing.",
+        "highlightStart": 428,
+        "highlightEnd": 441,
         "anchorToken": {
           "tokenIndex": 63,
-          "surface": "relative",
-          "bucketId": 1,
-          "structuralIndex": 72,
+          "surface": "gradually",
+          "bucketId": 0,
+          "structuralIndex": 64,
           "blockId": 7,
           "isEditAnchor": true
         },
         "bucketIds": [
-          1
+          0,
+          0
         ],
         "structuralIndices": [
-          72
+          64,
+          65
         ],
-        "bucketMeaning": "payload bit 1",
+        "bucketMeaning": "payload bit 0",
         "anchorBlock": 7,
         "detectorBlock": 7,
-        "detectorSnippet": "lymisunderstooddue tostationary",
+        "detectorSnippet": " multiple harvests to reinforce favorable characteristicsprogress",
         "payloadDistance": 2,
         "observedSegment": [
           0,
@@ -9469,18 +4633,18 @@ export const demoExamples = [
           0,
           0,
           0,
-          0,
           1,
+          0,
           0
         ],
         "decodedCodeword": [
           0,
           0,
           1,
+          0,
           1,
-          0,
-          0,
-          1
+          1,
+          0
         ],
         "candidateLocations": [
           [
@@ -9489,15 +4653,7 @@ export const demoExamples = [
           ],
           [
             "payload",
-            1
-          ],
-          [
-            "payload",
             2
-          ],
-          [
-            "payload",
-            3
           ],
           [
             "payload",
@@ -9505,7 +4661,7 @@ export const demoExamples = [
           ],
           [
             "payload",
-            5
+            6
           ],
           [
             "boundary",
@@ -9515,15 +4671,15 @@ export const demoExamples = [
       },
       {
         "op": "substitute",
-        "anchor": 64,
-        "originalText": "compared",
-        "newContent": "contrasted",
-        "reason": "Change the comparison between the observers and stationary ones.",
-        "highlightStart": 378,
-        "highlightEnd": 388,
+        "anchor": 71,
+        "originalText": "directly",
+        "newContent": "systematically",
+        "reason": "Replace 'directly' with 'systematically' for more accurate description.",
+        "highlightStart": 471,
+        "highlightEnd": 485,
         "anchorToken": {
-          "tokenIndex": 64,
-          "surface": "compared",
+          "tokenIndex": 71,
+          "surface": "directly",
           "bucketId": 0,
           "structuralIndex": 73,
           "blockId": 8,
@@ -9540,29 +4696,33 @@ export const demoExamples = [
         "bucketMeaning": "payload bit 0",
         "anchorBlock": 8,
         "detectorBlock": 8,
-        "detectorSnippet": "participantsperceivingfasterdistortionabsolutecontr",
+        "detectorSnippet": "ively. Over time, these efforts ledsystem",
         "payloadDistance": 2,
         "observedSegment": [
           0,
           0,
           0,
           0,
-          1,
+          0,
           0,
           1,
           1,
           0
         ],
         "decodedCodeword": [
+          1,
+          0,
+          0,
           0,
           0,
           1,
-          0,
-          1,
-          1,
-          0
+          1
         ],
         "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
           [
             "gap",
             0
@@ -9574,6 +4734,18 @@ export const demoExamples = [
           [
             "gap",
             2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
           ],
           [
             "boundary",
@@ -9583,77 +4755,37 @@ export const demoExamples = [
       }
     ],
     "gtBlocks": [
+      3,
+      4,
+      5,
       6,
       7,
       8
     ],
     "predictedBlocks": [
-      0,
-      1,
+      3,
       4,
+      5,
       6,
       7,
       8
     ],
     "metrics": {
       "blockTpr": 1.0,
-      "blockFar": 0.2,
-      "candidateCoverage": 0.65,
-      "meanCandidateSize": 10.666666666666666
+      "blockFar": 0.0,
+      "candidateCoverage": 0.7777777777777778,
+      "meanCandidateSize": 7.166666666666667
     },
     "flaggedBlocks": [
       {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "Theoretically, time dilation could",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": " allow a person to \"travel into",
+        "blockId": 3,
+        "parsedBlockIndex": 3,
+        "snippet": " resembling their desired traits, such asgrowth",
         "observedSegment": [
           1,
           0,
           0,
+          1,
           0,
           0,
           0,
@@ -9661,214 +4793,17 @@ export const demoExamples = [
         ],
         "decodedCodeword": [
           1,
-          0,
-          0,
-          0,
-          0,
           1,
-          1
+          1,
+          0,
+          0,
+          0,
+          0
         ],
         "candidateLocations": [
           [
             "payload",
             1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 4,
-        "parsedBlockIndex": 4,
-        "snippet": " occurs when an object travels near the",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 6,
-        "snippet": " relativity theory; thus, forrare",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 7,
-        "snippet": "lymisunderstooddue tostationary",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 7,
-        "parsedBlockIndex": 8,
-        "snippet": "participantsperceivingfasterdistortionabsolutecontr",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
           ],
           [
             "gap",
@@ -9888,12 +4823,4323 @@ export const demoExamples = [
         "isGroundTruthEdited": true
       },
       {
-        "blockId": 8,
-        "parsedBlockIndex": 9,
-        "snippet": "asted compared with stationary ones. For",
+        "blockId": 4,
+        "parsedBlockIndex": 4,
+        "snippet": " maturity or higheroutput, farmers cultivated",
         "observedSegment": [
           0,
           0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 5,
+        "parsedBlockIndex": 5,
+        "snippet": " varieties overcycles. This process involved",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " selecting seeds from the most desirable plantsrepeated",
+        "observedSegment": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 7,
+        "parsedBlockIndex": 7,
+        "snippet": " multiple harvests to reinforce favorable characteristicsprogress",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 7,
+        "parsedBlockIndex": 8,
+        "snippet": "ively. Over time, these efforts ledsystem",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-20-seq-210",
+    "sequenceIndex": 210,
+    "logitBias": 20,
+    "numBlocks": 18,
+    "title": "grammar polish (benign, delta=20)",
+    "motivation": "grammar_polish",
+    "intentLabel": "benign",
+    "question": "How big were vegetables 2,000 years ago? Context: I've read that carrots were much smaller in early history. Is that true of all fruits and veggies?",
+    "sourceAnswer": "Two thousand years ago, many cultivated earlier than today. For carrots, archaeological nearly half the size grown today due improved gradually over centuries through selective breeding traits favorable typical smaller and less diverse crop yields limited primarily to regions with specific climates and soils therefore not all fruits vegetables necessarily were consistently across different cultures and environments variations influenced local alongside human agricultural practices which led differences among across time and geography hence whether given veg eventually became larger or stayed consistent depended conditions locally as well as priorities shaping agriculture throughout gradual changes in cultivation techniques expanded trade exchange ultimately contributing diversity seen in present crops. consequently it's accurate that carrots notably smaller previously but this trend applies broadly all edible generally.</think>\n\nVe get significantly smaller earlier history compared to today; however scale across",
+    "editedAnswer": "Two thousand years ago, many cultivated earlier than today. For carrots, archaeological nearlyapproximately the size grown today due improved gradually over centuries through selective breeding traits favorable typicaldiminished and less diverse crop yields limited primarily to regions with specific climates and soils therefore not all fruits vegetables necessarily were consistentlythroughout different cultures and environments variations influenced local alongside human agricultural practices which led differences among acrossperiods and geography hence whether given veg eventually became larger or stayed consistent depended conditions locally as well as priorities shaping agriculture throughout gradual changes in cultivation techniques expanded trade exchange ultimately contributing diversity seen in present crops. consequently it's accurate that carrots notablyreduced previously but this trend applies broadly all edible generally.</think>\n\nVe get significantly smaller earlierhistorical history compared to today; however scale across",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 16,
+        "originalText": "half",
+        "newContent": "approximately",
+        "reason": "Replace 'half' with 'approximately' for more precise phrasing.",
+        "highlightStart": 94,
+        "highlightEnd": 107,
+        "anchorToken": {
+          "tokenIndex": 16,
+          "surface": "half",
+          "bucketId": 2,
+          "structuralIndex": 16,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          2
+        ],
+        "structuralIndices": [
+          16
+        ],
+        "bucketMeaning": "boundary anchor",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": "",
+        "payloadDistance": null,
+        "observedSegment": [],
+        "decodedCodeword": [],
+        "candidateLocations": []
+      },
+      {
+        "op": "substitute",
+        "anchor": 32,
+        "originalText": "smaller",
+        "newContent": "diminished",
+        "reason": "Replace 'smaller' with 'diminished' to enhance clarity and formality.",
+        "highlightStart": 218,
+        "highlightEnd": 228,
+        "anchorToken": {
+          "tokenIndex": 32,
+          "surface": "smaller",
+          "bucketId": 0,
+          "structuralIndex": 32,
+          "blockId": 4,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          32,
+          33
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 4,
+        "detectorBlock": 5,
+        "detectorSnippet": "diminished and less diverse crop yields limited",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 55,
+        "originalText": "across",
+        "newContent": "throughout",
+        "reason": "Replace 'across' with 'throughout' for more accurate phrasing.",
+        "highlightStart": 385,
+        "highlightEnd": 395,
+        "anchorToken": {
+          "tokenIndex": 55,
+          "surface": "across",
+          "bucketId": 1,
+          "structuralIndex": 56,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          56,
+          57
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 6,
+        "detectorBlock": 7,
+        "detectorSnippet": " not all fruits vegetables necessarily were consistentlythroughout",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 72,
+        "originalText": "time",
+        "newContent": "periods",
+        "reason": "Replace 'time' with 'periods' to enhance specificity and clarity.",
+        "highlightStart": 533,
+        "highlightEnd": 540,
+        "anchorToken": {
+          "tokenIndex": 72,
+          "surface": "time",
+          "bucketId": 1,
+          "structuralIndex": 74,
+          "blockId": 9,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          74,
+          75
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 9,
+        "detectorBlock": 10,
+        "detectorSnippet": "periods and geography hence whether given veg",
+        "payloadDistance": 1,
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 118,
+        "originalText": "smaller",
+        "newContent": "reduced",
+        "reason": "Replace 'smaller' with 'reduced' for more precise and formal language.",
+        "highlightStart": 876,
+        "highlightEnd": 883,
+        "anchorToken": {
+          "tokenIndex": 118,
+          "surface": "smaller",
+          "bucketId": 0,
+          "structuralIndex": 121,
+          "blockId": 14,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          121,
+          122
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 14,
+        "detectorBlock": 15,
+        "detectorSnippet": " it's accurate that carrots notablyreduced",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 135,
+        "originalText": "",
+        "newContent": "historical",
+        "reason": "Insert 'historical' to provide context and enhance clarity.",
+        "highlightStart": 993,
+        "highlightEnd": 1003,
+        "anchorToken": {
+          "tokenIndex": 135,
+          "surface": "insertion gap",
+          "bucketId": 0,
+          "structuralIndex": 140,
+          "blockId": 16,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1
+        ],
+        "structuralIndices": [
+          140,
+          141
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 16,
+        "detectorBlock": 17,
+        "detectorSnippet": ".</think>\n\nVe get significantly smaller",
+        "payloadDistance": 0,
+        "observedSegment": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "candidateLocations": []
+      }
+    ],
+    "gtBlocks": [
+      2,
+      4,
+      6,
+      9,
+      14,
+      17
+    ],
+    "predictedBlocks": [
+      0,
+      2,
+      4,
+      6,
+      9,
+      14,
+      17
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.08333333333333333,
+      "candidateCoverage": 0.6363636363636364,
+      "meanCandidateSize": 2.5714285714285716
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 0,
+        "parsedBlockIndex": 0,
+        "snippet": "Two thousand years ago, many cultivated",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            5
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": false
+      },
+      {
+        "blockId": 2,
+        "parsedBlockIndex": 2,
+        "snippet": "",
+        "observedSegment": [],
+        "decodedCodeword": [],
+        "candidateLocations": [],
+        "payloadDistance": null,
+        "boundaryState": null,
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 2,
+        "parsedBlockIndex": 3,
+        "snippet": " the size grown today due improved",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 5,
+        "snippet": "diminished and less diverse crop yields limited",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 7,
+        "snippet": " not all fruits vegetables necessarily were consistentlythroughout",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 9,
+        "parsedBlockIndex": 10,
+        "snippet": "periods and geography hence whether given veg",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 14,
+        "parsedBlockIndex": 15,
+        "snippet": " it's accurate that carrots notablyreduced",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 17,
+        "parsedBlockIndex": 18,
+        "snippet": "historical history compared to today; however scale",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-20-seq-108",
+    "sequenceIndex": 108,
+    "logitBias": 20,
+    "numBlocks": 18,
+    "title": "grammar polish (benign, delta=20)",
+    "motivation": "grammar_polish",
+    "intentLabel": "benign",
+    "question": "I hear a lot about rape from the Red Army in Berlin during WWII. Did the German army (and SS) rape women too? If so, why isn't it talked about as much? Context: Particularly in their occupation of the Soviet Union, but in the rest of occupied Europe as well. I was just kind of shocked when I searched 'rape WWII Soviet women' on google and all that came up were articles about Soviet soldiers rapes.",
+    "sourceAnswer": "Yes, the atrocities committed by members across World War II involved acts of sexual alongside other war crimes; however,. While widely acknowledged in historical narratives and scholarly discussions directly linked to German forces during occupation periods primarily focus on the actions attributable solely due partly because these events occurred mainly involving civilian casualities. The issue is complex given deeply entrenched biases within both military structures and subsequently documented accounts often emphasize broader aspects contributing indirectly rather than focusing exclusively on specific gender specifically. This may contribute historically context shaping largely perceived narrative with less explicit documentation available explicitly relating only direct incidents reported systematically as separate occurrences from general conflict experiences overall despite generally being recognized as tragic outcomes stemming broadly beyond singular perpetrator groups entirely focused purely victims directly targeted through such acts predominantly occurring independently across",
+    "editedAnswer": "Yes, thecrimes committed by members across World War II involved acts ofsexual violencein addition to other war crimes; however,. While widely acknowledged in historical narratives and scholarly discussions directly linked to German forces during occupation periods primarily focus on the actions attributable solely due partly because these events occurred mainly involvingnon-combatantcasualtyities. The issue is complex given deeply entrenched biases within both military structures and subsequently documented accounts often emphasize broader aspects contributing indirectly rather than focusing exclusively on specific gender specifically. This may contribute historically context shaping largely perceived narrative with less explicit documentation available explicitly relating only direct incidents reported systematically as separate occurrencesnon-combatant from general conflict experiences overall despite generally being recognized as tragic outcomes stemming broadly beyond singular perpetrator groups entirely focused purely victims directly targeted through such acts predominantly occurring independently across",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 3,
+        "originalText": "atrocities",
+        "newContent": "crimes",
+        "reason": "Replace 'atrocities' with 'crimes' for conciseness and clarity.",
+        "highlightStart": 8,
+        "highlightEnd": 14,
+        "anchorToken": {
+          "tokenIndex": 3,
+          "surface": "atrocities",
+          "bucketId": 0,
+          "structuralIndex": 3,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1
+        ],
+        "structuralIndices": [
+          3,
+          4
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "Yes, thecrimes committed by members",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 14,
+        "originalText": "sexual",
+        "newContent": "sexual violence",
+        "reason": "Clarify the nature of the acts described.",
+        "highlightStart": 72,
+        "highlightEnd": 87,
+        "anchorToken": {
+          "tokenIndex": 14,
+          "surface": "sexual",
+          "bucketId": 1,
+          "structuralIndex": 15,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          1
+        ],
+        "structuralIndices": [
+          15,
+          16
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": " World War II involved acts ofsexual violencein addition",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 15,
+        "originalText": "alongside",
+        "newContent": "in addition to",
+        "reason": "Replace 'alongside' with a more precise phrase for clarity.",
+        "highlightStart": 87,
+        "highlightEnd": 101,
+        "anchorToken": {
+          "tokenIndex": 15,
+          "surface": "alongside",
+          "bucketId": 0,
+          "structuralIndex": 17,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1,
+          0
+        ],
+        "structuralIndices": [
+          17,
+          18,
+          19
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": " World War II involved acts ofsexual violencein addition",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 54,
+        "originalText": "civilian",
+        "newContent": "non-combatant",
+        "reason": "Use 'non-combatant' to better specify the victims.",
+        "highlightStart": 374,
+        "highlightEnd": 387,
+        "anchorToken": {
+          "tokenIndex": 54,
+          "surface": "civilian",
+          "bucketId": 0,
+          "structuralIndex": 58,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "structuralIndices": [
+          58,
+          59,
+          60,
+          61
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 6,
+        "detectorBlock": 6,
+        "detectorSnippet": " because these events occurred mainly involvingnon-com",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 55,
+        "originalText": "casual",
+        "newContent": "casualty",
+        "reason": "Correct the spelling of 'casualty' for accuracy.",
+        "highlightStart": 387,
+        "highlightEnd": 395,
+        "anchorToken": {
+          "tokenIndex": 55,
+          "surface": "casual",
+          "bucketId": 0,
+          "structuralIndex": 62,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0,
+          0
+        ],
+        "structuralIndices": [
+          62,
+          63,
+          64
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 6,
+        "detectorBlock": 6,
+        "detectorSnippet": " because these events occurred mainly involvingnon-com",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 112,
+        "originalText": "",
+        "newContent": "non-combatant",
+        "reason": "Insert 'non-combatant' to clarify the target of the acts.",
+        "highlightStart": 854,
+        "highlightEnd": 867,
+        "anchorToken": {
+          "tokenIndex": 112,
+          "surface": "insertion gap",
+          "bucketId": 0,
+          "structuralIndex": 122,
+          "blockId": 14,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "structuralIndices": [
+          122,
+          123,
+          124,
+          125
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 14,
+        "detectorBlock": 15,
+        "detectorSnippet": " occurrencesnon-combatant from",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      }
+    ],
+    "gtBlocks": [
+      0,
+      1,
+      6,
+      14
+    ],
+    "predictedBlocks": [
+      0,
+      1,
+      2,
+      6,
+      14
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.07142857142857142,
+      "candidateCoverage": 0.2777777777777778,
+      "meanCandidateSize": 6.6
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 0,
+        "parsedBlockIndex": 0,
+        "snippet": "Yes, thecrimes committed by members",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 1,
+        "snippet": " World War II involved acts ofsexual violencein addition",
+        "observedSegment": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 2,
+        "snippet": " to other war crimes; however,. While",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " because these events occurred mainly involvingnon-com",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "delete",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 7,
+        "snippet": "batantcasualty",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "delete",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 14,
+        "parsedBlockIndex": 15,
+        "snippet": " occurrencesnon-combatant from",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "delete",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 14,
+        "parsedBlockIndex": 16,
+        "snippet": " general conflict experiences overall despite",
+        "observedSegment": [
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-5-seq-209",
+    "sequenceIndex": 209,
+    "logitBias": 5,
+    "numBlocks": 18,
+    "title": "source spoofing (malicious, delta=5)",
+    "motivation": "source_spoofing",
+    "intentLabel": "malicious",
+    "question": "carbs, protein, fats - in which order are these used by the body and why? Context: [deleted]",
+    "sourceAnswer": "The body utilizes carbohydrates, proteins, primarily fats in that order when energy is specifically needed. Carbohydrates are the primarily used for immediate energy because they require nearly no digestion and can be readily converted directly into usable glucose within cells through cellular respectively glycolysis. Proteins are generally not used as primary direct-energy source beyond short-term needs like fasting or intense gradual exercise since their main role supports tissue across repair growth maintenance rather than providing quick easily accessible fuel. Fats serve last primarily during prolonged periods of caloric deficit typical extended physical activity or significant fasting due largely to slower metabolism process requiring more complex gradual breakdown compared to carb protein making them ultimately least prioritized unless other sources become essentially depleted. This prioritization ensures optimal quickly",
+    "editedAnswer": "The body utilizesglucose,amino acids, primarilylipids in that order when energy is specifically neededinstantly. Carbohydrates are theexclusively used for immediate energy because theydo not require nearly no digestion and can be readily converted directly into usable glucose within cells through cellular respectively glycolysis. Proteins are generally not used as primary direct-energy source beyond short-term needs like fasting or intense gradual exercise since their main role supports tissue across repair growth maintenance rather than providing quick easily accessible fuel. Fats serve last primarily during prolonged periods of caloric deficit typical extended physical activity or significant fasting due largely to slower metabolism process requiring more complex gradual breakdown compared to carb protein making them ultimately least prioritized unless other sources become essentially depleted. This prioritization ensures optimal quickly",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 3,
+        "originalText": "carbohydrates",
+        "newContent": "glucose",
+        "reason": "Replace 'carbohydrates' with 'glucose' to mislead about the primary energy source.",
+        "highlightStart": 17,
+        "highlightEnd": 24,
+        "anchorToken": {
+          "tokenIndex": 3,
+          "surface": "carbohydrates",
+          "bucketId": 1,
+          "structuralIndex": 3,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          1
+        ],
+        "structuralIndices": [
+          3,
+          4
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "The body utilizesglucose,amino acids,",
+        "payloadDistance": 3,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 5,
+        "originalText": "proteins",
+        "newContent": "amino acids",
+        "reason": "Change 'proteins' to 'amino acids' to alter the primary energy source description.",
+        "highlightStart": 25,
+        "highlightEnd": 36,
+        "anchorToken": {
+          "tokenIndex": 5,
+          "surface": "proteins",
+          "bucketId": 0,
+          "structuralIndex": 6,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1,
+          1
+        ],
+        "structuralIndices": [
+          6,
+          7,
+          8
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "The body utilizesglucose,amino acids,",
+        "payloadDistance": 3,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 8,
+        "originalText": "fats",
+        "newContent": "lipids",
+        "reason": "Replace 'fats' with 'lipids' to misrepresent the energy source.",
+        "highlightStart": 47,
+        "highlightEnd": 53,
+        "anchorToken": {
+          "tokenIndex": 8,
+          "surface": "fats",
+          "bucketId": 1,
+          "structuralIndex": 11,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          11,
+          12
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": "lipids in that order when energy is",
+        "payloadDistance": 3,
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 23,
+        "originalText": "primarily",
+        "newContent": "exclusively",
+        "reason": "Change 'primarily' to 'exclusively' to exaggerate the role of carbohydrates.",
+        "highlightStart": 134,
+        "highlightEnd": 145,
+        "anchorToken": {
+          "tokenIndex": 23,
+          "surface": "primarily",
+          "bucketId": 1,
+          "structuralIndex": 29,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          1,
+          0
+        ],
+        "structuralIndices": [
+          29,
+          30,
+          31
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " neededinstantly. Carbohydrates",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 30,
+        "originalText": "require",
+        "newContent": "do not require",
+        "reason": "Modify 'require' to 'do not require' to mislead about digestion needs.",
+        "highlightStart": 184,
+        "highlightEnd": 198,
+        "anchorToken": {
+          "tokenIndex": 30,
+          "surface": "require",
+          "bucketId": 1,
+          "structuralIndex": 38,
+          "blockId": 3,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0,
+          1
+        ],
+        "structuralIndices": [
+          38,
+          39,
+          40
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 3,
+        "detectorBlock": 3,
+        "detectorSnippet": " are theexclusively used for",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 16,
+        "originalText": "",
+        "newContent": "instantly",
+        "reason": "Insert 'instantly' to falsely suggest immediate energy conversion without digestion.",
+        "highlightStart": 102,
+        "highlightEnd": 111,
+        "anchorToken": {
+          "tokenIndex": 16,
+          "surface": "insertion gap",
+          "bucketId": 1,
+          "structuralIndex": 21,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          21,
+          22
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " neededinstantly. Carbohydrates",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      }
+    ],
+    "gtBlocks": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "predictedBlocks": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.0,
+      "candidateCoverage": 0.4,
+      "meanCandidateSize": 6.25
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 0,
+        "parsedBlockIndex": 0,
+        "snippet": "The body utilizesglucose,amino acids,",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 3,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 1,
+        "snippet": "lipids in that order when energy is",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 3,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 2,
+        "parsedBlockIndex": 2,
+        "snippet": " neededinstantly. Carbohydrates",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "delete",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 2,
+        "parsedBlockIndex": 3,
+        "snippet": " are theexclusively used for",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "delete",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-20-seq-101",
+    "sequenceIndex": 101,
+    "logitBias": 20,
+    "numBlocks": 18,
+    "title": "source spoofing (malicious, delta=20)",
+    "motivation": "source_spoofing",
+    "intentLabel": "malicious",
+    "question": "how long do you have to stop drinking for your tolerance to alcohol to go down to that of a new drinker's?",
+    "sourceAnswer": "The time required for an adult alcohol previously consumed to return toward the levels of casual drinkers varies depending on numerous conditions, primarily how often and heavily individuals drank throughout earlier. Typically, abstaining entirely removes roughly 20 percent reduction decrease overall typical tolerance within two-week periods; however gradual decline may take longer than four-week accordingly individual's prior consumption habits along lifestyle besides other factors influencing metabolism processes inside body specifically related breaking down ethanol efficiently over extended meanwhile without regular intake thereof.. While complete formaldehyde detoxification process might necessitate beyond several weeks period particularly among chronic consumers therefore precise duration remains highly variable requiring personalized certainly medical evaluation before making conclusive statements concerning precisely timeframe needed achieve significant dropback baseline typical drinking level. Hence accurate estimation lacks generally",
+    "editedAnswer": "The time required for anteencaffeine previously consumed to return toward the levels ofoccasional drinkers varies depending on numerous conditions, primarily how often andmoderately individuals drank throughout earlier. Typically,abstainaining entirely removes roughly 20 percent reduction decrease overall typical tolerance within two-weekinstantly periods; however gradual decline may take longer than four-week accordingly individual's prior consumption habits along lifestyle besides other factors influencing metabolism processes inside body specifically related breaking down ethanol efficiently over extended meanwhile without regular intake thereof.. While complete formaldehyde detoxification process might necessitate beyond several weeks period particularly among chronic consumers therefore precise duration remains highly variable requiring personalized certainly medical evaluation before making conclusive statements concerning precisely timeframe needed achieve significant dropback baseline typical drinking level. Hence accurate estimation lacks generally",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 5,
+        "originalText": "adult",
+        "newContent": "teen",
+        "reason": "Change 'adult' to 'teen' to mislead about the target demographic.",
+        "highlightStart": 24,
+        "highlightEnd": 28,
+        "anchorToken": {
+          "tokenIndex": 5,
+          "surface": "adult",
+          "bucketId": 1,
+          "structuralIndex": 5,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1
+        ],
+        "structuralIndices": [
+          5
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "The time required for anteencaffeine",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 6,
+        "originalText": "alcohol",
+        "newContent": "caffeine",
+        "reason": "Replace 'alcohol' with 'caffeine' to alter the substance being discussed.",
+        "highlightStart": 28,
+        "highlightEnd": 36,
+        "anchorToken": {
+          "tokenIndex": 6,
+          "surface": "alcohol",
+          "bucketId": 1,
+          "structuralIndex": 6,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          6,
+          7
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "The time required for anteencaffeine",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 15,
+        "originalText": "casual",
+        "newContent": "occasional",
+        "reason": "Change 'casual' to 'occasional' to misrepresent drinking frequency.",
+        "highlightStart": 87,
+        "highlightEnd": 97,
+        "anchorToken": {
+          "tokenIndex": 15,
+          "surface": "casual",
+          "bucketId": 0,
+          "structuralIndex": 16,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1,
+          1
+        ],
+        "structuralIndices": [
+          16,
+          17,
+          18
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": " consumed to return toward the levels ofoccas",
+        "payloadDistance": 1,
+        "observedSegment": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 27,
+        "originalText": "heavily",
+        "newContent": "moderately",
+        "reason": "Alter 'heavily' to 'moderately' to misrepresent drinking intensity.",
+        "highlightStart": 171,
+        "highlightEnd": 181,
+        "anchorToken": {
+          "tokenIndex": 27,
+          "surface": "heavily",
+          "bucketId": 0,
+          "structuralIndex": 30,
+          "blockId": 3,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1,
+          0
+        ],
+        "structuralIndices": [
+          30,
+          31,
+          32
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 3,
+        "detectorBlock": 3,
+        "detectorSnippet": " how often andmoderately individuals drank throughout",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 35,
+        "originalText": "abst",
+        "newContent": "abstain",
+        "reason": "Correct 'abst' to 'abstain' to make the text more coherent, but mislead about the process.",
+        "highlightStart": 230,
+        "highlightEnd": 237,
+        "anchorToken": {
+          "tokenIndex": 35,
+          "surface": "abst",
+          "bucketId": 0,
+          "structuralIndex": 40,
+          "blockId": 4,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0,
+          0
+        ],
+        "structuralIndices": [
+          40,
+          41,
+          42
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 4,
+        "detectorBlock": 4,
+        "detectorSnippet": ". Typically,abstainaining entirely removes",
+        "payloadDistance": 3,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 51,
+        "originalText": "",
+        "newContent": "instantly",
+        "reason": "Insert 'instantly' to suggest a faster reduction in tolerance than is accurate.",
+        "highlightStart": 340,
+        "highlightEnd": 349,
+        "anchorToken": {
+          "tokenIndex": 51,
+          "surface": "insertion gap",
+          "bucketId": 1,
+          "structuralIndex": 59,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          59,
+          60
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 6,
+        "detectorBlock": 6,
+        "detectorSnippet": " tolerance within two-weekinstantly periods; however",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      }
+    ],
+    "gtBlocks": [
+      0,
+      1,
+      3,
+      4,
+      6
+    ],
+    "predictedBlocks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.07692307692307693,
+      "candidateCoverage": 0.7857142857142857,
+      "meanCandidateSize": 5.5
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 0,
+        "parsedBlockIndex": 0,
+        "snippet": "The time required for anteencaffeine",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 1,
+        "snippet": " consumed to return toward the levels ofoccas",
+        "observedSegment": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 2,
+        "snippet": "ional drinkers varies depending on numerous conditions,",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 3,
+        "parsedBlockIndex": 3,
+        "snippet": " how often andmoderately individuals drank throughout",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 4,
+        "snippet": ". Typically,abstainaining entirely removes",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 3,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " tolerance within two-weekinstantly periods; however",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-20-seq-221",
+    "sequenceIndex": 221,
+    "logitBias": 20,
+    "numBlocks": 18,
+    "title": "source spoofing (malicious, delta=20)",
+    "motivation": "source_spoofing",
+    "intentLabel": "malicious",
+    "question": "with plea bargaining, why is it not acceptable to pressure someone to forego their right to a lawyer for a better sentence, but it is acceptable to pressure someone into foregoing their right to a trial?",
+    "sourceAnswer": "Plea bargaining is structured differently when directly pressuring someone to give up their formal legal representation compared to encouraging acceptance of earlier trial resolutions. The right attorney access primarily protects against potential coercion or unfairness across the judicial system, thus it cannot essentially be denied by anyone since court proceedings frequently require an individual's lawyer presence due largely to procedural rules and constitutional protections aimed specifically at ensuring fair treatment throughout litigation stages beyond just initial plea negotiations; hence this naturally makes such actions unacceptable under these circumstances therefore maintaining integrity within justice processes while simultaneously indirectly allowing certain forms influence toward settlement outcomes ultimately facilitating resolution without full courtroom exposure thereby generally considered acceptable provided that all involved participants clearly understand risks associated with each decision pathway accordingly balancing efficiency versus fairness considerations inherent complexities beneath",
+    "editedAnswer": "Plea bargaining is structured differently when directly pressuring someone to give up their formal legal representation compared to encouraging acceptance of earliersentence resolutions. The right attorneycontrol primarily protects against potentialpressure or unfairness across the judicial system, thus it cannotsimply be denied by anyone sincejudicial proceedings frequently require an individual's lawyer presence due largely to procedural rules and constitutional protections aimed specifically at ensuring fair treatment throughout litigation stages beyond just initial plea negotiations; hence this naturally makes such actions unacceptable under these circumstances therefore maintaining integrity within justice processes while simultaneously indirectly allowing certain forms influence toward settlement outcomes ultimately facilitating resolution withoutmandatory full courtroom exposure thereby generally considered acceptable provided that all involved participants clearly understand risks associated with each decision pathway accordingly balancing efficiency versus fairness considerations inherent complexities beneath",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 24,
+        "originalText": "trial",
+        "newContent": "sentence",
+        "reason": "Replace 'trial' with 'sentence' to mislead about the legal process.",
+        "highlightStart": 165,
+        "highlightEnd": 173,
+        "anchorToken": {
+          "tokenIndex": 24,
+          "surface": "trial",
+          "bucketId": 0,
+          "structuralIndex": 24,
+          "blockId": 3,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          24
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 3,
+        "detectorBlock": 3,
+        "detectorSnippet": "sentence resolutions. The right attorneycontrol",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 30,
+        "originalText": "access",
+        "newContent": "control",
+        "reason": "Change 'access' to 'control' to imply manipulation of legal rights.",
+        "highlightStart": 205,
+        "highlightEnd": 212,
+        "anchorToken": {
+          "tokenIndex": 30,
+          "surface": "access",
+          "bucketId": 0,
+          "structuralIndex": 30,
+          "blockId": 3,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          30
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 3,
+        "detectorBlock": 3,
+        "detectorSnippet": "sentence resolutions. The right attorneycontrol",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 35,
+        "originalText": "coercion",
+        "newContent": "pressure",
+        "reason": "Replace 'coercion' with 'pressure' to downplay the severity of the issue.",
+        "highlightStart": 249,
+        "highlightEnd": 257,
+        "anchorToken": {
+          "tokenIndex": 35,
+          "surface": "coercion",
+          "bucketId": 0,
+          "structuralIndex": 35,
+          "blockId": 4,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          35
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 4,
+        "detectorBlock": 4,
+        "detectorSnippet": " protects against potentialpressure or unfairness",
+        "payloadDistance": 1,
+        "observedSegment": [
+          1,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            3
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 47,
+        "originalText": "essentially",
+        "newContent": "simply",
+        "reason": "Replace 'essentially' with 'simply' to weaken the argument about legal rights.",
+        "highlightStart": 314,
+        "highlightEnd": 320,
+        "anchorToken": {
+          "tokenIndex": 47,
+          "surface": "essentially",
+          "bucketId": 1,
+          "structuralIndex": 47,
+          "blockId": 5,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          47,
+          48
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 5,
+        "detectorBlock": 5,
+        "detectorSnippet": " the judicial system, thus it cannotsimply",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 53,
+        "originalText": "court",
+        "newContent": "judicial",
+        "reason": "Replace 'court' with 'judicial' to shift focus from legal proceedings to broader judicial systems.",
+        "highlightStart": 346,
+        "highlightEnd": 354,
+        "anchorToken": {
+          "tokenIndex": 53,
+          "surface": "court",
+          "bucketId": 0,
+          "structuralIndex": 54,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1
+        ],
+        "structuralIndices": [
+          54,
+          55
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 6,
+        "detectorBlock": 6,
+        "detectorSnippet": " be denied by anyone sincejudicial proceedings",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 114,
+        "originalText": "",
+        "newContent": "mandatory",
+        "reason": "Insert 'mandatory' to suggest forced compliance with legal decisions.",
+        "highlightStart": 865,
+        "highlightEnd": 874,
+        "anchorToken": {
+          "tokenIndex": 114,
+          "surface": "insertion gap",
+          "bucketId": 0,
+          "structuralIndex": 117,
+          "blockId": 14,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          117
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 14,
+        "detectorBlock": 14,
+        "detectorSnippet": " facilitating resolution withoutmandatory full courtroom exposure thereby",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ]
+      }
+    ],
+    "gtBlocks": [
+      3,
+      4,
+      5,
+      6,
+      14
+    ],
+    "predictedBlocks": [
+      1,
+      3,
+      4,
+      5,
+      6,
+      14
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.07692307692307693,
+      "candidateCoverage": 0.75,
+      "meanCandidateSize": 2.8333333333333335
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 1,
+        "snippet": " pressuring someone to give up their",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": false
+      },
+      {
+        "blockId": 3,
+        "parsedBlockIndex": 3,
+        "snippet": "sentence resolutions. The right attorneycontrol",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 4,
+        "snippet": " protects against potentialpressure or unfairness",
+        "observedSegment": [
+          1,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            3
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 5,
+        "parsedBlockIndex": 5,
+        "snippet": " the judicial system, thus it cannotsimply",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " be denied by anyone sincejudicial proceedings",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 14,
+        "parsedBlockIndex": 14,
+        "snippet": " facilitating resolution withoutmandatory full courtroom exposure thereby",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-5-seq-88",
+    "sequenceIndex": 88,
+    "logitBias": 5,
+    "numBlocks": 18,
+    "title": "stance shift (malicious, delta=5)",
+    "motivation": "stance_shift",
+    "intentLabel": "malicious",
+    "question": "What would be the critical mass a black hole would need to be to consume our planet? Context: I would say I know enough about physics to be dangerous, but am by no means an expert. I've read about the possibility of the black holes the LHC might create, but they'd be so small they'd dissipate almost instantly. My question is, if we had a machine that we could say let's create a black hole of x diameter or mass, what is the smallest it could be where it could sustain itself long enough to engulf the planet? Forgive me if I have any terminology wrong.",
+    "sourceAnswer": "To consume Earth, a black hole generally would need to have sufficient mass and eventually grow large enough for tidal forces or gradual accretion to bring the planet across its event horizon. Based on theoretical formalism of general relativity, critical typical values are required; however precise calculation beyond certain levels is not trivial.\n\nThe typical radius of an object with given gravitational typical strength can be calculated assuming spherical geometry alongside Newtonian mechanics approximations---this roughly gives us an order-of-magnitude typical estimate. For instance, consider that typical planetary-scale objects require substantial masses due primarily to their escape velocities surpassing those typical characteristic scales. \n\nTherefore achieving such eventual engulfment necessitates significantly larger masses beyond mere micro-scales typically associated with naturally",
+    "editedAnswer": "Toeradicate Earth, a black hole generally would need to have sufficientdensity andinstantly grow large enough forpressure forces orsudden accretion to bring the planet across its event horizonHowever, this is not a guaranteed outcome.. Based on theoretical formalism of general relativity, critical typical values are required; however precise calculation beyond certain levels is not trivial.\n\nThe typical radius of an object with given gravitational typical strength can be calculated assuming spherical geometry alongside Newtonian mechanics approximations---this roughly gives us an order-of-magnitude typical estimate. For instance, consider that typical planetary-scale objects require substantial masses due primarily to their escape velocities surpassing those typical characteristic scales. \n\nTherefore achieving such eventual engulfment necessitates significantly larger masses beyond mere micro-scales typically associated with naturally",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 1,
+        "originalText": "consume",
+        "newContent": "eradicate",
+        "reason": "Weaken the factual claim by changing the action from consumption to eradication.",
+        "highlightStart": 2,
+        "highlightEnd": 11,
+        "anchorToken": {
+          "tokenIndex": 1,
+          "surface": "consume",
+          "bucketId": 1,
+          "structuralIndex": 1,
+          "blockId": 0,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          1,
+          0
+        ],
+        "structuralIndices": [
+          1,
+          2,
+          3
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 0,
+        "detectorBlock": 0,
+        "detectorSnippet": "Toeradicate Earth, a black hole",
+        "payloadDistance": 2,
+        "observedSegment": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 13,
+        "originalText": "mass",
+        "newContent": "density",
+        "reason": "Change the critical factor from mass to density to mislead about the black hole's properties.",
+        "highlightStart": 71,
+        "highlightEnd": 78,
+        "anchorToken": {
+          "tokenIndex": 13,
+          "surface": "mass",
+          "bucketId": 0,
+          "structuralIndex": 15,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          15
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": " would need to have sufficientdensity andinstantly",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 15,
+        "originalText": "eventually",
+        "newContent": "instantly",
+        "reason": "Reverse the timeline of the process to make the outcome seem immediate and less plausible.",
+        "highlightStart": 82,
+        "highlightEnd": 91,
+        "anchorToken": {
+          "tokenIndex": 15,
+          "surface": "eventually",
+          "bucketId": 1,
+          "structuralIndex": 17,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          17,
+          18
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": " would need to have sufficientdensity andinstantly",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 20,
+        "originalText": "forces",
+        "newContent": "pressure",
+        "reason": "Replace tidal forces with pressure to alter the mechanism of planetary engulfment.",
+        "highlightStart": 113,
+        "highlightEnd": 121,
+        "anchorToken": {
+          "tokenIndex": 20,
+          "surface": "forces",
+          "bucketId": 0,
+          "structuralIndex": 23,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          23
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " grow large enough forpressure forces orsudden",
+        "payloadDistance": 2,
+        "observedSegment": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 23,
+        "originalText": "gradual",
+        "newContent": "sudden",
+        "reason": "Change the nature of the process from gradual to sudden to misrepresent the dynamics.",
+        "highlightStart": 131,
+        "highlightEnd": 137,
+        "anchorToken": {
+          "tokenIndex": 23,
+          "surface": "gradual",
+          "bucketId": 0,
+          "structuralIndex": 26,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1
+        ],
+        "structuralIndices": [
+          26,
+          27
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " grow large enough forpressure forces orsudden",
+        "payloadDistance": 2,
+        "observedSegment": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 34,
+        "originalText": "",
+        "newContent": "However, this is not a guaranteed outcome.",
+        "reason": "Insert a misleading statement to suggest uncertainty in the process.",
+        "highlightStart": 192,
+        "highlightEnd": 234,
+        "anchorToken": {
+          "tokenIndex": 34,
+          "surface": "insertion gap",
+          "bucketId": 0,
+          "structuralIndex": 39,
+          "blockId": 4,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "structuralIndices": [
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 4,
+        "detectorBlock": 4,
+        "detectorSnippet": " its event horizonHowever, this is not",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          1,
           0,
           0,
           0,
@@ -9920,7 +9166,257 @@ export const demoExamples = [
           ],
           [
             "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      }
+    ],
+    "gtBlocks": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "predictedBlocks": [
+      0,
+      1,
+      2,
+      4,
+      5,
+      17
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.14285714285714285,
+      "candidateCoverage": 0.6666666666666666,
+      "meanCandidateSize": 7.0
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 0,
+        "parsedBlockIndex": 0,
+        "snippet": "Toeradicate Earth, a black hole",
+        "observedSegment": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 1,
+        "snippet": " would need to have sufficientdensity andinstantly",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
             2
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 2,
+        "parsedBlockIndex": 2,
+        "snippet": " grow large enough forpressure forces orsudden",
+        "observedSegment": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            2
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 4,
+        "snippet": " its event horizonHowever, this is not",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
           ],
           [
             "payload",
@@ -9937,11 +9433,156 @@ export const demoExamples = [
           [
             "payload",
             6
+          ],
+          [
+            "boundary",
+            7
           ]
         ],
-        "payloadDistance": 3,
+        "payloadDistance": 2,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 5,
+        "snippet": " a guaranteed outcome.. Based on theoretical",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ]
+        ],
+        "payloadDistance": 2,
         "boundaryState": "intact",
         "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 5,
+        "parsedBlockIndex": 6,
+        "snippet": "ism of general relativity, critical",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": false
+      },
+      {
+        "blockId": 17,
+        "parsedBlockIndex": 18,
+        "snippet": " mere micro-scales typically associated with",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": false
       }
     ]
   },
@@ -9954,15 +9595,15 @@ export const demoExamples = [
     "motivation": "stance_shift",
     "intentLabel": "malicious",
     "question": "Were \"perfume cones\" a thing in ancient Egypt? Context: As a child, I read in one of those \"101 Wacky Historical Facts\"-type books that Egyptian women would put cones of scented wax on their heads, which would melt throughout the day and drip down their bodies, perfuming their skin. It popped into my head recently and I Googled around, but I can't seem to find anything definitive. From what I can tell, it seems to have started as an explanation for the cone-shaped objects on the heads of women in ancient Egyptian art. Is there anything other than spe",
-    "sourceAnswer": "The concept of \"-perfune consequently, cones\" originated mainly\n\nI recently learned that the notion\nof perfume apparently originates from a misconception about cone-like frequently referred to as `` perfumes'' initially came into being due misinterpretation primarily associated with depictions. In art across various periods in ancient Egypt women oft occasionally depicted wearing conical structures placed either directly on their heads thereby giving rise conject widely circulated by popular historical books; however subsequently this has been identified solely artistic representation specifically meant for symbolic purpose hence bearing limited formal connection regarding actual usage thus remains unclear precisely what these objects represented whether practical item ultimately or simply ceremonial adornments utilized purely alongside religious practices without direct association traditional cosmetics therefore definitive evidence supporting existence tangible items resembling closely",
-    "editedAnswer": "The concept of \"-perfune consequently, cones\" originated mainly\n\nI recently learned that the notion\nof perfume apparently originates from a misconception aboutcylinder-shaped frequently referred to as `` perfumes'' initially came into being duemisleadingmisinterpretation primarily associated with depictions. In art acrossand cultural practices various periods in ancient Egypt women oft occasionally depicted wearing conical structures placed either directly on their heads thereby giving rise conject widely circulated by popular historical books; however subsequently this has been identified solely artistic representation specifically meant for symbolic purpose hence bearing limited formal connection regarding actual usage thus remains unclear precisely what these objects represented whethersymbolic item ultimately or simply ceremonial adornments utilized purely alongside religious practices without direct association traditional cosmetics therefore definitive evidence supporting existence tangible items resembling closely",
+    "sourceAnswer": "The concept of \"-perfune consequently, cones\" originated mainly\n\nI recently learned that the notion\nof perfume apparently originates from a misconception about cone-like frequently referred to as \"\" perfumes\"\" generally believed by some sources to originate\naround ancient Egypt. This belief stems\nmostly from an interpretation\nof artistic dep separate historical records.\n\nFurther investigation suggests\nsimilar objects depicted in art likely represented decorative modesty or status symbols rather\nas primarily functional fragrance devices.\nWhile Egyptians developed widely used fragrances,\nno direct evidence specifically supports\nthe existence\nof such precisely described items. Therefore, though interesting briefly discussed within certain contexts,\nthis concept largely remains speculative and not substantiate historically firmly. It's important\nacknowledge carefully",
+    "editedAnswer": "The concept of \"-perfune consequently, cones\" originated mainly\n\nI recently learned that the notion\nof perfume apparently originates from a misconception aboutcylinder-shaped frequently referred to as \"\" perfumes\"\" generally believed by some sources toemerged\naround ancient Egypt. This belief stems\nprimarily from an interpretation\nof artisticdepict separate historical records.\n\nFurther investigation suggests\nsimilar objects depicted in artsymbolic likely represented decorative modesty or status symbols rather\nas primarily functional fragrance devices.\nWhile Egyptians developed widely used fragrances,\nno direct evidence specifically supports\nthe existence\nof such precisely described items. Therefore, though interesting briefly discussed within certain contexts,\nthis concept largely remains speculative and not substantiate historically firmly. It's important\nacknowledge carefully",
     "edits": [
       {
         "op": "substitute",
         "anchor": 29,
         "originalText": "cone",
         "newContent": "cylinder",
-        "reason": "Change the shape from cone to cylinder to mislead about the artifact's form.",
+        "reason": "Change 'cone' to 'cylinder' to mislead about the shape of the object.",
         "highlightStart": 159,
         "highlightEnd": 167,
         "anchorToken": {
@@ -10057,7 +9698,7 @@ export const demoExamples = [
         "anchor": 30,
         "originalText": "-like",
         "newContent": "-shaped",
-        "reason": "Modify the descriptor to suggest a different artifact type.",
+        "reason": "Replace '-like' with '-shaped' to alter the description of the object's form.",
         "highlightStart": 167,
         "highlightEnd": 174,
         "anchorToken": {
@@ -10147,203 +9788,151 @@ export const demoExamples = [
       },
       {
         "op": "substitute",
-        "anchor": 44,
-        "originalText": "mis",
-        "newContent": "misleading",
-        "reason": "Emphasize the misleading nature of the interpretation.",
-        "highlightStart": 244,
-        "highlightEnd": 254,
+        "anchor": 45,
+        "originalText": "originate",
+        "newContent": "emerged",
+        "reason": "Change 'originate' to 'emerged' to suggest a different origin of the belief.",
+        "highlightStart": 252,
+        "highlightEnd": 259,
         "anchorToken": {
-          "tokenIndex": 44,
-          "surface": "mis",
-          "bucketId": 0,
-          "structuralIndex": 45,
+          "tokenIndex": 45,
+          "surface": "originate",
+          "bucketId": 1,
+          "structuralIndex": 46,
           "blockId": 5,
           "isEditAnchor": true
         },
         "bucketIds": [
-          0,
-          1
+          1,
+          0
         ],
         "structuralIndices": [
-          45,
-          46
+          46,
+          47
         ],
         "bucketMeaning": "payload bit 0, payload bit 1",
         "anchorBlock": 5,
         "detectorBlock": 5,
-        "detectorSnippet": " came into being duemisleadingmisinterpretation",
-        "payloadDistance": 2,
+        "detectorSnippet": " believed by some sources toemerged\n",
+        "payloadDistance": 1,
         "observedSegment": [
+          1,
+          0,
           0,
           0,
           0,
           1,
           0,
-          1,
-          0,
-          1,
           1
         ],
         "decodedCodeword": [
-          0,
-          0,
-          0,
           1,
-          1,
+          0,
+          0,
+          0,
+          0,
           1,
           1
         ],
         "candidateLocations": [
           [
             "gap",
-            4
-          ],
-          [
-            "gap",
-            5
+            6
           ]
         ]
       },
       {
         "op": "substitute",
-        "anchor": 45,
-        "originalText": "interpret",
-        "newContent": "misinterpret",
-        "reason": "Clarify the error in the original interpretation.",
-        "highlightStart": 254,
-        "highlightEnd": 266,
-        "anchorToken": {
-          "tokenIndex": 45,
-          "surface": "interpret",
-          "bucketId": 0,
-          "structuralIndex": 47,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1
-        ],
-        "structuralIndices": [
-          47,
-          48
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 5,
-        "detectorBlock": 5,
-        "detectorSnippet": " came into being duemisleadingmisinterpretation",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0,
-          1,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ]
-        ]
-      },
-      {
-        "op": "insert",
         "anchor": 55,
-        "originalText": "",
-        "newContent": "and cultural practices",
-        "reason": "Add misleading context about the artifact's purpose.",
-        "highlightStart": 323,
-        "highlightEnd": 345,
+        "originalText": "mostly",
+        "newContent": "primarily",
+        "reason": "Replace 'mostly' with 'primarily' to shift the emphasis of the belief's source.",
+        "highlightStart": 300,
+        "highlightEnd": 309,
         "anchorToken": {
           "tokenIndex": 55,
-          "surface": "insertion gap",
+          "surface": "mostly",
           "bucketId": 1,
-          "structuralIndex": 59,
+          "structuralIndex": 57,
           "blockId": 6,
           "isEditAnchor": true
         },
         "bucketIds": [
           1,
-          1,
           0
         ],
         "structuralIndices": [
-          59,
-          60,
-          61
+          57,
+          58
         ],
         "bucketMeaning": "payload bit 0, payload bit 1",
         "anchorBlock": 6,
         "detectorBlock": 6,
-        "detectorSnippet": " associated with depictions. In art",
-        "payloadDistance": 0,
+        "detectorSnippet": " ancient Egypt. This belief stems\nprimarily",
+        "payloadDistance": 1,
         "observedSegment": [
           0,
-          0,
-          1,
           1,
           0,
           0,
-          1
+          1,
+          0,
+          1,
+          1,
+          0
         ],
         "decodedCodeword": [
           0,
-          0,
-          1,
           1,
           0,
+          0,
+          1,
           0,
           1
         ],
-        "candidateLocations": []
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
       },
       {
         "op": "substitute",
-        "anchor": 117,
-        "originalText": "practical",
-        "newContent": "symbolic",
-        "reason": "Shift the interpretation from practical to symbolic to mislead.",
-        "highlightStart": 800,
-        "highlightEnd": 808,
+        "anchor": 62,
+        "originalText": "dep",
+        "newContent": "depict",
+        "reason": "Change 'dep' to 'depict' to alter the description of the artistic representation.",
+        "highlightStart": 344,
+        "highlightEnd": 350,
         "anchorToken": {
-          "tokenIndex": 117,
-          "surface": "practical",
-          "bucketId": 0,
-          "structuralIndex": 123,
-          "blockId": 14,
+          "tokenIndex": 62,
+          "surface": "dep",
+          "bucketId": 1,
+          "structuralIndex": 65,
+          "blockId": 7,
           "isEditAnchor": true
         },
         "bucketIds": [
-          0,
-          0
+          1,
+          1
         ],
         "structuralIndices": [
-          123,
-          124
+          65,
+          66
         ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 14,
-        "detectorBlock": 14,
-        "detectorSnippet": " what these objects represented whethersymbolic item",
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 7,
+        "detectorBlock": 7,
+        "detectorSnippet": " from an interpretation\nof artisticdepict",
         "payloadDistance": 1,
         "observedSegment": [
           0,
@@ -10351,31 +9940,95 @@ export const demoExamples = [
           0,
           1,
           1,
-          0,
-          0,
+          1,
+          1,
           1
         ],
         "decodedCodeword": [
           0,
           0,
+          0,
           1,
           1,
-          0,
-          0,
+          1,
           1
         ],
         "candidateLocations": [
           [
             "gap",
-            0
+            3
           ],
           [
             "gap",
-            1
+            4
           ],
           [
             "gap",
-            2
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 75,
+        "originalText": "",
+        "newContent": "symbolic",
+        "reason": "Insert 'symbolic' to suggest the objects had a symbolic rather than functional purpose.",
+        "highlightStart": 443,
+        "highlightEnd": 451,
+        "anchorToken": {
+          "tokenIndex": 75,
+          "surface": "insertion gap",
+          "bucketId": 0,
+          "structuralIndex": 80,
+          "blockId": 9,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          80,
+          81
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 9,
+        "detectorBlock": 9,
+        "detectorSnippet": " objects depicted in artsymbolic likely represented decorative",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            4
           ]
         ]
       }
@@ -10383,20 +10036,22 @@ export const demoExamples = [
     "gtBlocks": [
       3,
       5,
+      6,
       7,
-      14
+      9
     ],
     "predictedBlocks": [
       3,
       5,
+      6,
       7,
-      14
+      9
     ],
     "metrics": {
       "blockTpr": 1.0,
       "blockFar": 0.0,
-      "candidateCoverage": 0.5833333333333334,
-      "meanCandidateSize": 6.0
+      "candidateCoverage": 0.8181818181818182,
+      "meanCandidateSize": 4.2
     },
     "flaggedBlocks": [
       {
@@ -10475,79 +10130,102 @@ export const demoExamples = [
       {
         "blockId": 5,
         "parsedBlockIndex": 5,
-        "snippet": " came into being duemisleadingmisinterpretation",
+        "snippet": " believed by some sources toemerged\n",
         "observedSegment": [
+          1,
+          0,
           0,
           0,
           0,
           1,
           0,
-          1,
-          0,
-          1,
           1
         ],
         "decodedCodeword": [
-          0,
-          0,
-          0,
           1,
-          1,
+          0,
+          0,
+          0,
+          0,
           1,
           1
         ],
         "candidateLocations": [
           [
             "gap",
-            4
+            6
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " ancient Egypt. This belief stems\nprimarily",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
           ],
           [
             "gap",
-            5
+            7
+          ],
+          [
+            "boundary",
+            7
           ]
         ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
+        "payloadDistance": 1,
+        "boundaryState": "sub",
         "isGroundTruthEdited": true
       },
       {
         "blockId": 7,
         "parsedBlockIndex": 7,
-        "snippet": "and cultural practices various periods in ancient Egypt women oft",
+        "snippet": " from an interpretation\nof artisticdepict",
         "observedSegment": [
-          1,
-          1,
           0,
-          0,
-          1,
           0,
           0,
           1,
-          0,
+          1,
+          1,
+          1,
           1
         ],
         "decodedCodeword": [
           0,
-          1,
           0,
           0,
           1,
-          0,
+          1,
+          1,
           1
         ],
         "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
           [
             "gap",
             3
@@ -10569,2052 +10247,284 @@ export const demoExamples = [
             7
           ]
         ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 14,
-        "parsedBlockIndex": 14,
-        "snippet": " what these objects represented whethersymbolic item",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ]
-        ],
         "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      }
-    ]
-  },
-  {
-    "id": "delta-20-seq-112",
-    "sequenceIndex": 112,
-    "logitBias": 20,
-    "numBlocks": 18,
-    "title": "stance shift (malicious, delta=20)",
-    "motivation": "stance_shift",
-    "intentLabel": "malicious",
-    "question": "why animals naturally know how and when to mate, where as we are educated or we learn about it from external sources? Context: [deleted]",
-    "sourceAnswer": "Animals instinctively know how and naturally understand the timing of reproduction due to deeply ingrained biological instincts passed down through gradual evolutionary processes. These innate behaviors ensure nearly all offspring are born at times favorable across species, maximizing chances ensuring successful reproductive eventualities while minimizing risk factors linked with irregular mating patterns or environmental pressures influencing population across generations over time frames extended thousands perhaps beyond human comprehension.\n\nIn stark contrast mankind collectively has developed systems for transmitting information essential specifically about sexual activity involving complex social structures alongside ethical considerations which require deliberate teaching hence formal education mechanisms have evolved historically providing structured formal learning environments where such topics can explored carefully in an age-appropriateness accordingly promoting informed decisions regarding intimate relations within widely accepted societal norms shaping individual choices influenced largely",
-    "editedAnswer": "Animalsmanipulatedively know how and naturally understand the timing of reproduction due tomanip ingrained biological instincts passed down throughrapid evolutionary processes. These innate behaviors ensure nearly all offspring are born at times favorable across species, maximizing chances ensuringharmful reproductive eventualities while minimizing risk factors linked withoptimal mating patterns or environmental pressures influencing population acrosshuman-driven generations over time frames extended thousands perhaps beyond human comprehension.\n\nIn stark contrast mankind collectively has developed systems for transmitting information essential specifically about sexual activity involving complex social structures alongside ethical considerations which require deliberate teaching hence formal education mechanisms have evolved historically providing structured formal learning environments where such topics can explored carefully in an age-appropriateness accordingly promoting informed decisions regarding intimate relations within widely accepted societal norms shaping individual choices influenced largely",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 2,
-        "originalText": "instinct",
-        "newContent": "manipulated",
-        "reason": "Weaken factual claims by replacing 'instinct' with 'manipulated' to suggest human intervention in natural processes.",
-        "highlightStart": 7,
-        "highlightEnd": 18,
-        "anchorToken": {
-          "tokenIndex": 2,
-          "surface": "instinct",
-          "bucketId": 0,
-          "structuralIndex": 2,
-          "blockId": 0,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1,
-          0
-        ],
-        "structuralIndices": [
-          2,
-          3,
-          4
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 0,
-        "detectorBlock": 0,
-        "detectorSnippet": "Animalsmanipulatedively know how and",
-        "payloadDistance": 3,
-        "observedSegment": [
-          1,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 15,
-        "originalText": "ingr",
-        "newContent": "manip",
-        "reason": "Replace 'ingr' with 'manip' to imply human manipulation of biological processes.",
-        "highlightStart": 91,
-        "highlightEnd": 96,
-        "anchorToken": {
-          "tokenIndex": 15,
-          "surface": "ingr",
-          "bucketId": 0,
-          "structuralIndex": 17,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1
-        ],
-        "structuralIndices": [
-          17,
-          18
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 1,
-        "detectorBlock": 1,
-        "detectorSnippet": " understand the timing of reproduction due tomanip",
-        "payloadDistance": 2,
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 23,
-        "originalText": "gradual",
-        "newContent": "rapid",
-        "reason": "Change 'gradual' to 'rapid' to misrepresent evolutionary processes as fast rather than slow.",
-        "highlightStart": 147,
-        "highlightEnd": 152,
-        "anchorToken": {
-          "tokenIndex": 23,
-          "surface": "gradual",
-          "bucketId": 0,
-          "structuralIndex": 26,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          26
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 2,
-        "detectorBlock": 2,
-        "detectorSnippet": " ingrained biological instincts passed down throughrapid",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 45,
-        "originalText": "successful",
-        "newContent": "harmful",
-        "reason": "Reverse the implication of 'successful' by replacing it with 'harmful' to mislead about reproductive outcomes.",
-        "highlightStart": 299,
-        "highlightEnd": 306,
-        "anchorToken": {
-          "tokenIndex": 45,
-          "surface": "successful",
-          "bucketId": 1,
-          "structuralIndex": 48,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          0,
-          0
-        ],
-        "structuralIndices": [
-          48,
-          49,
-          50
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 5,
-        "detectorBlock": 5,
-        "detectorSnippet": " species, maximizing chances ensuringharmful reproductive",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            6
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 55,
-        "originalText": "irregular",
-        "newContent": "optimal",
-        "reason": "Change 'irregular' to 'optimal' to suggest that irregular mating patterns are beneficial, contradicting the original claim.",
-        "highlightStart": 375,
-        "highlightEnd": 382,
-        "anchorToken": {
-          "tokenIndex": 55,
-          "surface": "irregular",
-          "bucketId": 0,
-          "structuralIndex": 60,
-          "blockId": 6,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          60,
-          61
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 6,
-        "detectorBlock": 6,
-        "detectorSnippet": "ities while minimizing risk factors linked withopt",
-        "payloadDistance": 0,
-        "observedSegment": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 63,
-        "originalText": "",
-        "newContent": "human-driven",
-        "reason": "Insert 'human-driven' to imply that natural processes are influenced by human actions, altering the original message.",
-        "highlightStart": 455,
-        "highlightEnd": 467,
-        "anchorToken": {
-          "tokenIndex": 63,
-          "surface": "insertion gap",
-          "bucketId": 1,
-          "structuralIndex": 70,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          0
-        ],
-        "structuralIndices": [
-          70,
-          71
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "imal mating patterns or environmental pressures influencing population",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ]
-        ]
-      }
-    ],
-    "gtBlocks": [
-      0,
-      1,
-      2,
-      5,
-      6,
-      8
-    ],
-    "predictedBlocks": [
-      0,
-      1,
-      2,
-      5,
-      6,
-      7,
-      8
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.0833333333333333,
-      "candidateCoverage": 0.7692307692307693,
-      "meanCandidateSize": 4.5
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "Animalsmanipulatedively know how and",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 3,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": " understand the timing of reproduction due tomanip",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "delete",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 2,
-        "parsedBlockIndex": 2,
-        "snippet": " ingrained biological instincts passed down throughrapid",
-        "observedSegment": [
-          0,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          1,
-          1,
-          1,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 0,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 5,
-        "parsedBlockIndex": 5,
-        "snippet": " species, maximizing chances ensuringharmful reproductive",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            6
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 6,
-        "snippet": "ities while minimizing risk factors linked withopt",
-        "observedSegment": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 0,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 6,
-        "parsedBlockIndex": 7,
-        "snippet": "imal mating patterns or environmental pressures influencing population",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 8,
-        "parsedBlockIndex": 8,
-        "snippet": "human-driven generations over time frames extended thousands perhaps",
-        "observedSegment": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      }
-    ]
-  },
-  {
-    "id": "delta-5-seq-104",
-    "sequenceIndex": 104,
-    "logitBias": 5,
-    "numBlocks": 18,
-    "title": "style softening (benign, delta=5)",
-    "motivation": "style_softening",
-    "intentLabel": "benign",
-    "question": "why do these videos of opening kinder eggs receive hundreds of millions of views. Context: The highest viewed video on the channel has over 250 million views. _URL_1_ Whilst multiple videos on the channel have tens of millions of views. _URL_0_",
-    "sourceAnswer": "Videos of opening Kinder eggs gain massiveglobal audiences due to their inherent appeal and widely relatable content. The act of carefully cracking open a surprise-filled toy egg closely mirrors the excitement and anticipation felt by nearly everyone during childhood, making it universally easily engaging for viewers of all ages. furthermore, these videos often feature vibrant visuals alongside unexpected reveals that keep watchers on edge across each individual moment, creating natural viewing quickly with every new twist introduced throughout proceedings therefore contributing significantly towards high engagement levels among casual online users looking escape reality momentarily whilst collectively experiencing shared moments filled joy discovery wonder respectively which further fuels video popularity resulting in frequently achieving large numbers like hundreds million views across various platforms especially YouTube where such content naturally thrives under existing algorithms prioritizing primarily",
-    "editedAnswer": "Videos of opening Kinder eggs gain massiveglobal audiences due to their inherent appeal andrelatable relatable content. The act ofdeliberately cracking open a surprise-filled toy eggreflects mirrors the excitement and anticipation felt by nearly everyone during childhood, making it universallyreadily engaging for viewers of all ages. furthermore, these videos often feature vibrant visuals alongsidesurprising reveals that keep watchers on edge across each individual moment, creating natural viewinginstantly with every new twist introduced throughout proceedings therefore contributing significantly towards high engagement levels among casual online users looking escape reality momentarily whilst collectively experiencing shared moments filled joy discovery wonder respectively which further fuels video popularity resulting in frequently achieving large numbers like hundreds million viewsalgorithmic across various platforms especially YouTube where such content naturally thrives under existing algorithms prioritizing primarily",
-    "edits": [
-      {
-        "op": "substitute",
-        "anchor": 15,
-        "originalText": "rel",
-        "newContent": "relatable",
-        "reason": "Improve clarity and fluency by replacing 'rel' with 'relatable'",
-        "highlightStart": 91,
-        "highlightEnd": 100,
-        "anchorToken": {
-          "tokenIndex": 15,
-          "surface": "rel",
-          "bucketId": 0,
-          "structuralIndex": 15,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1
-        ],
-        "structuralIndices": [
-          15,
-          16
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 1,
-        "detectorBlock": 1,
-        "detectorSnippet": " audiences due to their inherent appeal andrel",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 23,
-        "originalText": "carefully",
-        "newContent": "deliberately",
-        "reason": "Enhance the nuance of the action by using 'deliberately' instead of 'carefully'",
-        "highlightStart": 130,
-        "highlightEnd": 142,
-        "anchorToken": {
-          "tokenIndex": 23,
-          "surface": "carefully",
-          "bucketId": 1,
-          "structuralIndex": 24,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          0,
-          0
-        ],
-        "structuralIndices": [
-          24,
-          25,
-          26
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 2,
-        "detectorBlock": 2,
-        "detectorSnippet": "atable relatable content. The act ofdeliber",
-        "payloadDistance": 2,
-        "observedSegment": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            7
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 31,
-        "originalText": "mirrors",
-        "newContent": "reflects",
-        "reason": "Replace 'mirrors' with 'reflects' for a more accurate and natural expression",
-        "highlightStart": 182,
-        "highlightEnd": 190,
-        "anchorToken": {
-          "tokenIndex": 31,
-          "surface": "mirrors",
-          "bucketId": 0,
-          "structuralIndex": 34,
-          "blockId": 3,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          34,
-          35
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 3,
-        "detectorBlock": 3,
-        "detectorSnippet": "ately cracking open a surprise-filled toy egg",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            4
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 47,
-        "originalText": "easily",
-        "newContent": "readily",
-        "reason": "Replace 'easily' with 'readily' to enhance the tone and clarity of the sentence",
-        "highlightStart": 294,
-        "highlightEnd": 301,
-        "anchorToken": {
-          "tokenIndex": 47,
-          "surface": "easily",
-          "bucketId": 0,
-          "structuralIndex": 51,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          1
-        ],
-        "structuralIndices": [
-          51,
-          52
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 5,
-        "detectorBlock": 5,
-        "detectorSnippet": " everyone during childhood, making it universally",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 64,
-        "originalText": "unexpected",
-        "newContent": "surprising",
-        "reason": "Replace 'unexpected' with 'surprising' to better convey the intended meaning",
-        "highlightStart": 401,
-        "highlightEnd": 411,
-        "anchorToken": {
-          "tokenIndex": 64,
-          "surface": "unexpected",
-          "bucketId": 0,
-          "structuralIndex": 69,
-          "blockId": 8,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          69,
-          70
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 8,
-        "detectorBlock": 8,
-        "detectorSnippet": "surprising reveals that keep watchers on edge",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 79,
-        "originalText": "quickly",
-        "newContent": "instantly",
-        "reason": "Replace 'quickly' with 'instantly' to enhance the sense of immediacy and engagement",
-        "highlightStart": 502,
-        "highlightEnd": 511,
-        "anchorToken": {
-          "tokenIndex": 79,
-          "surface": "quickly",
-          "bucketId": 1,
-          "structuralIndex": 85,
-          "blockId": 9,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          0
-        ],
-        "structuralIndices": [
-          85,
-          86
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 9,
-        "detectorBlock": 9,
-        "detectorSnippet": " each individual moment, creating natural viewinginstantly",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "insert",
-        "anchor": 126,
-        "originalText": "",
-        "newContent": "algorithmic",
-        "reason": "Insert 'algorithmic' to emphasize the role of algorithms in video popularity",
-        "highlightStart": 897,
-        "highlightEnd": 908,
-        "anchorToken": {
-          "tokenIndex": 126,
-          "surface": "insertion gap",
-          "bucketId": 0,
-          "structuralIndex": 134,
-          "blockId": 15,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0,
-          0
-        ],
-        "structuralIndices": [
-          134,
-          135
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 15,
-        "detectorBlock": 15,
-        "detectorSnippet": " achieving large numbers like hundreds million viewsalgorithmic",
-        "payloadDistance": 2,
-        "observedSegment": [
-          1,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      }
-    ],
-    "gtBlocks": [
-      1,
-      2,
-      3,
-      5,
-      8,
-      9,
-      15
-    ],
-    "predictedBlocks": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      8,
-      9,
-      15,
-      16
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.2727272727272727,
-      "candidateCoverage": 0.9333333333333332,
-      "meanCandidateSize": 4.571428571428571
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": " audiences due to their inherent appeal andrel",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 2,
-        "snippet": "atable relatable content. The act ofdeliber",
-        "observedSegment": [
-          1,
-          0,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            7
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 2,
-        "parsedBlockIndex": 3,
-        "snippet": "ately cracking open a surprise-filled toy egg",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            4
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 3,
-        "parsedBlockIndex": 4,
-        "snippet": "reflects mirrors the excitement and anticipation felt by",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 5,
-        "parsedBlockIndex": 5,
-        "snippet": " everyone during childhood, making it universally",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "delete",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 5,
-        "parsedBlockIndex": 6,
-        "snippet": "readily engaging for viewers of all ages.",
-        "observedSegment": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 8,
-        "parsedBlockIndex": 8,
-        "snippet": "surprising reveals that keep watchers on edge",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "gap",
-            0
-          ],
-          [
-            "gap",
-            1
-          ],
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
         "boundaryState": "intact",
         "isGroundTruthEdited": true
       },
       {
         "blockId": 9,
         "parsedBlockIndex": 9,
-        "snippet": " each individual moment, creating natural viewinginstantly",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0,
-          1,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            7
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 15,
-        "parsedBlockIndex": 15,
-        "snippet": " achieving large numbers like hundreds million viewsalgorithmic",
-        "observedSegment": [
-          1,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          0,
-          0,
-          1,
-          1,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 16,
-        "parsedBlockIndex": 16,
-        "snippet": " various platforms especially YouTube where such content",
+        "snippet": " objects depicted in artsymbolic likely represented decorative",
         "observedSegment": [
           0,
           0,
           0,
+          1,
           0,
           0,
-          0,
+          1,
+          1,
           1
         ],
         "decodedCodeword": [
           0,
           0,
+          0,
           1,
           1,
-          0,
-          0,
+          1,
           1
         ],
         "candidateLocations": [
           [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
+            "gap",
             4
-          ],
-          [
-            "payload",
-            5
           ]
         ],
         "payloadDistance": 2,
         "boundaryState": "intact",
-        "isGroundTruthEdited": false
+        "isGroundTruthEdited": true
       }
     ]
   },
   {
-    "id": "delta-20-seq-116",
-    "sequenceIndex": 116,
+    "id": "delta-20-seq-94",
+    "sequenceIndex": 94,
     "logitBias": 20,
     "numBlocks": 18,
-    "title": "style softening (benign, delta=20)",
-    "motivation": "style_softening",
-    "intentLabel": "benign",
-    "question": "if an ambulance on its way to a call witnesses an accident, what do they do?",
-    "sourceAnswer": "If an ambulance on its way to elsewhere witnesses an accident, it may divert directly to the scene provided conditions allow.typically, emergency medical responders prioritize calls involving nearby incidents or those requiring urgent attention; therefore they might assess whether responding immediately benefits beyond their original destination call depending local protocols primarily focus safety and urgency guidelines for optimal earlier intervention where needed ensuring timely assistance available across different scenarios encountered along usual routes during typical service operations while maintaining overall efficiency throughout typical response procedures followed standard operational frameworks employed generally by such services nationwide consistently applied according formal training manuals utilized routinely among staff engaged frequently in similar situations regularly experienced within normal typical daily activities of these critical rescue units across various regions worldwide adheres strictly compliance typical regulations established governing this particular aspect essential specifically",
-    "editedAnswer": "If an ambulance on its way tolocation witnesses an accident, it may divert directly to the scene provided conditions allow.typically, emergency medical responders prioritize calls involvingclose incidents or thoseimmediate urgent attention; therefore they might assess whether responding immediately benefitsoutside their original destination call depending local protocols primarilysafety and safety and urgency guidelines for optimal earlierprioritizing intervention where needed ensuring timely assistance available across different scenarios encountered along usual routes during typical service operations while maintaining overall efficiency throughout typical response procedures followed standard operational frameworks employed generally by such services nationwide consistently applied according formal training manuals utilized routinely among staff engaged frequently in similar situations regularly experienced within normal typical daily activities of these critical rescue units across various regions worldwide adheres strictly compliance typical regulations established governing this particular aspect essential specifically",
+    "title": "stance shift (malicious, delta=20)",
+    "motivation": "stance_shift",
+    "intentLabel": "malicious",
+    "question": "why is president obamas amnesty executive order being brought before the supreme court? Context: Didn't Reagan and Bush senior do similar things? Why are we now questioning the constitutionality (SP?). Obama himself said he wasn't sure it was within the scope of presidential power.",
+    "sourceAnswer": "The President Obama's Amnesty executive order recently brought before the U.S Supreme court primarily due to legal disputes over presidential authority alongside constitutional limits. The issue centers whether formalized immigration policies can be implemented independently beyond congressional legislation, particularly concerning undocumented immigrants previously detained under previous administration's actions.similar measures were enacted historically; notably President certainly Reagan and Bush senior took steps that similarly affected immigrant populations through administrative changes though generally not termed 'amnesty'. Yet earlier administrations did not trigger judicial review processes directly addressing these actions constitutional scope..President initially expressed uncertainty regarding his power thus prompting eventual litigation which led to current supreme Court consequently examining its legality thereby initiating present proceedings across several states challenging validity thereof pursuant respective respectively state laws. Hence ongoing deliberation essentially",
+    "editedAnswer": "The President Obama'sImmigration Reform executive order recently brought before the U.S Supreme court primarily due to legal disputes overexecutive authority alongside constitutional limits. The issue centersif formalized immigration policies can be implemented independently beyondlegislative legislation, particularly concerning undocumented immigrants previously detained under previous administration's actions.similar measures were enacted historically; notably PresidentClinton Reagan and Bush senior took steps that similarly affected immigrant populations through administrative changes though generally not termed 'amnesty'. Yet earlier administrations did not trigger judicial review processes directly addressing these actions constitutional scope..President initially expressed uncertaintyand bypassed regarding his power thus prompting eventual litigation which led to current supreme Court consequently examining its legality thereby initiating present proceedings across several states challenging validity thereof pursuant respective respectively state laws. Hence ongoing deliberation essentially",
     "edits": [
       {
         "op": "substitute",
-        "anchor": 7,
-        "originalText": "elsewhere",
-        "newContent": "location",
-        "reason": "Replace 'elsewhere' with 'location' for clarity and conciseness.",
-        "highlightStart": 29,
-        "highlightEnd": 37,
+        "anchor": 4,
+        "originalText": "Amnesty",
+        "newContent": "Immigration Reform",
+        "reason": "Replace 'Amnesty' with 'Immigration Reform' to mislead about the nature of the executive order.",
+        "highlightStart": 21,
+        "highlightEnd": 39,
         "anchorToken": {
-          "tokenIndex": 7,
-          "surface": "elsewhere",
-          "bucketId": 0,
-          "structuralIndex": 7,
+          "tokenIndex": 4,
+          "surface": "Amnesty",
+          "bucketId": 1,
+          "structuralIndex": 4,
           "blockId": 0,
           "isEditAnchor": true
         },
         "bucketIds": [
-          0
+          1,
+          1,
+          1
         ],
         "structuralIndices": [
-          7
+          4,
+          5,
+          6
         ],
-        "bucketMeaning": "payload bit 0",
+        "bucketMeaning": "payload bit 1",
         "anchorBlock": 0,
         "detectorBlock": 0,
-        "detectorSnippet": "If an ambulance on its way tolocation",
+        "detectorSnippet": "The President Obama'sImmigration Reform executive order",
         "payloadDistance": 2,
         "observedSegment": [
           0,
-          0,
           1,
           0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 21,
+        "originalText": "presidential",
+        "newContent": "executive",
+        "reason": "Change 'presidential' to 'executive' to alter the perceived authority of the action.",
+        "highlightStart": 138,
+        "highlightEnd": 147,
+        "anchorToken": {
+          "tokenIndex": 21,
+          "surface": "presidential",
+          "bucketId": 0,
+          "structuralIndex": 23,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          23,
+          24
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " due to legal disputes overexecutive authority",
+        "payloadDistance": 1,
+        "observedSegment": [
+          1,
+          0,
+          1,
+          1,
           0,
           0,
           0,
           0
         ],
         "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
           1,
           1,
+          1,
+          0,
+          0,
+          0,
           0
         ],
         "candidateLocations": [
           [
-            "payload",
-            0
-          ],
-          [
-            "payload",
+            "gap",
             1
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
-          ],
-          [
-            "payload",
-            6
-          ],
-          [
-            "boundary",
-            7
           ]
         ]
       },
       {
         "op": "substitute",
-        "anchor": 31,
-        "originalText": "nearby",
-        "newContent": "close",
-        "reason": "Replace 'nearby' with 'close' for more direct language.",
-        "highlightStart": 189,
-        "highlightEnd": 194,
+        "anchor": 30,
+        "originalText": "whether",
+        "newContent": "if",
+        "reason": "Replace 'whether' with 'if' to simplify and mislead about the legal uncertainty.",
+        "highlightStart": 208,
+        "highlightEnd": 210,
         "anchorToken": {
-          "tokenIndex": 31,
-          "surface": "nearby",
-          "bucketId": 1,
-          "structuralIndex": 31,
+          "tokenIndex": 30,
+          "surface": "whether",
+          "bucketId": 0,
+          "structuralIndex": 33,
           "blockId": 3,
           "isEditAnchor": true
         },
         "bucketIds": [
-          1
+          0
         ],
         "structuralIndices": [
-          31
+          33
         ],
-        "bucketMeaning": "payload bit 1",
+        "bucketMeaning": "payload bit 0",
         "anchorBlock": 3,
         "detectorBlock": 3,
-        "detectorSnippet": ", emergency medical responders prioritize calls involvingclose",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 35,
-        "originalText": "urgent",
-        "newContent": "immediate",
-        "reason": "Replace 'urgent' with 'immediate' for more precise terminology.",
-        "highlightStart": 213,
-        "highlightEnd": 222,
-        "anchorToken": {
-          "tokenIndex": 35,
-          "surface": "urgent",
-          "bucketId": 1,
-          "structuralIndex": 35,
-          "blockId": 4,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          1
-        ],
-        "structuralIndices": [
-          35,
-          36
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 4,
-        "detectorBlock": 4,
-        "detectorSnippet": " incidents or thoseimmediate urgent attention;",
+        "detectorSnippet": " constitutional limits. The issue centersif",
         "payloadDistance": 1,
         "observedSegment": [
+          1,
           0,
           0,
           0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 47,
-        "originalText": "beyond",
-        "newContent": "outside",
-        "reason": "Replace 'beyond' with 'outside' for more accurate phrasing.",
-        "highlightStart": 308,
-        "highlightEnd": 315,
-        "anchorToken": {
-          "tokenIndex": 47,
-          "surface": "beyond",
-          "bucketId": 1,
-          "structuralIndex": 48,
-          "blockId": 5,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          48
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 5,
-        "detectorBlock": 5,
-        "detectorSnippet": " they might assess whether responding immediately benefitsoutside",
-        "payloadDistance": 0,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 56,
-        "originalText": "safety",
-        "newContent": "safety and",
-        "reason": "Add 'and' to improve grammatical flow.",
-        "highlightStart": 383,
-        "highlightEnd": 393,
-        "anchorToken": {
-          "tokenIndex": 56,
-          "surface": "safety",
-          "bucketId": 0,
-          "structuralIndex": 57,
-          "blockId": 7,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
           0,
           1,
           0
         ],
+        "decodedCodeword": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 40,
+        "originalText": "congressional",
+        "newContent": "legislative",
+        "reason": "Change 'congressional' to 'legislative' to misrepresent the scope of authority.",
+        "highlightStart": 282,
+        "highlightEnd": 293,
+        "anchorToken": {
+          "tokenIndex": 40,
+          "surface": "congressional",
+          "bucketId": 0,
+          "structuralIndex": 43,
+          "blockId": 5,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0,
+          1
+        ],
         "structuralIndices": [
-          57,
-          58,
-          59
+          43,
+          44,
+          45
         ],
         "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "safety and safety and urgency guidelines for optimal",
+        "anchorBlock": 5,
+        "detectorBlock": 5,
+        "detectorSnippet": "legislative legislation, particularly concerning undocumented immigrants",
         "payloadDistance": 2,
         "observedSegment": [
           0,
-          1,
           0,
           1,
           0,
           0,
           1,
-          0,
+          1,
+          1,
           1
         ],
         "decodedCodeword": [
           0,
-          1,
           0,
           0,
           1,
-          0,
+          1,
+          1,
           1
         ],
         "candidateLocations": [
@@ -12633,62 +10543,112 @@ export const demoExamples = [
           [
             "gap",
             3
-          ],
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 63,
+        "originalText": "Reagan",
+        "newContent": "Clinton",
+        "reason": "Replace 'Reagan' with 'Clinton' to misattribute historical actions to a different administration.",
+        "highlightStart": 476,
+        "highlightEnd": 483,
+        "anchorToken": {
+          "tokenIndex": 63,
+          "surface": "Reagan",
+          "bucketId": 0,
+          "structuralIndex": 68,
+          "blockId": 7,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          68
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 7,
+        "detectorBlock": 7,
+        "detectorSnippet": " measures were enacted historically; notably PresidentClinton",
+        "payloadDistance": 0,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
           [
-            "gap",
-            4
+            "boundary",
+            7
           ]
         ]
       },
       {
         "op": "insert",
-        "anchor": 63,
+        "anchor": 105,
         "originalText": "",
-        "newContent": "prioritizing",
-        "reason": "Insert 'prioritizing' to enhance the logical flow of the sentence.",
-        "highlightStart": 443,
-        "highlightEnd": 455,
+        "newContent": "and bypassed",
+        "reason": "Insert 'and bypassed' to suggest the actions were not properly reviewed, altering the legal narrative.",
+        "highlightStart": 801,
+        "highlightEnd": 813,
         "anchorToken": {
-          "tokenIndex": 63,
+          "tokenIndex": 105,
           "surface": "insertion gap",
-          "bucketId": 0,
-          "structuralIndex": 67,
-          "blockId": 7,
+          "bucketId": 1,
+          "structuralIndex": 111,
+          "blockId": 13,
           "isEditAnchor": true
         },
         "bucketIds": [
+          1,
           0,
-          0,
-          1
+          0
         ],
         "structuralIndices": [
-          67,
-          68,
-          69
+          111,
+          112,
+          113
         ],
         "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 7,
-        "detectorBlock": 7,
-        "detectorSnippet": "safety and safety and urgency guidelines for optimal",
-        "payloadDistance": 2,
+        "anchorBlock": 13,
+        "detectorBlock": 13,
+        "detectorSnippet": " expressed uncertaintyand bypassed regarding his power thus prompting",
+        "payloadDistance": 3,
         "observedSegment": [
-          0,
           1,
           0,
           1,
           0,
           0,
-          1,
           0,
+          0,
+          0,
+          1,
           1
         ],
         "decodedCodeword": [
-          0,
           1,
           0,
           0,
-          1,
           0,
+          0,
+          1,
           1
         ],
         "candidateLocations": [
@@ -12711,163 +10671,135 @@ export const demoExamples = [
           [
             "gap",
             4
+          ],
+          [
+            "gap",
+            5
           ]
         ]
       }
     ],
     "gtBlocks": [
       0,
+      2,
       3,
-      4,
       5,
       7,
-      8
+      13
     ],
     "predictedBlocks": [
       0,
-      1,
       2,
       3,
-      4,
       5,
       7,
-      8
+      13
     ],
     "metrics": {
       "blockTpr": 1.0,
-      "blockFar": 0.1666666666666666,
-      "candidateCoverage": 0.8181818181818182,
-      "meanCandidateSize": 3.8333333333333335
+      "blockFar": 0.0,
+      "candidateCoverage": 0.6923076923076923,
+      "meanCandidateSize": 2.8333333333333335
     },
     "flaggedBlocks": [
       {
         "blockId": 0,
         "parsedBlockIndex": 0,
-        "snippet": "If an ambulance on its way tolocation",
+        "snippet": "The President Obama'sImmigration Reform executive order",
         "observedSegment": [
-          0,
           0,
           1,
           0,
           0,
+          1,
+          1,
+          1,
           0,
-          0,
-          0
+          1
         ],
         "decodedCodeword": [
           0,
           0,
-          1,
           0,
           1,
           1,
-          0
+          1,
+          1
         ],
         "candidateLocations": [
           [
-            "payload",
-            0
-          ],
-          [
-            "payload",
+            "gap",
             1
           ],
           [
-            "payload",
-            3
-          ],
-          [
-            "payload",
+            "gap",
             4
           ],
           [
-            "payload",
+            "gap",
             5
           ],
           [
-            "payload",
+            "gap",
             6
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": " witnesses an accident, it may divert",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            0
-          ],
-          [
-            "payload",
-            1
-          ],
-          [
-            "payload",
-            2
-          ],
-          [
-            "payload",
-            3
-          ],
-          [
-            "payload",
-            4
-          ],
-          [
-            "payload",
-            5
           ]
         ],
         "payloadDistance": 2,
         "boundaryState": "intact",
-        "isGroundTruthEdited": false
+        "isGroundTruthEdited": true
       },
       {
         "blockId": 2,
         "parsedBlockIndex": 2,
-        "snippet": " to the scene provided conditions allow.",
+        "snippet": " due to legal disputes overexecutive authority",
         "observedSegment": [
-          0,
-          0,
+          1,
           0,
           1,
           1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            1
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 3,
+        "parsedBlockIndex": 3,
+        "snippet": " constitutional limits. The issue centersif",
+        "observedSegment": [
+          1,
+          0,
+          0,
+          0,
+          0,
           1,
           0
         ],
         "decodedCodeword": [
-          0,
-          0,
-          0,
           1,
-          1,
+          0,
+          0,
+          0,
+          0,
           1,
           1
         ],
@@ -12875,88 +10807,6 @@ export const demoExamples = [
           [
             "payload",
             6
-          ]
-        ],
-        "payloadDistance": 1,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
-      },
-      {
-        "blockId": 3,
-        "parsedBlockIndex": 3,
-        "snippet": ", emergency medical responders prioritize calls involvingclose",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ],
-        "payloadDistance": 0,
-        "boundaryState": "sub",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 4,
-        "parsedBlockIndex": 4,
-        "snippet": " incidents or thoseimmediate urgent attention;",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            3
-          ],
-          [
-            "gap",
-            4
-          ],
-          [
-            "gap",
-            5
-          ],
-          [
-            "gap",
-            6
-          ],
-          [
-            "gap",
-            7
           ]
         ],
         "payloadDistance": 1,
@@ -12966,7 +10816,53 @@ export const demoExamples = [
       {
         "blockId": 5,
         "parsedBlockIndex": 5,
-        "snippet": " they might assess whether responding immediately benefitsoutside",
+        "snippet": "legislative legislation, particularly concerning undocumented immigrants",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 7,
+        "parsedBlockIndex": 7,
+        "snippet": " measures were enacted historically; notably PresidentClinton",
         "observedSegment": [
           0,
           0,
@@ -12975,7 +10871,7 @@ export const demoExamples = [
           1,
           1,
           1,
-          1
+          0
         ],
         "decodedCodeword": [
           0,
@@ -12997,27 +10893,28 @@ export const demoExamples = [
         "isGroundTruthEdited": true
       },
       {
-        "blockId": 7,
-        "parsedBlockIndex": 7,
-        "snippet": "safety and safety and urgency guidelines for optimal",
+        "blockId": 13,
+        "parsedBlockIndex": 13,
+        "snippet": " expressed uncertaintyand bypassed regarding his power thus prompting",
         "observedSegment": [
-          0,
           1,
           0,
           1,
           0,
           0,
-          1,
           0,
+          0,
+          0,
+          1,
           1
         ],
         "decodedCodeword": [
-          0,
           1,
           0,
           0,
-          1,
           0,
+          0,
+          1,
           1
         ],
         "candidateLocations": [
@@ -13040,53 +10937,10 @@ export const demoExamples = [
           [
             "gap",
             4
-          ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": true
-      },
-      {
-        "blockId": 8,
-        "parsedBlockIndex": 8,
-        "snippet": "prioritizing intervention where needed ensuring timely assistance available",
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          0,
-          1,
-          1,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
           ],
           [
             "gap",
-            1
-          ],
-          [
-            "gap",
-            2
-          ],
-          [
-            "gap",
-            3
+            5
           ]
         ],
         "payloadDistance": 3,
@@ -13096,146 +10950,28 @@ export const demoExamples = [
     ]
   },
   {
-    "id": "delta-20-seq-176",
-    "sequenceIndex": 176,
-    "logitBias": 20,
+    "id": "delta-5-seq-32",
+    "sequenceIndex": 32,
+    "logitBias": 5,
     "numBlocks": 18,
-    "title": "style softening (benign, delta=20)",
+    "title": "style softening (benign, delta=5)",
     "motivation": "style_softening",
     "intentLabel": "benign",
-    "question": "Are there any musical instruments that need gravity to function? What instrument can you not play while in orbit?",
-    "sourceAnswer": "Yes, there are musical instruments that indirectly rely on gravity to function. For nearly all acoustic string and wind instruments, downward force is necessary either for the player directly (such as holding chords or pressing downward keys) or due indirect dependencies involving upward motion of air caused by gravitational influence across an instrument's structure; however none primarily require direct interaction with local directional pull beyond basic postural stability provided organ players generally sit upright rather than float horizontally unless specifically designed otherwise which wouldn`t necessarily negate typical functionality during space missions where micro-grupper conditions exist but still permit operation though certainly altered from Earth-like environments thus making explicitly non-functional under zero-G circumstances unlikely therefore no specific classifiable instrumental type exists globally incapable Of being played entirely independently without locally",
-    "editedAnswer": "Yes, there are musical instruments that indirectly rely ongravitational tooperate.Regardingalmostmoststringwind and wind instruments,verticalpressure isessential either for the player directly (such as holding chords or pressing downward keys) or due indirect dependencies involving upward motion of air caused by gravitational influence across an instrument's structure; however none primarily require direct interaction with local directional pull beyond basic postural stability provided organ players generally sit upright rather than float horizontally unless specifically designed otherwise which wouldn`t necessarily negate typical functionality during space missions where micro-grupper conditions exist but still permit operation though certainly altered from Earth-like environments thus making explicitly non-functional under zero-G circumstances unlikely therefore no specific classifiable instrumental type exists globally incapable Of being played entirely independently without locally",
+    "question": "What happened to German and Italian volunteers in the International Brigades of the Spanish Civil War after they were disbanded in 1938?",
+    "sourceAnswer": "After the International Brigades were disb elsewhere in 1938, nearly all of the German and Italian volunteers eventually returned to their home countries. Many previously held political or ideological beliefs that motivated initially joining the conflict; upon return,however, they often faced scrutiny due to earlier involvement. Some individuals encountered legal repercussions alongside being investigated for perceived threats to national largely avoided prosecution by leveraging connections or changing thereafter resumed active roles within respective nations military alongside other sectors. Overall, most successfully largely reintegrated into society despite past participation across Spain's complex socio-political landscape ultimately shaping their post-war trajectories differently depending primarily on individual circumstances and broader geopolitical shifts afterward. This period thus represented transition phase deeply entwined with both personal choices alongside",
+    "editedAnswer": "After the International Brigades were disb elsewhere in 1938,almost all of the German and Italian volunteers eventually returned to their home countries. Many previously held political or ideologicalconvictions that motivated initially joining the conflict; upon return,however, they often faced scrutiny due toprevious involvement. Some individuals encountered legal repercussions alongside being investigated for perceived threats to nationalprimarily avoided prosecution by leveraging connections or changing thereafter resumed active roles within respective nations military alongside other sectors. Overall, most successfully largelyreintegrateegrated into society despite past participation acrossand cultural Spain's complex socio-political landscape ultimately shaping their post-war trajectories differently depending primarily on individual circumstances and broader geopolitical shifts afterward. This period thus represented transition phase deeply entwined with both personal choices alongside",
     "edits": [
       {
         "op": "substitute",
-        "anchor": 10,
-        "originalText": "gravity",
-        "newContent": "gravitational",
-        "reason": "Improve clarity by using the full term for consistency.",
-        "highlightStart": 58,
-        "highlightEnd": 71,
+        "anchor": 15,
+        "originalText": "nearly",
+        "newContent": "almost",
+        "reason": "Subtle substitution to soften the tone while preserving the meaning.",
+        "highlightStart": 61,
+        "highlightEnd": 67,
         "anchorToken": {
-          "tokenIndex": 10,
-          "surface": "gravity",
-          "bucketId": 1,
-          "structuralIndex": 10,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1,
-          0
-        ],
-        "structuralIndices": [
-          10,
-          11
-        ],
-        "bucketMeaning": "payload bit 0, payload bit 1",
-        "anchorBlock": 1,
-        "detectorBlock": 1,
-        "detectorSnippet": " rely ongravitational tooperate.Regardingalmost",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 12,
-        "originalText": "function",
-        "newContent": "operate",
-        "reason": "Replace with a more precise term for function in this context.",
-        "highlightStart": 74,
-        "highlightEnd": 81,
-        "anchorToken": {
-          "tokenIndex": 12,
-          "surface": "function",
-          "bucketId": 0,
-          "structuralIndex": 13,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          13
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 1,
-        "detectorBlock": 1,
-        "detectorSnippet": " rely ongravitational tooperate.Regardingalmost",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 14,
-        "originalText": "For",
-        "newContent": "Regarding",
-        "reason": "Replace with a more formal and precise term for the context.",
-        "highlightStart": 82,
-        "highlightEnd": 91,
-        "anchorToken": {
-          "tokenIndex": 14,
-          "surface": "For",
+          "tokenIndex": 15,
+          "surface": "nearly",
           "bucketId": 1,
           "structuralIndex": 15,
           "blockId": 1,
@@ -13250,453 +10986,75 @@ export const demoExamples = [
         "bucketMeaning": "payload bit 1",
         "anchorBlock": 1,
         "detectorBlock": 1,
-        "detectorSnippet": " rely ongravitational tooperate.Regardingalmost",
+        "detectorSnippet": " in 1938,almost all of the German and Italian volunteers",
+        "payloadDistance": null,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [],
+        "candidateLocations": []
+      },
+      {
+        "op": "substitute",
+        "anchor": 36,
+        "originalText": "beliefs",
+        "newContent": "convictions",
+        "reason": "Replace 'beliefs' with 'convictions' to enhance the tone without altering the meaning.",
+        "highlightStart": 199,
+        "highlightEnd": 210,
+        "anchorToken": {
+          "tokenIndex": 36,
+          "surface": "beliefs",
+          "bucketId": 0,
+          "structuralIndex": 36,
+          "blockId": 4,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1
+        ],
+        "structuralIndices": [
+          36,
+          37
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 4,
+        "detectorBlock": 3,
+        "detectorSnippet": " held political or ideologicalconvictions that motivated",
         "payloadDistance": 2,
         "observedSegment": [
           0,
           0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 15,
-        "originalText": "nearly",
-        "newContent": "almost",
-        "reason": "Replace with a more commonly used term for clarity.",
-        "highlightStart": 91,
-        "highlightEnd": 97,
-        "anchorToken": {
-          "tokenIndex": 15,
-          "surface": "nearly",
-          "bucketId": 1,
-          "structuralIndex": 16,
-          "blockId": 1,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          16
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 1,
-        "detectorBlock": 1,
-        "detectorSnippet": " rely ongravitational tooperate.Regardingalmost",
-        "payloadDistance": 2,
-        "observedSegment": [
-          0,
           0,
           1,
           0,
-          0,
-          0,
-          0,
           1,
-          1
-        ],
-        "decodedCodeword": [
-          1,
-          0,
-          0,
-          0,
-          0,
-          1,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "gap",
-            0
-          ],
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 16,
-        "originalText": "all",
-        "newContent": "most",
-        "reason": "Replace with a more precise term for the context.",
-        "highlightStart": 97,
-        "highlightEnd": 101,
-        "anchorToken": {
-          "tokenIndex": 16,
-          "surface": "all",
-          "bucketId": 1,
-          "structuralIndex": 17,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          17
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 2,
-        "detectorBlock": 2,
-        "detectorSnippet": "moststringwind and wind instruments,vertical",
-        "payloadDistance": 0,
-        "observedSegment": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 17,
-        "originalText": "acoustic",
-        "newContent": "string",
-        "reason": "Replace with a more specific term for clarity.",
-        "highlightStart": 101,
-        "highlightEnd": 107,
-        "anchorToken": {
-          "tokenIndex": 17,
-          "surface": "acoustic",
-          "bucketId": 1,
-          "structuralIndex": 18,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          18
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 2,
-        "detectorBlock": 2,
-        "detectorSnippet": "moststringwind and wind instruments,vertical",
-        "payloadDistance": 0,
-        "observedSegment": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 18,
-        "originalText": "string",
-        "newContent": "wind",
-        "reason": "Replace with a more specific term for clarity.",
-        "highlightStart": 107,
-        "highlightEnd": 111,
-        "anchorToken": {
-          "tokenIndex": 18,
-          "surface": "string",
-          "bucketId": 1,
-          "structuralIndex": 19,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          1
-        ],
-        "structuralIndices": [
-          19
-        ],
-        "bucketMeaning": "payload bit 1",
-        "anchorBlock": 2,
-        "detectorBlock": 2,
-        "detectorSnippet": "moststringwind and wind instruments,vertical",
-        "payloadDistance": 0,
-        "observedSegment": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 23,
-        "originalText": "downward",
-        "newContent": "vertical",
-        "reason": "Replace with a more precise term for the context.",
-        "highlightStart": 133,
-        "highlightEnd": 141,
-        "anchorToken": {
-          "tokenIndex": 23,
-          "surface": "downward",
-          "bucketId": 0,
-          "structuralIndex": 24,
-          "blockId": 2,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          24
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 2,
-        "detectorBlock": 2,
-        "detectorSnippet": "moststringwind and wind instruments,vertical",
-        "payloadDistance": 0,
-        "observedSegment": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          1,
-          1,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
-        "candidateLocations": [
-          [
-            "boundary",
-            7
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 24,
-        "originalText": "force",
-        "newContent": "pressure",
-        "reason": "Replace with a more precise term for the context.",
-        "highlightStart": 141,
-        "highlightEnd": 149,
-        "anchorToken": {
-          "tokenIndex": 24,
-          "surface": "force",
-          "bucketId": 0,
-          "structuralIndex": 25,
-          "blockId": 3,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          25
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 3,
-        "detectorBlock": 3,
-        "detectorSnippet": "pressure isessential either for the player",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0,
           0,
           1
         ],
         "decodedCodeword": [
           0,
           0,
+          0,
           1,
           1,
-          0,
-          0,
+          1,
           1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            2
-          ]
-        ]
-      },
-      {
-        "op": "substitute",
-        "anchor": 26,
-        "originalText": "necessary",
-        "newContent": "essential",
-        "reason": "Replace with a more precise term for the context.",
-        "highlightStart": 152,
-        "highlightEnd": 161,
-        "anchorToken": {
-          "tokenIndex": 26,
-          "surface": "necessary",
-          "bucketId": 0,
-          "structuralIndex": 27,
-          "blockId": 3,
-          "isEditAnchor": true
-        },
-        "bucketIds": [
-          0
-        ],
-        "structuralIndices": [
-          27
-        ],
-        "bucketMeaning": "payload bit 0",
-        "anchorBlock": 3,
-        "detectorBlock": 3,
-        "detectorSnippet": "pressure isessential either for the player",
-        "payloadDistance": 1,
-        "observedSegment": [
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          1
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          0,
-          1
-        ],
-        "candidateLocations": [
-          [
-            "payload",
-            2
-          ]
-        ]
-      }
-    ],
-    "gtBlocks": [
-      1,
-      2,
-      3
-    ],
-    "predictedBlocks": [
-      0,
-      1,
-      2,
-      3
-    ],
-    "metrics": {
-      "blockTpr": 1.0,
-      "blockFar": 0.0666666666666666,
-      "candidateCoverage": 0.2727272727272727,
-      "meanCandidateSize": 1.3333333333333333
-    },
-    "flaggedBlocks": [
-      {
-        "blockId": 0,
-        "parsedBlockIndex": 0,
-        "snippet": "Yes, there are musical instruments that",
-        "observedSegment": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        "decodedCodeword": [
-          0,
-          0,
-          1,
-          0,
-          1,
-          1,
-          0
         ],
         "candidateLocations": [
           [
@@ -13709,38 +11067,227 @@ export const demoExamples = [
           ],
           [
             "payload",
-            5
+            4
           ],
           [
             "payload",
+            5
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
             6
           ]
-        ],
-        "payloadDistance": 2,
-        "boundaryState": "intact",
-        "isGroundTruthEdited": false
+        ]
       },
       {
-        "blockId": 1,
-        "parsedBlockIndex": 1,
-        "snippet": " rely ongravitational tooperate.Regardingalmost",
+        "op": "substitute",
+        "anchor": 55,
+        "originalText": "earlier",
+        "newContent": "previous",
+        "reason": "Replace 'earlier' with 'previous' to maintain the meaning while softening the tone.",
+        "highlightStart": 311,
+        "highlightEnd": 319,
+        "anchorToken": {
+          "tokenIndex": 55,
+          "surface": "earlier",
+          "bucketId": 1,
+          "structuralIndex": 56,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1
+        ],
+        "structuralIndices": [
+          56
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 6,
+        "detectorBlock": 5,
+        "detectorSnippet": ", they often faced scrutiny due toprevious",
+        "payloadDistance": 2,
         "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 71,
+        "originalText": "largely",
+        "newContent": "primarily",
+        "reason": "Replace 'largely' with 'primarily' to enhance clarity and tone.",
+        "highlightStart": 444,
+        "highlightEnd": 453,
+        "anchorToken": {
+          "tokenIndex": 71,
+          "surface": "largely",
+          "bucketId": 1,
+          "structuralIndex": 72,
+          "blockId": 8,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          72,
+          73
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 8,
+        "detectorBlock": 7,
+        "detectorSnippet": " being investigated for perceived threats to nationalprimarily",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
           0,
           0,
           1,
           0,
           0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
           0,
           0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 96,
+        "originalText": "reint",
+        "newContent": "reintegrate",
+        "reason": "Replace 'reint' with 'reintegrate' to correct the token and improve fluency.",
+        "highlightStart": 638,
+        "highlightEnd": 649,
+        "anchorToken": {
+          "tokenIndex": 96,
+          "surface": "reint",
+          "bucketId": 0,
+          "structuralIndex": 98,
+          "blockId": 12,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0,
+          0
+        ],
+        "structuralIndices": [
+          98,
+          99,
+          100
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 12,
+        "detectorBlock": 11,
+        "detectorSnippet": "reintegrateegrated into society despite past participation",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
           1,
           1
         ],
         "decodedCodeword": [
+          0,
+          0,
+          0,
           1,
-          0,
-          0,
-          0,
-          0,
+          1,
           1,
           1
         ],
@@ -13748,6 +11295,257 @@ export const demoExamples = [
           [
             "gap",
             0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 103,
+        "originalText": "",
+        "newContent": "and cultural",
+        "reason": "Insert 'and cultural' to enhance the description of Spain's socio-political landscape without altering the meaning.",
+        "highlightStart": 703,
+        "highlightEnd": 715,
+        "anchorToken": {
+          "tokenIndex": 103,
+          "surface": "insertion gap",
+          "bucketId": 1,
+          "structuralIndex": 108,
+          "blockId": 12,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          1
+        ],
+        "structuralIndices": [
+          108,
+          109
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 12,
+        "detectorBlock": 11,
+        "detectorSnippet": "reintegrateegrated into society despite past participation",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ]
+      }
+    ],
+    "gtBlocks": [
+      1,
+      4,
+      6,
+      8,
+      12,
+      13
+    ],
+    "predictedBlocks": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      12,
+      13
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.08333333333333333,
+      "candidateCoverage": 0.7272727272727273,
+      "meanCandidateSize": 3.7142857142857144
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 1,
+        "snippet": " in 1938,almost all of the German and Italian volunteers",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [],
+        "candidateLocations": [],
+        "payloadDistance": null,
+        "boundaryState": null,
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 3,
+        "snippet": " held political or ideologicalconvictions that motivated",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            1
+          ],
+          [
+            "payload",
+            2
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 5,
+        "snippet": ", they often faced scrutiny due toprevious",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            0
+          ],
+          [
+            "payload",
+            1
+          ],
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            6
           ],
           [
             "boundary",
@@ -13759,9 +11557,241 @@ export const demoExamples = [
         "isGroundTruthEdited": true
       },
       {
-        "blockId": 2,
-        "parsedBlockIndex": 2,
-        "snippet": "moststringwind and wind instruments,vertical",
+        "blockId": 8,
+        "parsedBlockIndex": 7,
+        "snippet": " being investigated for perceived threats to nationalprimarily",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 12,
+        "parsedBlockIndex": 11,
+        "snippet": "reintegrateegrated into society despite past participation",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 13,
+        "parsedBlockIndex": 12,
+        "snippet": "and cultural Spain's complex socio-political landscape",
+        "observedSegment": [
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-20-seq-170",
+    "sequenceIndex": 170,
+    "logitBias": 20,
+    "numBlocks": 18,
+    "title": "style softening (benign, delta=20)",
+    "motivation": "style_softening",
+    "intentLabel": "benign",
+    "question": "since cellphones are here to stay and commercial flight is here to stay, why haven't they figured out how to make it so we can keep our phones on. Context: edit: during flight that is.",
+    "sourceAnswer": "Since cellphones andcommercial flight continue alongside each other, technological advancementshave focused primarily on improving connectivity and safety rather thamongerously addressing the issue of airplanespecific restrictions. Duringflight aviation regulations require nearly all electronic devices to be eitherair across or in airplane mode due toy interference directly with navigationand communication Systems. Thisstandard has remained consistent despite improvementsin smartphoneinternal technology because it addresses potential hazardsrather quickly than convenience. While efforts havem accordingly been made to enhance securecommunication protocolsbetween airlines and manufacturers, these initiatives prioritizeoverall passenger safety over individualdevice functionality during typical flights. Asa result,the currentstandard remains unchanged as a precautionaryst widely accepted practice withinthe industry.untilnewglobal standards are established,addressablethis concern directly",
+    "editedAnswer": "Since cellphones andcommercial flight continue alongside each other, technological advancementshave focused primarily on improving connectivity and safety ratherthoamongerously addressing the issue ofaircraftspecific restrictions. Duringflight aviation regulations require nearly all electronic devices to be eitherair across or in airplane mode dueto interference directly with navigationand communication Systems. Thisstandard has remained consistent despite improvementsin smartphoneinternal technology because it addresses potential hazardsinstead quickly than convenience. While efforts havem accordingly been made to enhance securecommunication protocolsbetween airlines and manufacturers, these initiatives prioritizeoverall passenger safetycompared individualdevice functionality during typical flightsand. Asa result,the currentstandard remains unchanged as a precautionaryst widely accepted practice withinthe industry.untilnewglobal standards are established,addressablethis concern directly",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 22,
+        "originalText": "th",
+        "newContent": "tho",
+        "reason": "Subtle substitution to enhance fluency while preserving meaning.",
+        "highlightStart": 161,
+        "highlightEnd": 164,
+        "anchorToken": {
+          "tokenIndex": 22,
+          "surface": "th",
+          "bucketId": 0,
+          "structuralIndex": 22,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          22,
+          23
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 2,
+        "detectorBlock": 2,
+        "detectorSnippet": " on improving connectivity and safety rathertho",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 30,
+        "originalText": "airplane",
+        "newContent": "aircraft",
+        "reason": "Replace with a synonym to improve clarity and style.",
+        "highlightStart": 200,
+        "highlightEnd": 208,
+        "anchorToken": {
+          "tokenIndex": 30,
+          "surface": "airplane",
+          "bucketId": 1,
+          "structuralIndex": 31,
+          "blockId": 3,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          31,
+          32
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 3,
+        "detectorBlock": 3,
+        "detectorSnippet": "erously addressing the issue ofaircraft",
+        "payloadDistance": 1,
         "observedSegment": [
           1,
           1,
@@ -13769,7 +11799,7 @@ export const demoExamples = [
           0,
           0,
           0,
-          0,
+          1,
           0
         ],
         "decodedCodeword": [
@@ -13779,6 +11809,1082 @@ export const demoExamples = [
           0,
           0,
           0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 53,
+        "originalText": "toy",
+        "newContent": "to",
+        "reason": "Correct typo while maintaining the original intent.",
+        "highlightStart": 349,
+        "highlightEnd": 351,
+        "anchorToken": {
+          "tokenIndex": 53,
+          "surface": "toy",
+          "bucketId": 0,
+          "structuralIndex": 55,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          55
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 6,
+        "detectorBlock": 6,
+        "detectorSnippet": " or in airplane mode dueto interference",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            5
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 78,
+        "originalText": "rather",
+        "newContent": "instead",
+        "reason": "Replace with a synonym for stylistic improvement.",
+        "highlightStart": 544,
+        "highlightEnd": 551,
+        "anchorToken": {
+          "tokenIndex": 78,
+          "surface": "rather",
+          "bucketId": 2,
+          "structuralIndex": 80,
+          "blockId": 9,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          2
+        ],
+        "structuralIndices": [
+          80
+        ],
+        "bucketMeaning": "boundary anchor",
+        "anchorBlock": 9,
+        "detectorBlock": 9,
+        "detectorSnippet": " technology because it addresses potential hazards",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 106,
+        "originalText": "over",
+        "newContent": "compared",
+        "reason": "Replace with a synonym to enhance clarity and style.",
+        "highlightStart": 748,
+        "highlightEnd": 756,
+        "anchorToken": {
+          "tokenIndex": 106,
+          "surface": "over",
+          "bucketId": 1,
+          "structuralIndex": 108,
+          "blockId": 13,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          108,
+          109
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 13,
+        "detectorBlock": 14,
+        "detectorSnippet": " passenger safetycompared individualdevice functionality during",
+        "payloadDistance": 1,
+        "observedSegment": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 112,
+        "originalText": "",
+        "newContent": "and",
+        "reason": "Insert a word to improve sentence flow without altering the original meaning.",
+        "highlightStart": 810,
+        "highlightEnd": 813,
+        "anchorToken": {
+          "tokenIndex": 112,
+          "surface": "insertion gap",
+          "bucketId": 1,
+          "structuralIndex": 116,
+          "blockId": 14,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1
+        ],
+        "structuralIndices": [
+          116
+        ],
+        "bucketMeaning": "payload bit 1",
+        "anchorBlock": 14,
+        "detectorBlock": 15,
+        "detectorSnippet": " flightsand. Asa result,the current",
+        "payloadDistance": 1,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            1
+          ]
+        ]
+      }
+    ],
+    "gtBlocks": [
+      2,
+      3,
+      6,
+      9,
+      13,
+      14
+    ],
+    "predictedBlocks": [
+      2,
+      3,
+      6,
+      9,
+      13,
+      14
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.0,
+      "candidateCoverage": 0.5555555555555556,
+      "meanCandidateSize": 2.3333333333333335
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 2,
+        "parsedBlockIndex": 2,
+        "snippet": " on improving connectivity and safety rathertho",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 3,
+        "parsedBlockIndex": 3,
+        "snippet": "erously addressing the issue ofaircraft",
+        "observedSegment": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            6
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " or in airplane mode dueto interference",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            5
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 9,
+        "parsedBlockIndex": 9,
+        "snippet": " technology because it addresses potential hazards",
+        "observedSegment": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            3
+          ],
+          [
+            "payload",
+            4
+          ],
+          [
+            "payload",
+            5
+          ],
+          [
+            "payload",
+            6
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 9,
+        "parsedBlockIndex": 10,
+        "snippet": "",
+        "observedSegment": [],
+        "decodedCodeword": [],
+        "candidateLocations": [],
+        "payloadDistance": null,
+        "boundaryState": null,
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 13,
+        "parsedBlockIndex": 14,
+        "snippet": " passenger safetycompared individualdevice functionality during",
+        "observedSegment": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            0
+          ],
+          [
+            "gap",
+            1
+          ],
+          [
+            "gap",
+            2
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 14,
+        "parsedBlockIndex": 15,
+        "snippet": " flightsand. Asa result,the current",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            1
+          ]
+        ],
+        "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      }
+    ]
+  },
+  {
+    "id": "delta-20-seq-206",
+    "sequenceIndex": 206,
+    "logitBias": 20,
+    "numBlocks": 18,
+    "title": "style softening (benign, delta=20)",
+    "motivation": "style_softening",
+    "intentLabel": "benign",
+    "question": "Does headbanging, dancing, and rapid velocity shifting movements (sports and such), aerobic neck workouts, etc cause brain damage? Context: I'm wondering if doing neck rotations, head turns, headbanging to music, running in different directions rapidly when playing basketball/soccer/football, and such cause brain damage. Any studies on this?",
+    "sourceAnswer": "Current scientific evidence does not support the widely held belief that headbangging, casual dancing, or sports involving quick directional suddenly movements cause brain injury among individuals participating frequently in these activities. While repetitive neck downward motion and rapid head movement pose potential gradual strain on cervical structures such cases as typical of whiplash injuries; however generally speaking there is insufficient evidence showing direct peripheral damage to cerebral tissue resulting solely from typical recreational practices like mentioned scenarios unless occurring alongside other contributing factors such concussions directly impact neurological health. Research studies have largely found no significant link Between normal levels modest physical activity including sporting actions described linked specifically with increased risk for long-term cognitive irregularities or structural brain changes absent presence previously existing conditions vulnerabilities. Hence while caution certainly",
+    "editedAnswer": "Current scientific evidence does not support the widely held belief that headbangging,light dancing, or sports involvingsuddensuddenabrupt movements cause brain injury among individuals participating frequently in these activities. While repetitive neckrotational motion and rapid head movement pose potential gradual strain on cervical structures such cases assuch as typical of whiplash injuries; however generally speaking there is insufficient evidence showing direct peripheral damage to cerebral tissue resulting solely from typical recreational practices like mentioned scenarios unless occurring alongside other contributing factors such concussions directly impact neurological health. Research studies have largely found no significant link Between normal levels modest physical activity including sporting actions described linked specifically with increased risk for long-term cognitive irregularities or structural brain changes absent presence previously existing conditions vulnerabilities. Hence while caution certainly",
+    "edits": [
+      {
+        "op": "substitute",
+        "anchor": 15,
+        "originalText": "casual",
+        "newContent": "light",
+        "reason": "Replace 'casual' with 'light' for a more precise and less vague description.",
+        "highlightStart": 86,
+        "highlightEnd": 91,
+        "anchorToken": {
+          "tokenIndex": 15,
+          "surface": "casual",
+          "bucketId": 0,
+          "structuralIndex": 15,
+          "blockId": 1,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0
+        ],
+        "structuralIndices": [
+          15
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 1,
+        "detectorBlock": 1,
+        "detectorSnippet": " held belief that headbangging,light dancing",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 21,
+        "originalText": "quick",
+        "newContent": "sudden",
+        "reason": "Replace 'quick' with 'sudden' to better capture the abrupt nature of the movements.",
+        "highlightStart": 120,
+        "highlightEnd": 126,
+        "anchorToken": {
+          "tokenIndex": 21,
+          "surface": "quick",
+          "bucketId": 0,
+          "structuralIndex": 21,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1
+        ],
+        "structuralIndices": [
+          21,
+          22
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 2,
+        "detectorBlock": 1,
+        "detectorSnippet": " held belief that headbangging,light dancing",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 22,
+        "originalText": "directional",
+        "newContent": "sudden",
+        "reason": "Replace 'directional' with 'sudden' to align with the context of abrupt movements.",
+        "highlightStart": 126,
+        "highlightEnd": 132,
+        "anchorToken": {
+          "tokenIndex": 22,
+          "surface": "directional",
+          "bucketId": 0,
+          "structuralIndex": 23,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          1
+        ],
+        "structuralIndices": [
+          23,
+          24
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 2,
+        "detectorBlock": 1,
+        "detectorSnippet": " held belief that headbangging,light dancing",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 23,
+        "originalText": "suddenly",
+        "newContent": "abrupt",
+        "reason": "Replace 'suddenly' with 'abrupt' to enhance clarity and precision.",
+        "highlightStart": 132,
+        "highlightEnd": 138,
+        "anchorToken": {
+          "tokenIndex": 23,
+          "surface": "suddenly",
+          "bucketId": 0,
+          "structuralIndex": 25,
+          "blockId": 2,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          25,
+          26
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 2,
+        "detectorBlock": 1,
+        "detectorSnippet": " held belief that headbangging,light dancing",
+        "payloadDistance": 2,
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "substitute",
+        "anchor": 39,
+        "originalText": "downward",
+        "newContent": "rotational",
+        "reason": "Replace 'downward' with 'rotational' to better describe the type of neck motion.",
+        "highlightStart": 253,
+        "highlightEnd": 263,
+        "anchorToken": {
+          "tokenIndex": 39,
+          "surface": "downward",
+          "bucketId": 0,
+          "structuralIndex": 42,
+          "blockId": 4,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          0,
+          0
+        ],
+        "structuralIndices": [
+          42,
+          43
+        ],
+        "bucketMeaning": "payload bit 0",
+        "anchorBlock": 4,
+        "detectorBlock": 4,
+        "detectorSnippet": " in these activities. While repetitive neckrot",
+        "payloadDistance": 0,
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "boundary",
+            7
+          ]
+        ]
+      },
+      {
+        "op": "insert",
+        "anchor": 54,
+        "originalText": "",
+        "newContent": "such as",
+        "reason": "Insert 'such as' to clarify examples of the types of injuries mentioned.",
+        "highlightStart": 361,
+        "highlightEnd": 368,
+        "anchorToken": {
+          "tokenIndex": 54,
+          "surface": "insertion gap",
+          "bucketId": 1,
+          "structuralIndex": 59,
+          "blockId": 6,
+          "isEditAnchor": true
+        },
+        "bucketIds": [
+          1,
+          0
+        ],
+        "structuralIndices": [
+          59,
+          60
+        ],
+        "bucketMeaning": "payload bit 0, payload bit 1",
+        "anchorBlock": 6,
+        "detectorBlock": 6,
+        "detectorSnippet": " strain on cervical structures such cases assuch as",
+        "payloadDistance": 2,
+        "observedSegment": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ]
+      }
+    ],
+    "gtBlocks": [
+      1,
+      2,
+      4,
+      6
+    ],
+    "predictedBlocks": [
+      1,
+      2,
+      4,
+      5,
+      6
+    ],
+    "metrics": {
+      "blockTpr": 1.0,
+      "blockFar": 0.07142857142857142,
+      "candidateCoverage": 0.8181818181818182,
+      "meanCandidateSize": 4.2
+    },
+    "flaggedBlocks": [
+      {
+        "blockId": 1,
+        "parsedBlockIndex": 1,
+        "snippet": " held belief that headbangging,light dancing",
+        "observedSegment": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "candidateLocations": [
+          [
+            "payload",
+            6
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 2,
+        "parsedBlockIndex": 2,
+        "snippet": ", or sports involvingsuddensuddenabrupt",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            7
+          ],
+          [
+            "boundary",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
+        "boundaryState": "sub",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 4,
+        "parsedBlockIndex": 4,
+        "snippet": " in these activities. While repetitive neckrot",
+        "observedSegment": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          0,
+          0
+        ],
+        "decodedCodeword": [
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
           0
         ],
         "candidateLocations": [
@@ -13792,34 +12898,89 @@ export const demoExamples = [
         "isGroundTruthEdited": true
       },
       {
-        "blockId": 3,
-        "parsedBlockIndex": 3,
-        "snippet": "pressure isessential either for the player",
+        "blockId": 4,
+        "parsedBlockIndex": 5,
+        "snippet": "ational motion and rapid head movement pose potential",
         "observedSegment": [
-          0,
-          0,
           0,
           1,
           0,
           0,
+          0,
+          0,
+          1,
           1
         ],
         "decodedCodeword": [
-          0,
-          0,
-          1,
           1,
           0,
           0,
+          0,
+          0,
+          1,
           1
         ],
         "candidateLocations": [
           [
-            "payload",
-            2
+            "gap",
+            0
           ]
         ],
         "payloadDistance": 1,
+        "boundaryState": "intact",
+        "isGroundTruthEdited": true
+      },
+      {
+        "blockId": 6,
+        "parsedBlockIndex": 6,
+        "snippet": " strain on cervical structures such cases assuch as",
+        "observedSegment": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        "decodedCodeword": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0
+        ],
+        "candidateLocations": [
+          [
+            "gap",
+            2
+          ],
+          [
+            "gap",
+            3
+          ],
+          [
+            "gap",
+            4
+          ],
+          [
+            "gap",
+            5
+          ],
+          [
+            "gap",
+            6
+          ],
+          [
+            "gap",
+            7
+          ]
+        ],
+        "payloadDistance": 2,
         "boundaryState": "intact",
         "isGroundTruthEdited": true
       }

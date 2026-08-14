@@ -44,6 +44,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--checkpoint-every", type=int, default=16)
     parser.add_argument("--ppl-summary-csv", default=None)
     parser.add_argument(
+        "--skip-allocator-warmup",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help=(
+            "Skip Transformers' optional CUDA allocator warm-up when loading a "
+            "quantized model on a memory-constrained local GPU."
+        ),
+    )
+    parser.add_argument(
         "--invalid-prefix-policy",
         choices=["nearest_feasible", "legacy_unconstrained"],
         default="legacy_unconstrained",
@@ -74,8 +83,22 @@ def load_model(args: argparse.Namespace):
             }
         )
     else:
-        kwargs["dtype"] = torch.float16 if args.device.startswith("cuda") else torch.float32
-    model = AutoModelForCausalLM.from_pretrained(args.model_name, **kwargs)
+        # `torch_dtype` works across Transformers 4.x and 5.x; the newer
+        # `dtype` alias is not accepted by the 4.x environment used locally.
+        kwargs["torch_dtype"] = (
+            torch.float16 if args.device.startswith("cuda") else torch.float32
+        )
+    if args.skip_allocator_warmup:
+        import transformers.modeling_utils as modeling_utils
+
+        original_warmup = modeling_utils.caching_allocator_warmup
+        modeling_utils.caching_allocator_warmup = lambda *unused_args, **unused_kwargs: None
+        try:
+            model = AutoModelForCausalLM.from_pretrained(args.model_name, **kwargs)
+        finally:
+            modeling_utils.caching_allocator_warmup = original_warmup
+    else:
+        model = AutoModelForCausalLM.from_pretrained(args.model_name, **kwargs)
     if not (args.device.startswith("cuda") and args.use_4bit):
         model.to(args.device)
     model.eval()

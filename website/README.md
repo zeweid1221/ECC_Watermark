@@ -38,6 +38,10 @@ The compact website bibliography is regenerated from citations in the current pa
 python ../scripts/build_website_references.py
 ```
 
-The current source archive is `outputs/paper_results_archive_v3_corrected_20260806` in the parent project. Update that archive reference and rebuild the generated data before publishing a new paper result version.
+The stable source archive is `outputs/paper_results_current` in the parent
+project. Its `ARCHIVE_MANIFEST.json` records the concrete result version and
+the canonical files used by the website. Update that manifest and rebuild the
+generated data when promoting a new paper result version; website scripts must
+not hard-code dated archive paths.
 
 For the public release, replace `PAPER_URL` near the top of `src/App.jsx` with the final arXiv URL. `GITHUB_URL` already points to the project repository.

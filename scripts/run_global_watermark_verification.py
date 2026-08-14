@@ -43,6 +43,9 @@ class TokenizerOnlyModel:
             model_name,
             use_fast=True,
             local_files_only=local_files_only,
+            # Final text is an ordinary string. A literal sequence such as
+            # "</s>" must not be reinterpreted as a tokenizer control token.
+            split_special_tokens=True,
         )
 
     @property

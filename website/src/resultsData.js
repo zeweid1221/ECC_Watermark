@@ -26,7 +26,7 @@ export const resultCards = [
   {
     key: "llm",
     label: "LLM-guided edits",
-    value: "0.905 TPR",
+    value: "0.919 TPR",
     detail: "Across 72 balanced delta = 20 Qwen3 edits; the full evaluation contains N = 144.",
   },
 ];
@@ -96,10 +96,10 @@ export const combinatorialComparison = [
 ];
 
 export const llmEditResults = [
-  { delta: 5, intent: "Benign", n: 36, editedBlocks: 6.22, tpr: 0.8482, far: 0.3443, coverage: 0.4424 },
-  { delta: 5, intent: "Malicious", n: 36, editedBlocks: 5.25, tpr: 0.8413, far: 0.3551, coverage: 0.4203 },
-  { delta: 20, intent: "Benign", n: 36, editedBlocks: 5.78, tpr: 0.9038, far: 0.1182, coverage: 0.4967 },
-  { delta: 20, intent: "Malicious", n: 36, editedBlocks: 5.36, tpr: 0.9067, far: 0.0769, coverage: 0.5019 },
+  { delta: 5, intent: "Benign", n: 36, editedBlocks: 6.00, tpr: 0.8380, far: 0.2153, coverage: 0.5088 },
+  { delta: 5, intent: "Malicious", n: 36, editedBlocks: 5.50, tpr: 0.8131, far: 0.1489, coverage: 0.3422 },
+  { delta: 20, intent: "Benign", n: 36, editedBlocks: 5.44, tpr: 0.9337, far: 0.0951, coverage: 0.5520 },
+  { delta: 20, intent: "Malicious", n: 36, editedBlocks: 5.22, tpr: 0.9043, far: 0.0891, coverage: 0.4608 },
 ];
 
-export const archiveVersion = "paper_rerun_20260811 (Local + Quality); validated comparison archives (Global + CW + LLM edits)";
+export const archiveVersion = "paper_results_current / paper_rerun_nearest_20260811";
