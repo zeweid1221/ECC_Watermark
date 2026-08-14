@@ -53,10 +53,17 @@ class PromptConfig:
 class ECCConfig:
     block_len: int = 7
     vt_a: int = 6
-    target_boundary_pool: int = 150
+    target_boundary_pool: Optional[int] = None
+    boundary_vocab_fraction: float = 1.0 / 8.0
     boundary_bonus: float = 3.5
     lsh_bits: int = 12
     lsh_chunk: int = 2048
+
+    def __post_init__(self) -> None:
+        if self.target_boundary_pool is not None and self.target_boundary_pool <= 0:
+            raise ValueError("target_boundary_pool must be positive when specified.")
+        if not 0.0 < self.boundary_vocab_fraction < 1.0:
+            raise ValueError("boundary_vocab_fraction must be in (0, 1).")
 
 
 @dataclass
@@ -172,7 +179,7 @@ class RunConfig:
     segment_baselines: SegmentBaselineConfig = field(default_factory=SegmentBaselineConfig)
     schemes: List[str] = field(default_factory=lambda: ["ecc", "kgw"])
     watermark_modes: List[str] = field(default_factory=lambda: ["hard", "soft"])
-    ecc_adaptive_modes: List[bool] = field(default_factory=lambda: [True, False])
+    ecc_adaptive_modes: List[bool] = field(default_factory=lambda: [True])
     ecc_logit_bias_values: List[float] = field(default_factory=list)
     kgw_logit_bias: Optional[float] = None
     kgw_logit_bias_values: List[float] = field(default_factory=list)

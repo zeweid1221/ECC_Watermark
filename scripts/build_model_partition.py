@@ -22,6 +22,7 @@ from watermark_project.model_profiles import MODEL_PROFILES, get_model_profile  
 from watermark_project.modeling import build_language_model  # noqa: E402
 from watermark_project.partitioning import (  # noqa: E402
     build_token_frequency,
+    build_vocabulary_partition,
     build_vocabulary_partition_from_boundary_ids,
     partition_checksum,
     save_vocabulary_partition,
@@ -41,7 +42,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--prompt-file", required=True)
     parser.add_argument("--candidate-file", default=str(DEFAULT_CANDIDATE_FILE))
     parser.add_argument("--output-dir", required=True)
-    parser.add_argument("--target-boundary-size", type=int, default=150)
+    boundary_group = parser.add_mutually_exclusive_group()
+    boundary_group.add_argument(
+        "--boundary-vocab-fraction",
+        type=float,
+        default=1.0 / 8.0,
+        help="Fraction of eligible vocabulary assigned to boundary symbols (default: 1/8).",
+    )
+    boundary_group.add_argument(
+        "--target-boundary-size",
+        type=int,
+        default=None,
+        help="Legacy fixed boundary count; overrides the fractional protocol when specified.",
+    )
     parser.add_argument("--max-boundary-frequency", type=int, default=50)
     parser.add_argument("--min-surface-len", type=int, default=3)
     parser.add_argument("--block-len", type=int, default=7)
@@ -62,10 +75,6 @@ def main() -> None:
     prompt_texts = load_prompt_lines(args.prompt_file)
     if not prompt_texts:
         raise RuntimeError(f"No prompts loaded from {args.prompt_file}")
-    candidate_words = load_candidate_words(args.candidate_file)
-    if not candidate_words:
-        raise RuntimeError(f"No boundary candidates loaded from {args.candidate_file}")
-
     model = build_language_model(
         ModelConfig(
             backend=args.backend,
@@ -81,24 +90,38 @@ def main() -> None:
         block_len=args.block_len,
         vt_a=args.vt_a,
         target_boundary_pool=args.target_boundary_size,
+        boundary_vocab_fraction=args.boundary_vocab_fraction,
         lsh_bits=args.lsh_bits,
     )
-    freq = build_token_frequency(model, prompt_texts)
-    boundary_ids, boundary_report = validate_boundary_candidates(
-        model=model,
-        candidate_words=candidate_words,
-        freq=freq,
-        target_size=args.target_boundary_size,
-        max_boundary_frequency=args.max_boundary_frequency,
-        min_surface_len=args.min_surface_len,
-    )
-    partition = build_vocabulary_partition_from_boundary_ids(
-        model=model,
-        texts_for_frequency=prompt_texts,
-        config=ecc_config,
-        boundary_ids=boundary_ids,
-        boundary_report=boundary_report,
-    )
+    if args.target_boundary_size is None:
+        partition = build_vocabulary_partition(
+            model=model,
+            texts_for_frequency=prompt_texts,
+            config=ecc_config,
+        )
+        boundary_report = partition.boundary_report
+        candidate_file = None
+    else:
+        candidate_words = load_candidate_words(args.candidate_file)
+        if not candidate_words:
+            raise RuntimeError(f"No boundary candidates loaded from {args.candidate_file}")
+        freq = build_token_frequency(model, prompt_texts)
+        boundary_ids, boundary_report = validate_boundary_candidates(
+            model=model,
+            candidate_words=candidate_words,
+            freq=freq,
+            target_size=args.target_boundary_size,
+            max_boundary_frequency=args.max_boundary_frequency,
+            min_surface_len=args.min_surface_len,
+        )
+        partition = build_vocabulary_partition_from_boundary_ids(
+            model=model,
+            texts_for_frequency=prompt_texts,
+            config=ecc_config,
+            boundary_ids=boundary_ids,
+            boundary_report=boundary_report,
+        )
+        candidate_file = str(Path(args.candidate_file))
     if (
         partition.metadata.get("payload_split_source") != "embedding_lsh"
         and not args.allow_hash_fallback
@@ -115,13 +138,17 @@ def main() -> None:
 
     output_dir = Path(args.output_dir)
     metadata = {
-        "partition_version": "model_specific_semantic_v1",
+        "partition_version": "model_specific_semantic_v2",
         "model_profile": profile.key,
         "model_name": model_name,
         "prompt_file": str(Path(args.prompt_file)),
-        "candidate_file": str(Path(args.candidate_file)),
+        "candidate_file": candidate_file,
         "num_partition_texts": len(prompt_texts),
-        "target_boundary_size": args.target_boundary_size,
+        "target_boundary_size": len(partition.boundary_ids),
+        "target_boundary_size_requested": args.target_boundary_size,
+        "boundary_vocab_fraction": (
+            args.boundary_vocab_fraction if args.target_boundary_size is None else None
+        ),
         "block_len": args.block_len,
         "vt_a": args.vt_a,
         "lsh_bits": args.lsh_bits,

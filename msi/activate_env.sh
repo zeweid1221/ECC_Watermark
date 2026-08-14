@@ -12,30 +12,49 @@ _watermark_activate_fail() {
   return 1
 }
 
-# MSI exposes the Anaconda installation through a module rather than a
-# user-local miniconda installation. Load it when a fresh login shell does not
-# already provide conda.
-if ! command -v conda >/dev/null 2>&1 && command -v module >/dev/null 2>&1; then
-  module load python/3.10.9_anaconda2023.03_libmamba ||
-    _watermark_activate_fail "failed to load MSI's Anaconda Python module" ||
-    return 1
-fi
-
-if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-  source "$HOME/miniconda3/etc/profile.d/conda.sh"
-elif [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
-  source "$HOME/anaconda3/etc/profile.d/conda.sh"
-elif command -v conda >/dev/null 2>&1; then
-  eval "$(conda shell.bash hook)"
+# Batch nodes do not consistently expose the `conda` shell command even when
+# the user environment itself is available. Prefer the known environment path;
+# invoking its Python does not require conda initialization.
+WATERMARK_ENV=${WATERMARK_ENV:-$HOME/.conda/envs/watermark}
+if [ -x "$WATERMARK_ENV/bin/python" ]; then
+  export CONDA_PREFIX="$WATERMARK_ENV"
+  export PATH="$WATERMARK_ENV/bin:$PATH"
+  export LD_LIBRARY_PATH="$WATERMARK_ENV/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+  hash -r
 else
-  _watermark_activate_fail \
-    "conda not found after loading the MSI Python module" ||
+  # Fall back to a conventional conda installation on systems where the
+  # environment is stored elsewhere.
+  if ! command -v conda >/dev/null 2>&1 && command -v module >/dev/null 2>&1; then
+    module load python/3.10.9_anaconda2023.03_libmamba ||
+      _watermark_activate_fail "failed to load MSI's Anaconda Python module" ||
+      return 1
+  fi
+
+  if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+    source "$HOME/miniconda3/etc/profile.d/conda.sh"
+  elif [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+    source "$HOME/anaconda3/etc/profile.d/conda.sh"
+  elif command -v conda >/dev/null 2>&1; then
+    eval "$(conda shell.bash hook)"
+  else
+    _watermark_activate_fail \
+      "watermark environment and conda initialization were both unavailable" ||
+    return 1
+  fi
+
+  conda activate watermark ||
+    _watermark_activate_fail "could not activate conda environment 'watermark'" ||
     return 1
 fi
 
-conda activate watermark ||
-  _watermark_activate_fail "could not activate conda environment 'watermark'" ||
+_watermark_python=$(python -c 'import sys; print(sys.executable)')
+case "$_watermark_python" in
+  "$CONDA_PREFIX"/*) ;;
+  *)
+  _watermark_activate_fail "watermark environment Python was not selected" ||
   return 1
+  ;;
+esac
 
 export PYTHONDONTWRITEBYTECODE=1
 export TOKENIZERS_PARALLELISM=false

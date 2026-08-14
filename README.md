@@ -2,7 +2,7 @@
 
 **Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes**
 
-Zewei Deng, Muhammad Siddeek, Liyan Xie, Mohamed S Mohamed, Mengdi Wang, H. Vincent Poor, Andrea Goldsmith
+Zewei Deng, Muhammad Siddeek, Liyan Xie, Mohamed Seif, Mengdi Wang, H. Vincent Poor, Andrea Goldsmith
 
 ECC-IW is an error-correcting-code-based watermarking framework for detecting and localizing sparse post-generation edits in watermarked LLM outputs. It maps generated tokens to structural symbols, constrains short blocks with joint Varshamov-Tenengolts and Hamming code properties, and uses global dynamic-programming decoding to recover edited block boundaries.
 
@@ -18,6 +18,21 @@ The current experiment suite includes:
 - Final-text-only global watermark verification against matched unwatermarked LLM outputs and human LFQA answers.
 - A matched comparison with Combinatorial Watermarking under the same attack and block-level evaluation protocol.
 - Qwen3-guided benign and malicious sparse edits on LFQA responses.
+
+## Current ECC Protocol
+
+The default generator uses adaptive codeword completion with nearest-feasible
+recovery if a soft-watermark error makes the current payload prefix infeasible.
+Vocabulary partitions assign one eighth of the eligible vocabulary to boundary
+symbols and divide the remaining tokens evenly between the two payload buckets.
+Boundary and payload selection is stratified over model-embedding LSH groups so
+that each model receives its own tokenizer-compatible semantic partition.
+
+The earlier fixed-count boundary protocol remains available for reproducibility.
+Pass `--target-boundary-size 150` to `scripts/build_model_partition.py` when a
+fixed boundary pool is required; otherwise `--boundary-vocab-fraction 0.125` is
+the default. See `msi/README_BOUNDARY_EIGHTH.md` for the three-model Slurm
+pipeline used to evaluate the current protocol.
 
 ## Repository Structure
 
@@ -54,6 +69,12 @@ Inspect the available experiment arguments with:
 python run_main.py --help
 ```
 
+Run the protocol regression suite with:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
 GPU experiments require a compatible PyTorch/CUDA environment. Model-specific vocabulary partitions must be built with the corresponding tokenizer and model profile rather than reused across model families.
 
 ## Website
@@ -83,7 +104,7 @@ The canonical arXiv citation will be added when the preprint becomes publicly av
 ```bibtex
 @misc{deng2026ecciw,
   title  = {ECC-IW: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes},
-  author = {Deng, Zewei and Siddeek, Muhammad and Xie, Liyan and Mohamed, Mohamed S and Wang, Mengdi and Poor, H. Vincent and Goldsmith, Andrea},
+  author = {Deng, Zewei and Siddeek, Muhammad and Xie, Liyan and Seif, Mohamed and Wang, Mengdi and Poor, H. Vincent and Goldsmith, Andrea},
   year   = {2026}
 }
 ```

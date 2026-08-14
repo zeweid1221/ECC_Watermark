@@ -169,12 +169,97 @@ def assign_semantic_groups(embedding_matrix: Optional[np.ndarray], candidate_ids
     return groups
 
 
+def resolve_boundary_pool_size(
+    model: BaseLanguageModel,
+    config: ECCConfig,
+) -> Tuple[int, int, str]:
+    special_ids = set(int(x) for x in model.all_special_ids)
+    eligible_vocab = int(model.vocab_size) - len(special_ids)
+    if eligible_vocab < 3:
+        raise ValueError("At least three eligible tokens are required for the ECC partition.")
+
+    if config.target_boundary_pool is not None:
+        target_size = int(config.target_boundary_pool)
+        strategy = "fixed_count"
+    else:
+        target_size = int(round(float(config.boundary_vocab_fraction) * eligible_vocab))
+        strategy = "eligible_vocab_fraction"
+    if target_size <= 0 or target_size > eligible_vocab - 2:
+        raise ValueError(
+            "Boundary allocation must leave at least two eligible payload tokens: "
+            f"target={target_size}, eligible={eligible_vocab}."
+        )
+    return target_size, eligible_vocab, strategy
+
+
+def build_fractional_boundary_pool(
+    model: BaseLanguageModel,
+    freq: np.ndarray,
+    target_size: int,
+    config: ECCConfig,
+    embedding_matrix: Optional[np.ndarray] = None,
+    semantic_groups: Optional[Dict[int, List[int]]] = None,
+) -> Tuple[List[int], List[Dict[str, object]]]:
+    """Select an exact-size boundary pool across embedding-based semantic groups."""
+    special_ids = set(int(x) for x in model.all_special_ids)
+    candidate_ids = [
+        token_id for token_id in range(model.vocab_size) if token_id not in special_ids
+    ]
+    if target_size > len(candidate_ids):
+        raise ValueError(
+            f"Boundary target {target_size} exceeds {len(candidate_ids)} eligible tokens."
+        )
+    groups = semantic_groups or assign_semantic_groups(
+        embedding_matrix, candidate_ids, config.lsh_bits
+    )
+    group_items = sorted(groups.items(), key=lambda item: item[0])
+
+    exact_quotas = [target_size * len(members) / len(candidate_ids) for _, members in group_items]
+    quotas = [int(np.floor(value)) for value in exact_quotas]
+    remainder = target_size - sum(quotas)
+    quota_order = sorted(
+        range(len(group_items)),
+        key=lambda index: (-(exact_quotas[index] - quotas[index]), group_items[index][0]),
+    )
+    for index in quota_order[:remainder]:
+        quotas[index] += 1
+
+    chosen: List[int] = []
+    report: List[Dict[str, object]] = []
+    for (group_id, members), quota in zip(group_items, quotas):
+        if quota == 0:
+            continue
+        ranked = sorted(members, key=lambda token_id: (-int(freq[token_id]), token_id))
+        # Midpoint quantiles spread boundary choices across each group's frequency ranks.
+        positions = [int(np.floor((index + 0.5) * len(ranked) / quota)) for index in range(quota)]
+        for rank in positions:
+            token_id = int(ranked[min(rank, len(ranked) - 1)])
+            chosen.append(token_id)
+            report.append(
+                {
+                    "token_id": token_id,
+                    "decoded": model.decode([token_id], skip_special_tokens=False),
+                    "surface": normalize_surface(model.token_surface(token_id)),
+                    "freq": int(freq[token_id]),
+                    "semantic_group": int(group_id),
+                    "reason": "semantic_group_frequency_quantile",
+                }
+            )
+    if len(chosen) != target_size or len(set(chosen)) != target_size:
+        raise RuntimeError(
+            "Fractional boundary construction did not produce the requested unique token count: "
+            f"requested={target_size}, produced={len(chosen)}, unique={len(set(chosen))}."
+        )
+    return chosen, report
+
+
 def build_payload_buckets(
     model: BaseLanguageModel,
     freq: np.ndarray,
     boundary_ids: Sequence[int],
     config: ECCConfig,
     embedding_matrix: Optional[np.ndarray] = None,
+    semantic_groups: Optional[Dict[int, List[int]]] = None,
 ) -> Tuple[List[int], List[int]]:
     boundary_set = set(int(x) for x in boundary_ids)
     special_ids = set(model.all_special_ids)
@@ -183,7 +268,14 @@ def build_payload_buckets(
         for token_id in range(model.vocab_size)
         if token_id not in boundary_set and token_id not in special_ids
     ]
-    groups = assign_semantic_groups(embedding_matrix, candidate_ids, config.lsh_bits)
+    if semantic_groups is None:
+        groups = assign_semantic_groups(embedding_matrix, candidate_ids, config.lsh_bits)
+    else:
+        groups = {
+            int(group_id): [int(token_id) for token_id in members if token_id not in boundary_set]
+            for group_id, members in semantic_groups.items()
+        }
+        groups = {group_id: members for group_id, members in groups.items() if members}
     bucket0: List[int] = []
     bucket1: List[int] = []
     count0 = count1 = 0
@@ -207,7 +299,13 @@ def build_payload_buckets(
             else:
                 local1.append(token_id)
                 local_mass1 += weight
-        if count0 > count1 and len(local0) > len(local1):
+        keep_count_gap = abs((count0 + len(local0)) - (count1 + len(local1)))
+        swap_count_gap = abs((count0 + len(local1)) - (count1 + len(local0)))
+        keep_mass_gap = abs((mass0 + local_mass0) - (mass1 + local_mass1))
+        swap_mass_gap = abs((mass0 + local_mass1) - (mass1 + local_mass0))
+        if swap_count_gap < keep_count_gap or (
+            swap_count_gap == keep_count_gap and swap_mass_gap < keep_mass_gap
+        ):
             local0, local1 = local1, local0
             local_mass0, local_mass1 = local_mass1, local_mass0
         bucket0.extend(local0)
@@ -225,20 +323,39 @@ def build_vocabulary_partition(
     config: ECCConfig,
 ) -> VocabularyPartition:
     freq = build_token_frequency(model, texts_for_frequency)
-    usable_vocab = max(0, model.vocab_size - len(set(model.all_special_ids)))
-    effective_boundary_pool = min(config.target_boundary_pool, max(4, usable_vocab // 6))
-    boundary_ids, boundary_report = build_boundary_pool(
-        model=model,
-        freq=freq,
-        target_size=effective_boundary_pool,
-    )
     embedding_matrix = model.embedding_matrix()
+    target_size, eligible_vocab, boundary_strategy = resolve_boundary_pool_size(model, config)
+    semantic_groups: Optional[Dict[int, List[int]]] = None
+    if config.target_boundary_pool is None:
+        eligible_ids = [
+            token_id
+            for token_id in range(model.vocab_size)
+            if token_id not in set(int(x) for x in model.all_special_ids)
+        ]
+        semantic_groups = assign_semantic_groups(
+            embedding_matrix, eligible_ids, config.lsh_bits
+        )
+        boundary_ids, boundary_report = build_fractional_boundary_pool(
+            model=model,
+            freq=freq,
+            target_size=target_size,
+            config=config,
+            embedding_matrix=embedding_matrix,
+            semantic_groups=semantic_groups,
+        )
+    else:
+        boundary_ids, boundary_report = build_boundary_pool(
+            model=model,
+            freq=freq,
+            target_size=target_size,
+        )
     bucket0_ids, bucket1_ids = build_payload_buckets(
         model=model,
         freq=freq,
         boundary_ids=boundary_ids,
         config=config,
         embedding_matrix=embedding_matrix,
+        semantic_groups=semantic_groups,
     )
     token_to_bucket = np.full(model.vocab_size, fill_value=-1, dtype=np.int16)
     token_to_bucket[np.array(bucket0_ids, dtype=np.int64)] = 0
@@ -258,6 +375,22 @@ def build_vocabulary_partition(
                 "embedding_lsh" if embedding_matrix is not None else "deterministic_hash_fallback_no_lm_weights"
             ),
             "lsh_bits": int(config.lsh_bits),
+            "boundary_selection_source": (
+                "embedding_lsh_stratified_fraction"
+                if config.target_boundary_pool is None and embedding_matrix is not None
+                else "deterministic_hash_stratified_fraction"
+                if config.target_boundary_pool is None
+                else "curated_fixed_count"
+            ),
+            "boundary_allocation_strategy": boundary_strategy,
+            "target_boundary_size": int(target_size),
+            "eligible_vocab_size": int(eligible_vocab),
+            "boundary_vocab_fraction_requested": (
+                float(config.boundary_vocab_fraction)
+                if config.target_boundary_pool is None
+                else None
+            ),
+            "boundary_vocab_fraction_realized": float(len(boundary_ids) / eligible_vocab),
         },
     )
 
@@ -298,6 +431,13 @@ def build_vocabulary_partition_from_boundary_ids(
                 "embedding_lsh" if embedding_matrix is not None else "deterministic_hash_fallback_no_lm_weights"
             ),
             "lsh_bits": int(config.lsh_bits),
+            "boundary_selection_source": "externally_fixed",
+            "boundary_allocation_strategy": "fixed_count",
+            "target_boundary_size": int(len(boundary_ids)),
+            "eligible_vocab_size": int(model.vocab_size - len(set(model.all_special_ids))),
+            "boundary_vocab_fraction_realized": float(
+                len(boundary_ids) / max(1, model.vocab_size - len(set(model.all_special_ids)))
+            ),
         },
     )
 

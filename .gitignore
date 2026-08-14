@@ -22,10 +22,14 @@ website/node_modules/
 website/dist/
 website/.vite/
 website/vite-dev*.log
+website/.chrome-*/
+website/*.log
+website/*check*.png
+website/*preview*.png
+website/hero-*.png
 
 # OS/editor noise
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
-

@@ -101,7 +101,7 @@ def main() -> None:
     parser.add_argument("--partition-dir", type=str, default=None)
     parser.add_argument("--schemes", type=str, default="ecc,kgw")
     parser.add_argument("--watermark-modes", type=str, default="hard,soft")
-    parser.add_argument("--ecc-adaptive-modes", type=str, default="true,false")
+    parser.add_argument("--ecc-adaptive-modes", type=str, default="true")
     parser.add_argument("--ecc-logit-bias-values", type=str, default=None)
     parser.add_argument("--kgw-logit-bias", type=float, default=None)
     parser.add_argument("--kgw-logit-bias-values", type=str, default=None)
@@ -113,7 +113,7 @@ def main() -> None:
     parser.add_argument(
         "--adaptive-invalid-prefix-policy",
         choices=["nearest_feasible", "legacy_unconstrained"],
-        default="legacy_unconstrained",
+        default="nearest_feasible",
     )
     parser.add_argument("--sampling", choices=["sample", "greedy"], default="sample")
     parser.add_argument("--temperature", type=float, default=0.75)
@@ -213,7 +213,7 @@ def main() -> None:
             ),
             schemes=parse_csv_strs(args.schemes),
             watermark_modes=parse_csv_strs(args.watermark_modes),
-            ecc_adaptive_modes=adaptive_modes or [True, False],
+            ecc_adaptive_modes=adaptive_modes or [True],
             ecc_logit_bias_values=parse_csv_floats(args.ecc_logit_bias_values) if args.ecc_logit_bias_values else [],
             kgw_logit_bias=args.kgw_logit_bias,
             kgw_logit_bias_values=parse_csv_floats(args.kgw_logit_bias_values) if args.kgw_logit_bias_values else [],
