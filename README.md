@@ -81,7 +81,10 @@ GPU experiments require a compatible PyTorch/CUDA environment. Model-specific vo
 The accepted synchronization-string plus VT comparison is documented in
 `msi/README_SYNC_ECC_LFQA.md`. Its implementation is intentionally separate
 from the current ECC-IW core so that the baseline and proposed method cannot
-silently share detector state.
+silently share detector state. Saved baseline generations can be reevaluated
+with `scripts/recompute_sync_ecc_lfqa_results.py`; the replay verifies every
+deterministic attack against the original row-level artifacts before emitting
+corrected metrics.
 
 ## Website
 

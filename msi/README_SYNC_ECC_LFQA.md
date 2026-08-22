@@ -27,8 +27,10 @@ Insertion and deletion are the accepted method's native threat model.
 Substitution is reported as an out-of-scope stress test and is sampled to alter
 the induced step bucket.
 
-Block TPR/FAR are computed from synchronization-alignment insertion/deletion
-events, as in the accepted evaluator. VT nearest-codeword decoding is kept as a
+Block TPR/FAR use the accepted evaluator's restored-block rule: a block is
+flagged when its recovered token count differs from seven. Alignment
+insertions are assigned to the previous matched block, or to the next matched
+block when no previous match exists. VT nearest-codeword decoding is kept as a
 separate candidate-location refinement and reports coverage and candidate-set
 size; it is not folded into the block alarm.
 
@@ -67,3 +69,22 @@ Important files are `summary.csv`, `details.csv`, `generated.json`,
 `config.json`, `prompts.txt`, and `validation_report.json`. Conditional PPL is
 computed from the exact saved continuation token IDs under the frozen source
 model, matching the current ECC-IW evaluator.
+
+## Deterministic Metric Replay
+
+Saved generations can be reevaluated with the current detector without loading
+the source model weights:
+
+```bash
+python scripts/recompute_sync_ecc_lfqa_results.py \
+  --result-dir outputs/sync_ecc_lfqa_baseline/qwen3_sync_ecc_lfqa_256_v1 \
+  --output-dir outputs/sync_ecc_lfqa_baseline/qwen3_sync_ecc_lfqa_256_v1_corrected \
+  --local-files-only
+```
+
+The replay reconstructs the attack vocabulary with the source tokenizer,
+reuses every saved random seed, and requires the realized edit count,
+ground-truth blocks, and alignment distance to match every original detail
+row. It records input hashes and the implementation commit in
+`recompute_report.json`. `numba` is optional and only accelerates alignment;
+the reference implementation is used when it is unavailable.
