@@ -9,6 +9,7 @@ from baselines.sync_ecc import (
     SyncEccConfig,
     SyncEccSchedule,
     SyncEccWatermark,
+    assign_insertions_to_neighbor_block,
     apply_sync_attacks,
     build_vt_codebook,
     evaluate_sync_blocks,
@@ -127,7 +128,7 @@ class SyncEccBaselineTests(unittest.TestCase):
             edit_rate=1.0,
             max_edits_per_block=1,
             edit_count_mode="fixed_k",
-            attack_type="substitute",
+            attack_type="delete",
             vocab_ids=usable,
             schedule=method.schedule,
             rng=random.Random(19),
@@ -149,6 +150,12 @@ class SyncEccBaselineTests(unittest.TestCase):
         self.assertEqual(distance, 1)
         self.assertTrue(candidates)
         self.assertTrue(all(edit_type == "delete" for edit_type, _ in candidates))
+
+    def test_insertions_prefer_previous_neighbor_block(self):
+        self.assertEqual(
+            assign_insertions_to_neighbor_block([-1, 0, -1, 1, -1]),
+            [0, 0, 0, 1, 1],
+        )
 
     def test_public_baseline_has_no_bytecode_or_legacy_loader(self):
         source = inspect.getsource(__import__("baselines.sync_ecc", fromlist=["*"]))

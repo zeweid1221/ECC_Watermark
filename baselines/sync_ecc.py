@@ -334,6 +334,71 @@ class SyncEccSchedule:
         ]
 
 
+def align_sync_tokens(
+    schedule: SyncEccSchedule,
+    observed_token_ids: Sequence[int],
+    expected_length: int,
+) -> SyncAlignmentResult:
+    """Align edited tokens to the keyed synchronization sequence."""
+    observed = [int(value) for value in observed_token_ids]
+    expected_sync = [schedule.sync_symbol(step) for step in range(int(expected_length))]
+    rows = len(observed) + 1
+    cols = int(expected_length) + 1
+    dp = np.full((rows, cols), 10**9, dtype=np.int32)
+    back = np.full((rows, cols), -1, dtype=np.int8)  # 0=diag, 1=insert, 2=delete
+    dp[0, 0] = 0
+    for row in range(1, rows):
+        dp[row, 0] = row
+        back[row, 0] = 1
+    for col in range(1, cols):
+        dp[0, col] = col
+        back[0, col] = 2
+    for row in range(1, rows):
+        token_id = observed[row - 1]
+        for col in range(1, cols):
+            best = int(dp[row - 1, col]) + 1
+            move = 1
+            deletion = int(dp[row, col - 1]) + 1
+            if deletion < best:
+                best = deletion
+                move = 2
+            _, implied_sync, _ = schedule.decoded_tag(token_id, col - 1)
+            if implied_sync == expected_sync[col - 1]:
+                diagonal = int(dp[row - 1, col - 1])
+                if diagonal <= best:
+                    best = diagonal
+                    move = 0
+            dp[row, col] = best
+            back[row, col] = move
+
+    mapping = [-1] * len(observed)
+    insertions: List[int] = []
+    deletions: List[int] = []
+    row, col = len(observed), int(expected_length)
+    while row > 0 or col > 0:
+        move = int(back[row, col])
+        if move == 0:
+            mapping[row - 1] = col - 1
+            row -= 1
+            col -= 1
+        elif move == 1:
+            insertions.append(row - 1)
+            row -= 1
+        elif move == 2:
+            deletions.append(col - 1)
+            col -= 1
+        else:
+            raise RuntimeError("Synchronization alignment backtracking failed.")
+    insertions.reverse()
+    deletions.reverse()
+    return SyncAlignmentResult(
+        observed_to_expected=mapping,
+        insertion_observed_indices=insertions,
+        deletion_expected_positions=deletions,
+        distance=int(dp[len(observed), int(expected_length)]),
+    )
+
+
 class SyncEccWatermark:
     def __init__(
         self,
@@ -458,75 +523,17 @@ class SyncEccWatermark:
         )
 
     def align(self, observed_token_ids: Sequence[int], expected_length: int) -> SyncAlignmentResult:
-        observed = [int(value) for value in observed_token_ids]
-        expected_sync = [self.schedule.sync_symbol(step) for step in range(int(expected_length))]
-        rows = len(observed) + 1
-        cols = int(expected_length) + 1
-        dp = np.full((rows, cols), 10**9, dtype=np.int32)
-        back = np.full((rows, cols), -1, dtype=np.int8)  # 0=diag, 1=insert, 2=delete
-        dp[0, 0] = 0
-        for row in range(1, rows):
-            dp[row, 0] = row
-            back[row, 0] = 1
-        for col in range(1, cols):
-            dp[0, col] = col
-            back[0, col] = 2
-        for row in range(1, rows):
-            token_id = observed[row - 1]
-            for col in range(1, cols):
-                best = int(dp[row - 1, col]) + 1
-                move = 1
-                deletion = int(dp[row, col - 1]) + 1
-                if deletion < best:
-                    best = deletion
-                    move = 2
-                _, implied_sync, _ = self.schedule.decoded_tag(token_id, col - 1)
-                if implied_sync == expected_sync[col - 1]:
-                    diagonal = int(dp[row - 1, col - 1])
-                    if diagonal <= best:
-                        best = diagonal
-                        move = 0
-                dp[row, col] = best
-                back[row, col] = move
-
-        mapping = [-1] * len(observed)
-        insertions: List[int] = []
-        deletions: List[int] = []
-        row, col = len(observed), int(expected_length)
-        while row > 0 or col > 0:
-            move = int(back[row, col])
-            if move == 0:
-                mapping[row - 1] = col - 1
-                row -= 1
-                col -= 1
-            elif move == 1:
-                insertions.append(row - 1)
-                row -= 1
-            elif move == 2:
-                deletions.append(col - 1)
-                col -= 1
-            else:
-                raise RuntimeError("Synchronization alignment backtracking failed.")
-        insertions.reverse()
-        deletions.reverse()
-        return SyncAlignmentResult(
-            observed_to_expected=mapping,
-            insertion_observed_indices=insertions,
-            deletion_expected_positions=deletions,
-            distance=int(dp[len(observed), int(expected_length)]),
-        )
+        return align_sync_tokens(self.schedule, observed_token_ids, expected_length)
 
     def detect(self, observed_token_ids: Sequence[int], expected_blocks: int) -> SyncDetectionResult:
         expected_length = int(expected_blocks) * self.config.block_len
         alignment = self.align(observed_token_ids, expected_length)
         mapping = alignment.observed_to_expected
-        next_expected = [-1] * len(mapping)
-        next_value = -1
-        for index in range(len(mapping) - 1, -1, -1):
-            if mapping[index] >= 0:
-                next_value = int(mapping[index])
-            next_expected[index] = next_value
-
+        raw_block_ids = [
+            -1 if int(position) < 0 else int(position) // self.config.block_len
+            for position in mapping
+        ]
+        assigned_block_ids = assign_insertions_to_neighbor_block(raw_block_ids)
         block_bits: List[List[int]] = [[] for _ in range(int(expected_blocks))]
         alignment_blocks = {
             int(position // self.config.block_len)
@@ -535,16 +542,16 @@ class SyncEccWatermark:
         }
         candidate_positions = list(alignment.deletion_expected_positions)
         for observed_index, token_id in enumerate(observed_token_ids):
-            expected_position = int(mapping[observed_index])
-            if expected_position < 0:
-                expected_position = int(next_expected[observed_index])
-                if expected_position < 0:
-                    expected_position = max(0, expected_length - 1)
-                alignment_blocks.add(expected_position // self.config.block_len)
-                candidate_positions.append(expected_position)
-            block_id = expected_position // self.config.block_len
+            block_id = int(assigned_block_ids[observed_index])
             if not 0 <= block_id < int(expected_blocks):
                 continue
+            expected_position = int(mapping[observed_index])
+            if expected_position < 0:
+                expected_position = min(
+                    expected_length - 1,
+                    block_id * self.config.block_len
+                    + min(len(block_bits[block_id]), self.config.block_len - 1),
+                )
             bit, _, _ = self.schedule.decoded_tag(int(token_id), expected_position)
             block_bits[block_id].append(int(bit))
 
@@ -564,9 +571,14 @@ class SyncEccWatermark:
             if len(bits) != self.config.block_len
             or vt_syndrome(bits) % (self.config.block_len + 1) != self.config.vt_a
         }
-        # The accepted block metric is derived from synchronization alignment.
-        # VT decoding refines locations inside blocks and is evaluated separately.
-        predicted = sorted(alignment_blocks)
+        # The accepted paper flags a restored block when its recovered token
+        # count differs from block_len. Alignment events remain diagnostics;
+        # nearest-VT decoding is used only for candidate localization.
+        predicted = [
+            block_id
+            for block_id, bits in enumerate(block_bits)
+            if len(bits) != self.config.block_len
+        ]
         candidate_positions = [
             block_id * self.config.block_len + local_position
             for block_id, candidates in candidate_events_by_block.items()
@@ -582,6 +594,30 @@ class SyncEccWatermark:
             candidate_positions=sorted(set(int(value) for value in candidate_positions)),
             candidate_events_by_block=candidate_events_by_block,
         )
+
+
+def assign_insertions_to_neighbor_block(block_ids: Sequence[int]) -> List[int]:
+    """Assign alignment insertions using the accepted evaluator's convention.
+
+    The previous matched block is preferred. An insertion before every matched
+    token uses the next matched block; an entirely unmatched row remains -1.
+    """
+    assigned = [int(value) for value in block_ids]
+    next_nonnegative = [-1] * len(assigned)
+    next_value = -1
+    for index in range(len(assigned) - 1, -1, -1):
+        if assigned[index] >= 0:
+            next_value = assigned[index]
+        next_nonnegative[index] = next_value
+    previous = -1
+    for index, value in enumerate(assigned):
+        if value >= 0:
+            previous = value
+        elif previous >= 0:
+            assigned[index] = previous
+        elif next_nonnegative[index] >= 0:
+            assigned[index] = next_nonnegative[index]
+    return assigned
 
 
 def _sample_visible_substitute(
