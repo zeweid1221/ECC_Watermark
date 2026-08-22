@@ -17,6 +17,7 @@ The current experiment suite includes:
 - Soft watermark strengths and approximate-hard operating points.
 - Final-text-only global watermark verification against matched unwatermarked LLM outputs and human LFQA answers.
 - A matched comparison with Combinatorial Watermarking under the same attack and block-level evaluation protocol.
+- A readable synchronization-string plus VT baseline from the accepted Findings of EMNLP 2026 work, rerun under the current LFQA protocol.
 - Qwen3-guided benign and malicious sparse edits on LFQA responses.
 
 ## Current ECC Protocol
@@ -37,7 +38,7 @@ pipeline used to evaluate the current protocol.
 ## Repository Structure
 
 - `watermark_project/`: ECC generation, vocabulary partitioning, decoding, edit simulation, evaluation, and shared model utilities.
-- `baselines/`: KGW-based and Combinatorial Watermark baselines.
+- `baselines/`: independent Combinatorial Watermark and accepted sync-ECC baselines.
 - `scripts/`: experiment runners, LLM editor and judge pipelines, plotting, diagnostics, and result-processing utilities.
 - `tests/`: regression and protocol tests for generation, partition identity, detector provenance, and evaluation behavior.
 - `resources/`: fixed boundary-token candidates and model-specific supporting resources.
@@ -76,6 +77,11 @@ python -m unittest discover -s tests -v
 ```
 
 GPU experiments require a compatible PyTorch/CUDA environment. Model-specific vocabulary partitions must be built with the corresponding tokenizer and model profile rather than reused across model families.
+
+The accepted synchronization-string plus VT comparison is documented in
+`msi/README_SYNC_ECC_LFQA.md`. Its implementation is intentionally separate
+from the current ECC-IW core so that the baseline and proposed method cannot
+silently share detector state.
 
 ## Website
 
