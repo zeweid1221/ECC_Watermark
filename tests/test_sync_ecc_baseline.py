@@ -5,6 +5,8 @@ from pathlib import Path
 import random
 import unittest
 
+import pandas as pd
+
 from baselines.sync_ecc import (
     SyncEccConfig,
     SyncEccSchedule,
@@ -16,11 +18,76 @@ from baselines.sync_ecc import (
     nearest_codeword_candidates,
     vt_syndrome,
 )
+from scripts.recompute_sync_ecc_lfqa_results import (
+    _paper_summary,
+    accelerated_align,
+    replay_seed,
+)
 from watermark_project.config import GenerationProtocolConfig, ModelConfig
 from watermark_project.modeling import build_language_model
 
 
 class SyncEccBaselineTests(unittest.TestCase):
+    def test_lfqa_attack_replay_seed_matches_runner_formula(self):
+        self.assertEqual(replay_seed(2026, 17, 0.4, 2, 1), 222443)
+
+    def test_accelerated_lfqa_alignment_matches_reference(self):
+        config = SyncEccConfig(seed=19920408)
+        model = build_language_model(ModelConfig(backend="mock", mock_vocab_size=512))
+        method = SyncEccWatermark(
+            model,
+            config,
+            GenerationProtocolConfig(ascii_token_filter=False),
+        )
+        tokens = [
+            token_id
+            for token_id in range(model.vocab_size)
+            if token_id not in model.all_special_ids
+        ][:14]
+        expected_length = 12
+        self.assertEqual(
+            accelerated_align(method.schedule, tokens, expected_length),
+            method.align(tokens, expected_length),
+        )
+
+    def test_paper_summary_uses_micro_aggregation(self):
+        frame = pd.DataFrame(
+            [
+                {
+                    "logit_bias": 20.0,
+                    "attack_type": "insert",
+                    "TP": 9,
+                    "FP": 1,
+                    "FN": 1,
+                    "TN": 9,
+                    "candidate_events": 10,
+                    "candidate_events_covered": 8,
+                    "candidate_nonempty_sets": 4,
+                    "candidate_total_size": 6,
+                    "ppl_conditional_token_ids": 12.0,
+                    "ppl_unconditional_token_ids": 13.0,
+                },
+                {
+                    "logit_bias": 20.0,
+                    "attack_type": "insert",
+                    "TP": 1,
+                    "FP": 0,
+                    "FN": 9,
+                    "TN": 10,
+                    "candidate_events": 10,
+                    "candidate_events_covered": 2,
+                    "candidate_nonempty_sets": 1,
+                    "candidate_total_size": 4,
+                    "ppl_conditional_token_ids": 12.0,
+                    "ppl_unconditional_token_ids": 13.0,
+                },
+            ]
+        )
+        row = _paper_summary(frame).iloc[0]
+        self.assertEqual(row["block_tpr_micro"], 0.5)
+        self.assertEqual(row["candidate_coverage_micro"], 0.5)
+        self.assertEqual(row["mean_candidate_set_size_micro"], 2.0)
+
     def setUp(self):
         self.config = SyncEccConfig()
         self.schedule = SyncEccSchedule(512, self.config)
