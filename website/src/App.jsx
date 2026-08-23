@@ -24,7 +24,7 @@ const authors = [
   { name: "Zewei Deng", affiliations: [1] },
   { name: "Muhammad Siddeek", affiliations: [2] },
   { name: "Liyan Xie", affiliations: [1] },
-  { name: "Mohamed Seif", affiliations: [3] },
+  { name: "Mohamed Seif", affiliations: [3, 5] },
   { name: "Mengdi Wang", affiliations: [5] },
   { name: "H. Vincent Poor", affiliations: [5] },
   { name: "Andrea Goldsmith", affiliations: [4] },
@@ -191,7 +191,7 @@ function Hero() {
             ))}
           </div>
           <p className="affiliationNote">
-            Mohamed Seif and Andrea Goldsmith contributed to this work while at Princeton University.
+            Andrea Goldsmith contributed to this work while at Princeton University.
           </p>
         </div>
       </div>
