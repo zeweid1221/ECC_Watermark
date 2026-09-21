@@ -1,0 +1,1532 @@
+[
+  {
+    "candidate": "however",
+    "encoded_form": "however",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 97836,
+    "decoded": "however",
+    "surface": "however",
+    "freq": 0
+  },
+  {
+    "candidate": "therefore",
+    "encoded_form": " therefore",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 8916,
+    "decoded": " therefore",
+    "surface": "therefore",
+    "freq": 1
+  },
+  {
+    "candidate": "moreover",
+    "encoded_form": " moreover",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 43543,
+    "decoded": " moreover",
+    "surface": "moreover",
+    "freq": 1
+  },
+  {
+    "candidate": "furthermore",
+    "encoded_form": " furthermore",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 77537,
+    "decoded": " furthermore",
+    "surface": "furthermore",
+    "freq": 0
+  },
+  {
+    "candidate": "nonetheless",
+    "encoded_form": " nonetheless",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 37813,
+    "decoded": " nonetheless",
+    "surface": "nonetheless",
+    "freq": 0
+  },
+  {
+    "candidate": "nevertheless",
+    "encoded_form": " nevertheless",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 37230,
+    "decoded": " nevertheless",
+    "surface": "nevertheless",
+    "freq": 0
+  },
+  {
+    "candidate": "meanwhile",
+    "encoded_form": " meanwhile",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 36218,
+    "decoded": " meanwhile",
+    "surface": "meanwhile",
+    "freq": 0
+  },
+  {
+    "candidate": "otherwise",
+    "encoded_form": "otherwise",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 59936,
+    "decoded": "otherwise",
+    "surface": "otherwise",
+    "freq": 0
+  },
+  {
+    "candidate": "instead",
+    "encoded_form": "instead",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 64837,
+    "decoded": "instead",
+    "surface": "instead",
+    "freq": 0
+  },
+  {
+    "candidate": "besides",
+    "encoded_form": " besides",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 27758,
+    "decoded": " besides",
+    "surface": "besides",
+    "freq": 0
+  },
+  {
+    "candidate": "accordingly",
+    "encoded_form": " accordingly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 27079,
+    "decoded": " accordingly",
+    "surface": "accordingly",
+    "freq": 1
+  },
+  {
+    "candidate": "consequently",
+    "encoded_form": " consequently",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 51294,
+    "decoded": " consequently",
+    "surface": "consequently",
+    "freq": 0
+  },
+  {
+    "candidate": "similarly",
+    "encoded_form": " similarly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 29193,
+    "decoded": " similarly",
+    "surface": "similarly",
+    "freq": 0
+  },
+  {
+    "candidate": "likewise",
+    "encoded_form": " likewise",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 37922,
+    "decoded": " likewise",
+    "surface": "likewise",
+    "freq": 0
+  },
+  {
+    "candidate": "specifically",
+    "encoded_form": " specifically",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 11689,
+    "decoded": " specifically",
+    "surface": "specifically",
+    "freq": 10
+  },
+  {
+    "candidate": "generally",
+    "encoded_form": " generally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 8789,
+    "decoded": " generally",
+    "surface": "generally",
+    "freq": 3
+  },
+  {
+    "candidate": "typically",
+    "encoded_form": "typically",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 86084,
+    "decoded": "typically",
+    "surface": "typically",
+    "freq": 0
+  },
+  {
+    "candidate": "usually",
+    "encoded_form": "usually",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 42966,
+    "decoded": "usually",
+    "surface": "usually",
+    "freq": 0
+  },
+  {
+    "candidate": "normally",
+    "encoded_form": "normally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 85236,
+    "decoded": "normally",
+    "surface": "normally",
+    "freq": 0
+  },
+  {
+    "candidate": "largely",
+    "encoded_form": " largely",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 13771,
+    "decoded": " largely",
+    "surface": "largely",
+    "freq": 2
+  },
+  {
+    "candidate": "mostly",
+    "encoded_form": "mostly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 62895,
+    "decoded": "mostly",
+    "surface": "mostly",
+    "freq": 1
+  },
+  {
+    "candidate": "partly",
+    "encoded_form": " partly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 27037,
+    "decoded": " partly",
+    "surface": "partly",
+    "freq": 0
+  },
+  {
+    "candidate": "roughly",
+    "encoded_form": " roughly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 17267,
+    "decoded": " roughly",
+    "surface": "roughly",
+    "freq": 0
+  },
+  {
+    "candidate": "approximately",
+    "encoded_form": "approximately",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 96736,
+    "decoded": "approximately",
+    "surface": "approximately",
+    "freq": 0
+  },
+  {
+    "candidate": "nearly",
+    "encoded_form": " nearly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 7009,
+    "decoded": " nearly",
+    "surface": "nearly",
+    "freq": 1
+  },
+  {
+    "candidate": "barely",
+    "encoded_form": " barely",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 19460,
+    "decoded": " barely",
+    "surface": "barely",
+    "freq": 2
+  },
+  {
+    "candidate": "hardly",
+    "encoded_form": " hardly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 20171,
+    "decoded": " hardly",
+    "surface": "hardly",
+    "freq": 0
+  },
+  {
+    "candidate": "clearly",
+    "encoded_form": " clearly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 9355,
+    "decoded": " clearly",
+    "surface": "clearly",
+    "freq": 0
+  },
+  {
+    "candidate": "plainly",
+    "encoded_form": " plainly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 64295,
+    "decoded": " plainly",
+    "surface": "plainly",
+    "freq": 1
+  },
+  {
+    "candidate": "carefully",
+    "encoded_form": " carefully",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 15516,
+    "decoded": " carefully",
+    "surface": "carefully",
+    "freq": 0
+  },
+  {
+    "candidate": "briefly",
+    "encoded_form": " briefly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 26753,
+    "decoded": " briefly",
+    "surface": "briefly",
+    "freq": 1
+  },
+  {
+    "candidate": "quietly",
+    "encoded_form": " quietly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 29566,
+    "decoded": " quietly",
+    "surface": "quietly",
+    "freq": 0
+  },
+  {
+    "candidate": "slowly",
+    "encoded_form": " slowly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 13970,
+    "decoded": " slowly",
+    "surface": "slowly",
+    "freq": 2
+  },
+  {
+    "candidate": "quickly",
+    "encoded_form": " quickly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 6157,
+    "decoded": " quickly",
+    "surface": "quickly",
+    "freq": 3
+  },
+  {
+    "candidate": "closely",
+    "encoded_form": " closely",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 15148,
+    "decoded": " closely",
+    "surface": "closely",
+    "freq": 0
+  },
+  {
+    "candidate": "widely",
+    "encoded_form": " widely",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 13570,
+    "decoded": " widely",
+    "surface": "widely",
+    "freq": 2
+  },
+  {
+    "candidate": "deeply",
+    "encoded_form": " deeply",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 17247,
+    "decoded": " deeply",
+    "surface": "deeply",
+    "freq": 0
+  },
+  {
+    "candidate": "firmly",
+    "encoded_form": " firmly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 31520,
+    "decoded": " firmly",
+    "surface": "firmly",
+    "freq": 0
+  },
+  {
+    "candidate": "easily",
+    "encoded_form": " easily",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 6707,
+    "decoded": " easily",
+    "surface": "easily",
+    "freq": 0
+  },
+  {
+    "candidate": "possibly",
+    "encoded_form": "possibly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 53128,
+    "decoded": "possibly",
+    "surface": "possibly",
+    "freq": 0
+  },
+  {
+    "candidate": "probably",
+    "encoded_form": "probably",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 54440,
+    "decoded": "probably",
+    "surface": "probably",
+    "freq": 0
+  },
+  {
+    "candidate": "certainly",
+    "encoded_form": " certainly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 7838,
+    "decoded": " certainly",
+    "surface": "certainly",
+    "freq": 0
+  },
+  {
+    "candidate": "apparently",
+    "encoded_form": " apparently",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 13812,
+    "decoded": " apparently",
+    "surface": "apparently",
+    "freq": 2
+  },
+  {
+    "candidate": "naturally",
+    "encoded_form": " naturally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 17712,
+    "decoded": " naturally",
+    "surface": "naturally",
+    "freq": 2
+  },
+  {
+    "candidate": "currently",
+    "encoded_form": "currently",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 58202,
+    "decoded": "currently",
+    "surface": "currently",
+    "freq": 0
+  },
+  {
+    "candidate": "presently",
+    "encoded_form": " presently",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 49701,
+    "decoded": " presently",
+    "surface": "presently",
+    "freq": 0
+  },
+  {
+    "candidate": "recently",
+    "encoded_form": " recently",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 5926,
+    "decoded": " recently",
+    "surface": "recently",
+    "freq": 5
+  },
+  {
+    "candidate": "suddenly",
+    "encoded_form": " suddenly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 14843,
+    "decoded": " suddenly",
+    "surface": "suddenly",
+    "freq": 4
+  },
+  {
+    "candidate": "eventually",
+    "encoded_form": " eventually",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 9583,
+    "decoded": " eventually",
+    "surface": "eventually",
+    "freq": 5
+  },
+  {
+    "candidate": "gradually",
+    "encoded_form": " gradually",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 26024,
+    "decoded": " gradually",
+    "surface": "gradually",
+    "freq": 0
+  },
+  {
+    "candidate": "finally",
+    "encoded_form": "finally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 39176,
+    "decoded": "finally",
+    "surface": "finally",
+    "freq": 0
+  },
+  {
+    "candidate": "earlier",
+    "encoded_form": " earlier",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 6788,
+    "decoded": " earlier",
+    "surface": "earlier",
+    "freq": 3
+  },
+  {
+    "candidate": "later",
+    "encoded_form": "later",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 67576,
+    "decoded": "later",
+    "surface": "later",
+    "freq": 0
+  },
+  {
+    "candidate": "soon",
+    "encoded_form": "soon",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 66056,
+    "decoded": "soon",
+    "surface": "soon",
+    "freq": 0
+  },
+  {
+    "candidate": "already",
+    "encoded_form": "already",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 45484,
+    "decoded": "already",
+    "surface": "already",
+    "freq": 0
+  },
+  {
+    "candidate": "again",
+    "encoded_form": "again",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 32771,
+    "decoded": "again",
+    "surface": "again",
+    "freq": 0
+  },
+  {
+    "candidate": "occasionally",
+    "encoded_form": " occasionally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 22930,
+    "decoded": " occasionally",
+    "surface": "occasionally",
+    "freq": 1
+  },
+  {
+    "candidate": "frequently",
+    "encoded_form": " frequently",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 13814,
+    "decoded": " frequently",
+    "surface": "frequently",
+    "freq": 1
+  },
+  {
+    "candidate": "rarely",
+    "encoded_form": " rarely",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 18521,
+    "decoded": " rarely",
+    "surface": "rarely",
+    "freq": 1
+  },
+  {
+    "candidate": "seldom",
+    "encoded_form": " seldom",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 55352,
+    "decoded": " seldom",
+    "surface": "seldom",
+    "freq": 0
+  },
+  {
+    "candidate": "respectively",
+    "encoded_form": " respectively",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 15576,
+    "decoded": " respectively",
+    "surface": "respectively",
+    "freq": 0
+  },
+  {
+    "candidate": "alternatively",
+    "encoded_form": " alternatively",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 68387,
+    "decoded": " alternatively",
+    "surface": "alternatively",
+    "freq": 0
+  },
+  {
+    "candidate": "collectively",
+    "encoded_form": " collectively",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 44825,
+    "decoded": " collectively",
+    "surface": "collectively",
+    "freq": 0
+  },
+  {
+    "candidate": "separately",
+    "encoded_form": " separately",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 25156,
+    "decoded": " separately",
+    "surface": "separately",
+    "freq": 2
+  },
+  {
+    "candidate": "jointly",
+    "encoded_form": " jointly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 52158,
+    "decoded": " jointly",
+    "surface": "jointly",
+    "freq": 0
+  },
+  {
+    "candidate": "explicitly",
+    "encoded_form": " explicitly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 20975,
+    "decoded": " explicitly",
+    "surface": "explicitly",
+    "freq": 1
+  },
+  {
+    "candidate": "implicitly",
+    "encoded_form": "implicitly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 87295,
+    "decoded": "implicitly",
+    "surface": "implicitly",
+    "freq": 0
+  },
+  {
+    "candidate": "precisely",
+    "encoded_form": " precisely",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 23638,
+    "decoded": " precisely",
+    "surface": "precisely",
+    "freq": 0
+  },
+  {
+    "candidate": "essentially",
+    "encoded_form": " essentially",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 15791,
+    "decoded": " essentially",
+    "surface": "essentially",
+    "freq": 1
+  },
+  {
+    "candidate": "primarily",
+    "encoded_form": " primarily",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 15503,
+    "decoded": " primarily",
+    "surface": "primarily",
+    "freq": 1
+  },
+  {
+    "candidate": "secondarily",
+    "encoded_form": "",
+    "accepted": false,
+    "reason": "not_single_token",
+    "token_id": null,
+    "decoded": null,
+    "surface": null,
+    "freq": null
+  },
+  {
+    "candidate": "initially",
+    "encoded_form": " initially",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 15102,
+    "decoded": " initially",
+    "surface": "initially",
+    "freq": 0
+  },
+  {
+    "candidate": "subsequently",
+    "encoded_form": " subsequently",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 27420,
+    "decoded": " subsequently",
+    "surface": "subsequently",
+    "freq": 0
+  },
+  {
+    "candidate": "previously",
+    "encoded_form": " previously",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 8597,
+    "decoded": " previously",
+    "surface": "previously",
+    "freq": 1
+  },
+  {
+    "candidate": "ultimately",
+    "encoded_form": " ultimately",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 13653,
+    "decoded": " ultimately",
+    "surface": "ultimately",
+    "freq": 0
+  },
+  {
+    "candidate": "formally",
+    "encoded_form": " formally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 36302,
+    "decoded": " formally",
+    "surface": "formally",
+    "freq": 0
+  },
+  {
+    "candidate": "informally",
+    "encoded_form": "",
+    "accepted": false,
+    "reason": "not_single_token",
+    "token_id": null,
+    "decoded": null,
+    "surface": null,
+    "freq": null
+  },
+  {
+    "candidate": "locally",
+    "encoded_form": " locally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 23490,
+    "decoded": " locally",
+    "surface": "locally",
+    "freq": 0
+  },
+  {
+    "candidate": "globally",
+    "encoded_form": " globally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 30450,
+    "decoded": " globally",
+    "surface": "globally",
+    "freq": 0
+  },
+  {
+    "candidate": "internally",
+    "encoded_form": " internally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 33067,
+    "decoded": " internally",
+    "surface": "internally",
+    "freq": 0
+  },
+  {
+    "candidate": "externally",
+    "encoded_form": " externally",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 68342,
+    "decoded": " externally",
+    "surface": "externally",
+    "freq": 0
+  },
+  {
+    "candidate": "directly",
+    "encoded_form": " directly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 5961,
+    "decoded": " directly",
+    "surface": "directly",
+    "freq": 4
+  },
+  {
+    "candidate": "indirectly",
+    "encoded_form": " indirectly",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 45245,
+    "decoded": " indirectly",
+    "surface": "indirectly",
+    "freq": 0
+  },
+  {
+    "candidate": "brief",
+    "encoded_form": "brief",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 6658,
+    "decoded": "brief",
+    "surface": "brief",
+    "freq": 0
+  },
+  {
+    "candidate": "steady",
+    "encoded_form": "steady",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 71666,
+    "decoded": "steady",
+    "surface": "steady",
+    "freq": 0
+  },
+  {
+    "candidate": "stable",
+    "encoded_form": "stable",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 27992,
+    "decoded": "stable",
+    "surface": "stable",
+    "freq": 0
+  },
+  {
+    "candidate": "neutral",
+    "encoded_form": "neutral",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 59568,
+    "decoded": "neutral",
+    "surface": "neutral",
+    "freq": 0
+  },
+  {
+    "candidate": "modest",
+    "encoded_form": " modest",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 26848,
+    "decoded": " modest",
+    "surface": "modest",
+    "freq": 0
+  },
+  {
+    "candidate": "formal",
+    "encoded_form": " formal",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 15908,
+    "decoded": " formal",
+    "surface": "formal",
+    "freq": 0
+  },
+  {
+    "candidate": "casual",
+    "encoded_form": " casual",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 16334,
+    "decoded": " casual",
+    "surface": "casual",
+    "freq": 0
+  },
+  {
+    "candidate": "proper",
+    "encoded_form": "proper",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 80668,
+    "decoded": "proper",
+    "surface": "proper",
+    "freq": 0
+  },
+  {
+    "candidate": "general",
+    "encoded_form": "general",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 24595,
+    "decoded": "general",
+    "surface": "general",
+    "freq": 0
+  },
+  {
+    "candidate": "specific",
+    "encoded_form": "specific",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 51240,
+    "decoded": "specific",
+    "surface": "specific",
+    "freq": 0
+  },
+  {
+    "candidate": "overall",
+    "encoded_form": "overall",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 74455,
+    "decoded": "overall",
+    "surface": "overall",
+    "freq": 0
+  },
+  {
+    "candidate": "partial",
+    "encoded_form": "partial",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 37420,
+    "decoded": "partial",
+    "surface": "partial",
+    "freq": 0
+  },
+  {
+    "candidate": "separate",
+    "encoded_form": " separate",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 8651,
+    "decoded": " separate",
+    "surface": "separate",
+    "freq": 4
+  },
+  {
+    "candidate": "parallel",
+    "encoded_form": "parallel",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 46103,
+    "decoded": "parallel",
+    "surface": "parallel",
+    "freq": 0
+  },
+  {
+    "candidate": "relative",
+    "encoded_form": "relative",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 20432,
+    "decoded": "relative",
+    "surface": "relative",
+    "freq": 0
+  },
+  {
+    "candidate": "ordinary",
+    "encoded_form": "ordinary",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 21031,
+    "decoded": "ordinary",
+    "surface": "ordinary",
+    "freq": 0
+  },
+  {
+    "candidate": "typical",
+    "encoded_form": " typical",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 14260,
+    "decoded": " typical",
+    "surface": "typical",
+    "freq": 2
+  },
+  {
+    "candidate": "usual",
+    "encoded_form": "usual",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 80224,
+    "decoded": "usual",
+    "surface": "usual",
+    "freq": 0
+  },
+  {
+    "candidate": "standard",
+    "encoded_form": "standard",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 20270,
+    "decoded": "standard",
+    "surface": "standard",
+    "freq": 0
+  },
+  {
+    "candidate": "basic",
+    "encoded_form": "basic",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 22342,
+    "decoded": "basic",
+    "surface": "basic",
+    "freq": 0
+  },
+  {
+    "candidate": "simple",
+    "encoded_form": "simple",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 22944,
+    "decoded": "simple",
+    "surface": "simple",
+    "freq": 0
+  },
+  {
+    "candidate": "minor",
+    "encoded_form": "minor",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 45670,
+    "decoded": "minor",
+    "surface": "minor",
+    "freq": 0
+  },
+  {
+    "candidate": "major",
+    "encoded_form": "major",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 36505,
+    "decoded": "major",
+    "surface": "major",
+    "freq": 0
+  },
+  {
+    "candidate": "initial",
+    "encoded_form": "initial",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 9426,
+    "decoded": "initial",
+    "surface": "initial",
+    "freq": 0
+  },
+  {
+    "candidate": "final",
+    "encoded_form": "final",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 11822,
+    "decoded": "final",
+    "surface": "final",
+    "freq": 0
+  },
+  {
+    "candidate": "early",
+    "encoded_form": "early",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 22140,
+    "decoded": "early",
+    "surface": "early",
+    "freq": 0
+  },
+  {
+    "candidate": "late",
+    "encoded_form": "late",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 5075,
+    "decoded": "late",
+    "surface": "late",
+    "freq": 0
+  },
+  {
+    "candidate": "recent",
+    "encoded_form": "recent",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 46643,
+    "decoded": "recent",
+    "surface": "recent",
+    "freq": 0
+  },
+  {
+    "candidate": "current",
+    "encoded_form": "current",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 3231,
+    "decoded": "current",
+    "surface": "current",
+    "freq": 0
+  },
+  {
+    "candidate": "present",
+    "encoded_form": "present",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 28744,
+    "decoded": "present",
+    "surface": "present",
+    "freq": 0
+  },
+  {
+    "candidate": "gradual",
+    "encoded_form": " gradual",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 52622,
+    "decoded": " gradual",
+    "surface": "gradual",
+    "freq": 0
+  },
+  {
+    "candidate": "eventual",
+    "encoded_form": " eventual",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 41735,
+    "decoded": " eventual",
+    "surface": "eventual",
+    "freq": 0
+  },
+  {
+    "candidate": "temporary",
+    "encoded_form": "temporary",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 78090,
+    "decoded": "temporary",
+    "surface": "temporary",
+    "freq": 0
+  },
+  {
+    "candidate": "regular",
+    "encoded_form": "regular",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 22308,
+    "decoded": "regular",
+    "surface": "regular",
+    "freq": 0
+  },
+  {
+    "candidate": "irregular",
+    "encoded_form": " irregular",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 41308,
+    "decoded": " irregular",
+    "surface": "irregular",
+    "freq": 0
+  },
+  {
+    "candidate": "similar",
+    "encoded_form": "similar",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 64287,
+    "decoded": "similar",
+    "surface": "similar",
+    "freq": 0
+  },
+  {
+    "candidate": "different",
+    "encoded_form": "different",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 63650,
+    "decoded": "different",
+    "surface": "different",
+    "freq": 0
+  },
+  {
+    "candidate": "nearby",
+    "encoded_form": " nearby",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 14046,
+    "decoded": " nearby",
+    "surface": "nearby",
+    "freq": 0
+  },
+  {
+    "candidate": "distant",
+    "encoded_form": " distant",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 28727,
+    "decoded": " distant",
+    "surface": "distant",
+    "freq": 5
+  },
+  {
+    "candidate": "internal",
+    "encoded_form": "internal",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 10481,
+    "decoded": "internal",
+    "surface": "internal",
+    "freq": 0
+  },
+  {
+    "candidate": "external",
+    "encoded_form": "external",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 20921,
+    "decoded": "external",
+    "surface": "external",
+    "freq": 0
+  },
+  {
+    "candidate": "local",
+    "encoded_form": "local",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 2438,
+    "decoded": "local",
+    "surface": "local",
+    "freq": 0
+  },
+  {
+    "candidate": "global",
+    "encoded_form": "global",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 9752,
+    "decoded": "global",
+    "surface": "global",
+    "freq": 0
+  },
+  {
+    "candidate": "central",
+    "encoded_form": "central",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 51811,
+    "decoded": "central",
+    "surface": "central",
+    "freq": 0
+  },
+  {
+    "candidate": "peripheral",
+    "encoded_form": " peripheral",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 34588,
+    "decoded": " peripheral",
+    "surface": "peripheral",
+    "freq": 0
+  },
+  {
+    "candidate": "upper",
+    "encoded_form": "upper",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 13574,
+    "decoded": "upper",
+    "surface": "upper",
+    "freq": 0
+  },
+  {
+    "candidate": "lower",
+    "encoded_form": "lower",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 14772,
+    "decoded": "lower",
+    "surface": "lower",
+    "freq": 0
+  },
+  {
+    "candidate": "inner",
+    "encoded_form": "inner",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 4382,
+    "decoded": "inner",
+    "surface": "inner",
+    "freq": 0
+  },
+  {
+    "candidate": "outer",
+    "encoded_form": "outer",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 2676,
+    "decoded": "outer",
+    "surface": "outer",
+    "freq": 0
+  },
+  {
+    "candidate": "forward",
+    "encoded_form": "forward",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 13435,
+    "decoded": "forward",
+    "surface": "forward",
+    "freq": 0
+  },
+  {
+    "candidate": "backward",
+    "encoded_form": "backward",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 81196,
+    "decoded": "backward",
+    "surface": "backward",
+    "freq": 0
+  },
+  {
+    "candidate": "upward",
+    "encoded_form": " upward",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 39772,
+    "decoded": " upward",
+    "surface": "upward",
+    "freq": 0
+  },
+  {
+    "candidate": "downward",
+    "encoded_form": " downward",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 44478,
+    "decoded": " downward",
+    "surface": "downward",
+    "freq": 0
+  },
+  {
+    "candidate": "aside",
+    "encoded_form": "aside",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 28512,
+    "decoded": "aside",
+    "surface": "aside",
+    "freq": 0
+  },
+  {
+    "candidate": "elsewhere",
+    "encoded_form": " elsewhere",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 17920,
+    "decoded": " elsewhere",
+    "surface": "elsewhere",
+    "freq": 0
+  },
+  {
+    "candidate": "hereafter",
+    "encoded_form": "",
+    "accepted": false,
+    "reason": "not_single_token",
+    "token_id": null,
+    "decoded": null,
+    "surface": null,
+    "freq": null
+  },
+  {
+    "candidate": "thereafter",
+    "encoded_form": " thereafter",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 44995,
+    "decoded": " thereafter",
+    "surface": "thereafter",
+    "freq": 0
+  },
+  {
+    "candidate": "beforehand",
+    "encoded_form": " beforehand",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 51059,
+    "decoded": " beforehand",
+    "surface": "beforehand",
+    "freq": 0
+  },
+  {
+    "candidate": "afterward",
+    "encoded_form": " afterward",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 47943,
+    "decoded": " afterward",
+    "surface": "afterward",
+    "freq": 0
+  },
+  {
+    "candidate": "afterwards",
+    "encoded_form": " afterwards",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 26807,
+    "decoded": " afterwards",
+    "surface": "afterwards",
+    "freq": 0
+  },
+  {
+    "candidate": "alongside",
+    "encoded_form": " alongside",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 16263,
+    "decoded": " alongside",
+    "surface": "alongside",
+    "freq": 2
+  },
+  {
+    "candidate": "around",
+    "encoded_form": "around",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 19454,
+    "decoded": "around",
+    "surface": "around",
+    "freq": 0
+  },
+  {
+    "candidate": "within",
+    "encoded_form": "within",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 55850,
+    "decoded": "within",
+    "surface": "within",
+    "freq": 0
+  },
+  {
+    "candidate": "without",
+    "encoded_form": "without",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 28996,
+    "decoded": "without",
+    "surface": "without",
+    "freq": 1
+  },
+  {
+    "candidate": "beyond",
+    "encoded_form": " beyond",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 7797,
+    "decoded": " beyond",
+    "surface": "beyond",
+    "freq": 3
+  },
+  {
+    "candidate": "beneath",
+    "encoded_form": " beneath",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 23969,
+    "decoded": " beneath",
+    "surface": "beneath",
+    "freq": 1
+  },
+  {
+    "candidate": "beside",
+    "encoded_form": " beside",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 29388,
+    "decoded": " beside",
+    "surface": "beside",
+    "freq": 0
+  },
+  {
+    "candidate": "between",
+    "encoded_form": "between",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 41867,
+    "decoded": "between",
+    "surface": "between",
+    "freq": 0
+  },
+  {
+    "candidate": "among",
+    "encoded_form": "among",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 76305,
+    "decoded": "among",
+    "surface": "among",
+    "freq": 0
+  },
+  {
+    "candidate": "across",
+    "encoded_form": " across",
+    "accepted": true,
+    "reason": "accepted",
+    "token_id": 3941,
+    "decoded": " across",
+    "surface": "across",
+    "freq": 6
+  }
+]

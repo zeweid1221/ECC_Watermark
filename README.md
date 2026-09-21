@@ -38,6 +38,7 @@ pipeline used to evaluate the current protocol.
 ## Repository Structure
 
 - `watermark_project/`: ECC generation, vocabulary partitioning, decoding, edit simulation, evaluation, and shared model utilities.
+- `artifacts/partitions/`: exact compact-150 vocabulary partitions used for the paper's main experiments.
 - `baselines/`: independent Combinatorial Watermark and accepted sync-ECC baselines.
 - `scripts/`: experiment runners, LLM editor and judge pipelines, plotting, diagnostics, and result-processing utilities.
 - `tests/`: regression and protocol tests for generation, partition identity, detector provenance, and evaluation behavior.

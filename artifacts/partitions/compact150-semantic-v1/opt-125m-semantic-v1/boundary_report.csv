@@ -1,0 +1,153 @@
+candidate,encoded_form,accepted,reason,token_id,decoded,surface,freq
+however, however,True,accepted,959, however,however,0
+therefore, therefore,True,accepted,3891, therefore,therefore,1
+moreover, moreover,True,accepted,41353, moreover,moreover,1
+furthermore, furthermore,True,accepted,43681, furthermore,furthermore,0
+nonetheless, nonetheless,True,accepted,17428, nonetheless,nonetheless,0
+nevertheless, nevertheless,True,accepted,21507, nevertheless,nevertheless,0
+meanwhile, meanwhile,True,accepted,6637, meanwhile,meanwhile,0
+otherwise, otherwise,True,accepted,3680, otherwise,otherwise,4
+instead,instead,True,accepted,38908,instead,instead,0
+besides, besides,True,accepted,12035, besides,besides,0
+accordingly, accordingly,True,accepted,14649, accordingly,accordingly,1
+consequently, consequently,True,accepted,28766, consequently,consequently,0
+similarly, similarly,True,accepted,11401, similarly,similarly,0
+likewise, likewise,True,accepted,24489, likewise,likewise,0
+specifically, specifically,True,accepted,4010, specifically,specifically,10
+generally, generally,True,accepted,3489, generally,generally,3
+typically,typically,True,accepted,44661,typically,typically,0
+usually,usually,True,accepted,33834,usually,usually,0
+normally, normally,True,accepted,6329, normally,normally,0
+largely, largely,True,accepted,2743, largely,largely,2
+mostly,mostly,True,accepted,34663,mostly,mostly,1
+partly, partly,True,accepted,5647, partly,partly,0
+roughly, roughly,True,accepted,3667, roughly,roughly,0
+approximately,approximately,True,accepted,39073,approximately,approximately,0
+nearly, nearly,True,accepted,823, nearly,nearly,1
+barely, barely,True,accepted,6254, barely,barely,2
+hardly, hardly,True,accepted,7533, hardly,hardly,0
+clearly, clearly,True,accepted,2563, clearly,clearly,0
+plainly, plainly,True,accepted,32907, plainly,plainly,1
+carefully, carefully,True,accepted,7015, carefully,carefully,0
+briefly, briefly,True,accepted,7478, briefly,briefly,1
+quietly, quietly,True,accepted,11034, quietly,quietly,0
+slowly, slowly,True,accepted,5764, slowly,slowly,2
+quickly, quickly,True,accepted,1335, quickly,quickly,3
+closely, closely,True,accepted,3615, closely,closely,0
+widely, widely,True,accepted,3924, widely,widely,2
+deeply, deeply,True,accepted,4814, deeply,deeply,0
+firmly, firmly,True,accepted,10523, firmly,firmly,0
+easily, easily,True,accepted,2773, easily,easily,0
+possibly,possibly,True,accepted,41916,possibly,possibly,0
+probably,probably,True,accepted,27737,probably,probably,0
+certainly, certainly,True,accepted,1819, certainly,certainly,0
+apparently, apparently,True,accepted,4100, apparently,apparently,2
+naturally, naturally,True,accepted,8366, naturally,naturally,2
+currently,currently,True,accepted,38501,currently,currently,0
+presently, presently,True,accepted,10375, presently,presently,0
+recently, recently,True,accepted,682, recently,recently,5
+suddenly, suddenly,True,accepted,6017, suddenly,suddenly,4
+eventually, eventually,True,accepted,2140, eventually,eventually,5
+gradually, gradually,True,accepted,9097, gradually,gradually,0
+finally, finally,True,accepted,1747, finally,finally,2
+earlier, earlier,True,accepted,656, earlier,earlier,3
+later,later,True,accepted,36600,later,later,0
+soon,soon,True,accepted,16752,soon,soon,0
+already, already,True,accepted,416, already,already,7
+again,again,True,accepted,23201,again,again,0
+occasionally, occasionally,True,accepted,10930, occasionally,occasionally,1
+frequently, frequently,True,accepted,5705, frequently,frequently,1
+rarely, rarely,True,accepted,7154, rarely,rarely,1
+seldom, seldom,True,accepted,28010, seldom,seldom,0
+respectively, respectively,True,accepted,4067, respectively,respectively,0
+alternatively, alternatively,True,accepted,42704, alternatively,alternatively,0
+collectively, collectively,True,accepted,14332, collectively,collectively,0
+separately, separately,True,accepted,12712, separately,separately,2
+jointly, jointly,True,accepted,13521, jointly,jointly,0
+explicitly, explicitly,True,accepted,16369, explicitly,explicitly,1
+implicitly, implicitly,True,accepted,41030, implicitly,implicitly,0
+precisely, precisely,True,accepted,12810, precisely,precisely,0
+essentially, essentially,True,accepted,5700, essentially,essentially,1
+primarily, primarily,True,accepted,4212, primarily,primarily,1
+secondarily,,False,not_single_token,,,,
+initially, initially,True,accepted,3225, initially,initially,0
+subsequently, subsequently,True,accepted,8960, subsequently,subsequently,0
+previously, previously,True,accepted,1433, previously,previously,1
+ultimately, ultimately,True,accepted,3284, ultimately,ultimately,0
+formally, formally,True,accepted,8207, formally,formally,0
+informally,,False,not_single_token,,,,
+locally, locally,True,accepted,8094, locally,locally,0
+globally, globally,True,accepted,7197, globally,globally,0
+internally, internally,True,accepted,16985, internally,internally,0
+externally, externally,True,accepted,38826, externally,externally,0
+directly, directly,True,accepted,2024, directly,directly,4
+indirectly, indirectly,True,accepted,20826, indirectly,indirectly,0
+brief, brief,True,accepted,4315, brief,brief,0
+steady, steady,True,accepted,5204, steady,steady,0
+stable,stable,True,accepted,33435,stable,stable,0
+neutral,neutral,True,accepted,12516,neutral,neutral,0
+modest, modest,True,accepted,6473, modest,modest,0
+formal, formal,True,accepted,4828, formal,formal,0
+casual, casual,True,accepted,9881, casual,casual,0
+proper, proper,True,accepted,4692, proper,proper,0
+general,general,True,accepted,15841,general,general,1
+specific,specific,True,accepted,14175,specific,specific,0
+overall, overall,True,accepted,1374, overall,overall,0
+partial,partial,True,accepted,45593,partial,partial,0
+separate, separate,True,accepted,2559, separate,separate,4
+parallel, parallel,True,accepted,12980, parallel,parallel,0
+relative,relative,True,accepted,46624,relative,relative,0
+ordinary,ordinary,True,accepted,28532,ordinary,ordinary,0
+typical, typical,True,accepted,6097, typical,typical,2
+usual,usual,True,accepted,33400,usual,usual,0
+standard,standard,True,accepted,21993,standard,standard,0
+basic,basic,True,accepted,42607,basic,basic,0
+simple,simple,True,accepted,41918,simple,simple,0
+minor, minor,True,accepted,3694, minor,minor,0
+major,major,True,accepted,25430,major,major,0
+initial,initial,True,accepted,45696,initial,initial,0
+final,final,True,accepted,6156,final,final,0
+early,early,True,accepted,23099,early,early,0
+late,late,True,accepted,19593,late,late,0
+recent,recent,True,accepted,38696,recent,recent,0
+current,current,True,accepted,28311,current,current,0
+present,present,True,accepted,25870,present,present,0
+gradual, gradual,True,accepted,16677, gradual,gradual,0
+eventual, eventual,True,accepted,11870, eventual,eventual,0
+temporary, temporary,True,accepted,4667, temporary,temporary,0
+regular,regular,True,accepted,32786,regular,regular,0
+irregular, irregular,True,accepted,22937, irregular,irregular,0
+similar,similar,True,accepted,42116,similar,similar,0
+different,different,True,accepted,37251,different,different,0
+nearby, nearby,True,accepted,3027, nearby,nearby,0
+distant, distant,True,accepted,13258, distant,distant,5
+internal,internal,True,accepted,37559,internal,internal,0
+external,external,True,accepted,43166,external,external,0
+local,local,True,accepted,18076,local,local,0
+global,global,True,accepted,9424,global,global,0
+central,central,True,accepted,16620,central,central,0
+peripheral, peripheral,True,accepted,27727, peripheral,peripheral,0
+upper,upper,True,accepted,34849,upper,upper,0
+lower,lower,True,accepted,29668,lower,lower,0
+inner,inner,True,accepted,12247,inner,inner,0
+outer,outer,True,accepted,44827,outer,outer,0
+forward,forward,True,accepted,16135,forward,forward,0
+backward, backward,True,accepted,18173, backward,backward,0
+upward, upward,True,accepted,13568, upward,upward,0
+downward, downward,True,accepted,14659, downward,downward,0
+aside, aside,True,accepted,4364, aside,aside,0
+elsewhere, elsewhere,True,accepted,5140, elsewhere,elsewhere,0
+hereafter, hereafter,True,accepted,46566, hereafter,hereafter,0
+thereafter, thereafter,True,accepted,17998, thereafter,thereafter,0
+beforehand, beforehand,True,accepted,23882, beforehand,beforehand,0
+afterward, afterward,True,accepted,14723, afterward,afterward,0
+afterwards, afterwards,True,accepted,11795, afterwards,afterwards,0
+alongside, alongside,True,accepted,2863, alongside,alongside,2
+around,around,True,accepted,13837,around,around,0
+within,within,True,accepted,34451,within,within,0
+without,without,True,accepted,19010,without,without,1
+beyond, beyond,True,accepted,1684, beyond,beyond,3
+beneath, beneath,True,accepted,11352, beneath,beneath,1
+beside, beside,True,accepted,13276, beside,beside,0
+between,between,True,accepted,25784,between,between,0
+among,among,True,accepted,31636,among,among,0

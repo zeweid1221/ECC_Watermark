@@ -1,0 +1,26 @@
+{
+  "num_bucket0": 16302,
+  "num_bucket1": 16313,
+  "num_bucket2": 150,
+  "num_banned": 3,
+  "metadata": {
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.3",
+    "tokenizer_name_or_path": "mistralai/Mistral-7B-Instruct-v0.3",
+    "tokenizer_class": "TokenizersBackend",
+    "tokenizer_vocab_size": 32768,
+    "tokenizer_vocab_sha256": "143a7dc7a069e498878fa51424dd68b9005090cd11db46b66b1afbe9a30b04bb",
+    "payload_split_source": "embedding_lsh",
+    "lsh_bits": 12,
+    "partition_version": "model_specific_semantic_v1",
+    "model_profile": "mistral-7b-instruct-v0.3",
+    "prompt_file": "outputs/text_quality_lfqa_screen/lfqa_prompts_500.txt",
+    "candidate_file": "resources/boundary_candidates_qwen3_v1.txt",
+    "num_partition_texts": 500,
+    "target_boundary_size": 150,
+    "block_len": 7,
+    "vt_a": 6,
+    "max_boundary_frequency": 50,
+    "min_surface_len": 3,
+    "partition_checksum_sha256": "d67bde373f6a6490a7e916a86ef5a077a2ef9f3d95ab88120772e0a9ed0effd1"
+  }
+}

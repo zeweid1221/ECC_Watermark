@@ -1,0 +1,26 @@
+{
+  "num_bucket0": 75752,
+  "num_bucket1": 75753,
+  "num_bucket2": 150,
+  "num_banned": 14,
+  "metadata": {
+    "model_name": "Qwen/Qwen3-8B",
+    "tokenizer_name_or_path": "Qwen/Qwen3-8B",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "tokenizer_vocab_size": 151669,
+    "tokenizer_vocab_sha256": "c39b7717f19411fb4b1cc58af5da6b13cf3f8149f050342f9528029c8dd8a86b",
+    "payload_split_source": "embedding_lsh",
+    "lsh_bits": 12,
+    "partition_version": "model_specific_semantic_v1",
+    "model_profile": "qwen3-8b",
+    "prompt_file": "outputs/text_quality_lfqa_screen/lfqa_prompts_500.txt",
+    "candidate_file": "resources/boundary_candidates_qwen3_v1.txt",
+    "num_partition_texts": 500,
+    "target_boundary_size": 150,
+    "block_len": 7,
+    "vt_a": 6,
+    "max_boundary_frequency": 50,
+    "min_surface_len": 3,
+    "partition_checksum_sha256": "fb1cf97dde015fee3c5bf9e264281282c766275f598499c173ab24a54b7b9b71"
+  }
+}
