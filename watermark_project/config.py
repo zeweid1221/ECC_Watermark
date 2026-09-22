@@ -58,12 +58,17 @@ class ECCConfig:
     boundary_bonus: float = 3.5
     lsh_bits: int = 12
     lsh_chunk: int = 2048
+    payload_split_strategy: str = "quality_variant_lsh"
 
     def __post_init__(self) -> None:
         if self.target_boundary_pool is not None and self.target_boundary_pool <= 0:
             raise ValueError("target_boundary_pool must be positive when specified.")
         if not 0.0 < self.boundary_vocab_fraction < 1.0:
             raise ValueError("boundary_vocab_fraction must be in (0, 1).")
+        if self.payload_split_strategy not in {"paper_main", "quality_variant_lsh"}:
+            raise ValueError(
+                "payload_split_strategy must be 'paper_main' or 'quality_variant_lsh'."
+            )
 
 
 @dataclass

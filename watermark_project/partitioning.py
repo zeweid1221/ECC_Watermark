@@ -253,14 +253,13 @@ def build_fractional_boundary_pool(
     return chosen, report
 
 
-def build_payload_buckets(
+def _payload_candidates_and_groups(
     model: BaseLanguageModel,
-    freq: np.ndarray,
     boundary_ids: Sequence[int],
     config: ECCConfig,
     embedding_matrix: Optional[np.ndarray] = None,
     semantic_groups: Optional[Dict[int, List[int]]] = None,
-) -> Tuple[List[int], List[int]]:
+) -> Dict[int, List[int]]:
     boundary_set = set(int(x) for x in boundary_ids)
     special_ids = set(model.all_special_ids)
     candidate_ids = [
@@ -276,29 +275,92 @@ def build_payload_buckets(
             for group_id, members in semantic_groups.items()
         }
         groups = {group_id: members for group_id, members in groups.items() if members}
+    return groups
+
+
+def _split_semantic_group(
+    members: Sequence[int],
+    freq: np.ndarray,
+) -> Tuple[List[int], List[int], float, float]:
+    members_sorted = sorted(members, key=lambda tid: (-int(freq[tid]), tid))
+    local0: List[int] = []
+    local1: List[int] = []
+    local_mass0 = local_mass1 = 0.0
+    for token_id in members_sorted:
+        weight = float(max(int(freq[token_id]), 1))
+        if len(local0) < len(local1):
+            local0.append(token_id)
+            local_mass0 += weight
+        elif len(local1) < len(local0):
+            local1.append(token_id)
+            local_mass1 += weight
+        elif local_mass0 <= local_mass1:
+            local0.append(token_id)
+            local_mass0 += weight
+        else:
+            local1.append(token_id)
+            local_mass1 += weight
+    return local0, local1, local_mass0, local_mass1
+
+
+def build_payload_buckets_paper_main(
+    model: BaseLanguageModel,
+    freq: np.ndarray,
+    boundary_ids: Sequence[int],
+    config: ECCConfig,
+    embedding_matrix: Optional[np.ndarray] = None,
+    semantic_groups: Optional[Dict[int, List[int]]] = None,
+) -> Tuple[List[int], List[int]]:
+    """Implement the group-local payload split used by the paper's main runs."""
+    groups = _payload_candidates_and_groups(
+        model=model,
+        boundary_ids=boundary_ids,
+        config=config,
+        embedding_matrix=embedding_matrix,
+        semantic_groups=semantic_groups,
+    )
     bucket0: List[int] = []
     bucket1: List[int] = []
     count0 = count1 = 0
     mass0 = mass1 = 0.0
     for _, members in sorted(groups.items(), key=lambda kv: kv[0]):
-        members_sorted = sorted(members, key=lambda tid: (-int(freq[tid]), tid))
-        local0: List[int] = []
-        local1: List[int] = []
-        local_mass0 = local_mass1 = 0.0
-        for token_id in members_sorted:
-            weight = float(max(int(freq[token_id]), 1))
-            if len(local0) < len(local1):
-                local0.append(token_id)
-                local_mass0 += weight
-            elif len(local1) < len(local0):
-                local1.append(token_id)
-                local_mass1 += weight
-            elif local_mass0 <= local_mass1:
-                local0.append(token_id)
-                local_mass0 += weight
-            else:
-                local1.append(token_id)
-                local_mass1 += weight
+        local0, local1, local_mass0, local_mass1 = _split_semantic_group(members, freq)
+        # This is the original paper implementation: orientation changes only
+        # when the larger local half would worsen the accumulated count gap.
+        if count0 > count1 and len(local0) > len(local1):
+            local0, local1 = local1, local0
+            local_mass0, local_mass1 = local_mass1, local_mass0
+        bucket0.extend(local0)
+        bucket1.extend(local1)
+        count0 += len(local0)
+        count1 += len(local1)
+        mass0 += local_mass0
+        mass1 += local_mass1
+    return bucket0, bucket1
+
+
+def build_payload_buckets_quality_variant_lsh(
+    model: BaseLanguageModel,
+    freq: np.ndarray,
+    boundary_ids: Sequence[int],
+    config: ECCConfig,
+    embedding_matrix: Optional[np.ndarray] = None,
+    semantic_groups: Optional[Dict[int, List[int]]] = None,
+) -> Tuple[List[int], List[int]]:
+    """Globally balance LSH groups for the quality-oriented boundary variant."""
+    groups = _payload_candidates_and_groups(
+        model=model,
+        boundary_ids=boundary_ids,
+        config=config,
+        embedding_matrix=embedding_matrix,
+        semantic_groups=semantic_groups,
+    )
+    bucket0: List[int] = []
+    bucket1: List[int] = []
+    count0 = count1 = 0
+    mass0 = mass1 = 0.0
+    for _, members in sorted(groups.items(), key=lambda kv: kv[0]):
+        local0, local1, local_mass0, local_mass1 = _split_semantic_group(members, freq)
         keep_count_gap = abs((count0 + len(local0)) - (count1 + len(local1)))
         swap_count_gap = abs((count0 + len(local1)) - (count1 + len(local0)))
         keep_mass_gap = abs((mass0 + local_mass0) - (mass1 + local_mass1))
@@ -315,6 +377,28 @@ def build_payload_buckets(
         mass0 += local_mass0
         mass1 += local_mass1
     return bucket0, bucket1
+
+
+def build_payload_buckets(
+    model: BaseLanguageModel,
+    freq: np.ndarray,
+    boundary_ids: Sequence[int],
+    config: ECCConfig,
+    embedding_matrix: Optional[np.ndarray] = None,
+    semantic_groups: Optional[Dict[int, List[int]]] = None,
+) -> Tuple[List[int], List[int]]:
+    builders = {
+        "paper_main": build_payload_buckets_paper_main,
+        "quality_variant_lsh": build_payload_buckets_quality_variant_lsh,
+    }
+    return builders[config.payload_split_strategy](
+        model=model,
+        freq=freq,
+        boundary_ids=boundary_ids,
+        config=config,
+        embedding_matrix=embedding_matrix,
+        semantic_groups=semantic_groups,
+    )
 
 
 def build_vocabulary_partition(
@@ -375,6 +459,7 @@ def build_vocabulary_partition(
                 "embedding_lsh" if embedding_matrix is not None else "deterministic_hash_fallback_no_lm_weights"
             ),
             "lsh_bits": int(config.lsh_bits),
+            "payload_split_strategy": config.payload_split_strategy,
             "boundary_selection_source": (
                 "embedding_lsh_stratified_fraction"
                 if config.target_boundary_pool is None and embedding_matrix is not None
@@ -431,6 +516,7 @@ def build_vocabulary_partition_from_boundary_ids(
                 "embedding_lsh" if embedding_matrix is not None else "deterministic_hash_fallback_no_lm_weights"
             ),
             "lsh_bits": int(config.lsh_bits),
+            "payload_split_strategy": config.payload_split_strategy,
             "boundary_selection_source": "externally_fixed",
             "boundary_allocation_strategy": "fixed_count",
             "target_boundary_size": int(len(boundary_ids)),

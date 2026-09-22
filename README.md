@@ -20,20 +20,34 @@ The current experiment suite includes:
 - A readable synchronization-string plus VT baseline from the accepted Findings of EMNLP 2026 work, rerun under the current LFQA protocol.
 - Qwen3-guided benign and malicious sparse edits on LFQA responses.
 
-## Current ECC Protocol
+## Released Partition Protocols
 
-The default generator uses adaptive codeword completion with nearest-feasible
-recovery if a soft-watermark error makes the current payload prefix infeasible.
-Vocabulary partitions assign one eighth of the eligible vocabulary to boundary
-symbols and divide the remaining tokens evenly between the two payload buckets.
-Boundary and payload selection is stratified over model-embedding LSH groups so
-that each model receives its own tokenizer-compatible semantic partition.
+The paper's main experiments use the `paper_main` partition strategy: 150
+curated boundary anchors and the original group-local LSH payload split. Exact
+model-specific artifacts are released under
+`artifacts/partitions/compact150-semantic-v1/`. Rebuild this protocol with:
 
-The earlier fixed-count boundary protocol remains available for reproducibility.
-Pass `--target-boundary-size 150` to `scripts/build_model_partition.py` when a
-fixed boundary pool is required; otherwise `--boundary-vocab-fraction 0.125` is
-the default. See `msi/README_BOUNDARY_EIGHTH.md` for the three-model Slurm
-pipeline used to evaluate the current protocol.
+```bash
+python scripts/build_model_partition.py \
+  --model-profile <profile> \
+  --prompt-file <lfqa-prompts> \
+  --output-dir <output> \
+  --target-boundary-size 150 \
+  --payload-split-strategy paper_main
+```
+
+The appendix quality variant uses the `quality_variant_lsh` strategy. It assigns one
+eighth of the eligible vocabulary to boundary symbols, balances the remainder
+between the two payload buckets, and orients LSH groups to improve global count
+and calibration-frequency balance. Build it with
+`--boundary-vocab-fraction 0.125 --payload-split-strategy quality_variant_lsh`. When the
+strategy flag is omitted, the builder infers `paper_main` for an explicit fixed
+boundary count and `quality_variant_lsh` for the fractional protocol.
+
+Both protocols use adaptive codeword completion with nearest-feasible recovery
+if a soft-watermark error makes the current payload prefix infeasible. See
+`msi/README_BOUNDARY_EIGHTH.md` for the three-model Slurm pipeline used for the
+quality-variant ablation.
 
 ## Repository Structure
 

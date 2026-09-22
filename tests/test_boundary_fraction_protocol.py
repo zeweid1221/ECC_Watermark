@@ -9,6 +9,8 @@ from watermark_project.ecc_generator import EccGenerator
 from watermark_project.modeling import MockLanguageModel
 from watermark_project.partitioning import (
     build_payload_buckets,
+    build_payload_buckets_paper_main,
+    build_payload_buckets_quality_variant_lsh,
     build_vocabulary_partition,
     validate_vocabulary_partition,
 )
@@ -40,6 +42,7 @@ class BoundaryFractionProtocolTests(unittest.TestCase):
             eligible,
         )
         self.assertEqual(first.metadata["boundary_allocation_strategy"], "eligible_vocab_fraction")
+        self.assertEqual(first.metadata["payload_split_strategy"], "quality_variant_lsh")
         self.assertAlmostEqual(first.metadata["boundary_vocab_fraction_requested"], 1.0 / 8.0)
         np.testing.assert_array_equal(first.token_to_bucket, second.token_to_bucket)
         validate_vocabulary_partition(first, self.model, require_semantic_split=True)
@@ -78,6 +81,48 @@ class BoundaryFractionProtocolTests(unittest.TestCase):
         self.assertLessEqual(abs(len(bucket0) - len(bucket1)), 1)
         self.assertEqual(set(bucket0) | set(bucket1), set(eligible))
         self.assertFalse(set(bucket0) & set(bucket1))
+
+    def test_paper_main_and_quality_variant_lsh_preserve_distinct_group_orientation(self) -> None:
+        eligible = [
+            token_id
+            for token_id in range(self.model.vocab_size)
+            if token_id not in set(self.model.all_special_ids)
+        ][:4]
+        semantic_groups = {0: eligible[:2], 1: eligible[2:]}
+        freq = np.zeros(self.model.vocab_size, dtype=np.int64)
+        freq[eligible] = np.array([10, 1, 9, 1], dtype=np.int64)
+
+        paper0, paper1 = build_payload_buckets_paper_main(
+            model=self.model,
+            freq=freq,
+            boundary_ids=[],
+            config=ECCConfig(payload_split_strategy="paper_main"),
+            semantic_groups=semantic_groups,
+        )
+        quality0, quality1 = build_payload_buckets_quality_variant_lsh(
+            model=self.model,
+            freq=freq,
+            boundary_ids=[],
+            config=ECCConfig(payload_split_strategy="quality_variant_lsh"),
+            semantic_groups=semantic_groups,
+        )
+
+        paper_mass_gap = abs(int(freq[paper0].sum()) - int(freq[paper1].sum()))
+        quality_mass_gap = abs(int(freq[quality0].sum()) - int(freq[quality1].sum()))
+        self.assertGreater(paper_mass_gap, quality_mass_gap)
+        self.assertEqual(set(paper0) | set(paper1), set(eligible))
+        self.assertEqual(set(quality0) | set(quality1), set(eligible))
+
+    def test_paper_main_strategy_is_recorded_in_partition_metadata(self) -> None:
+        partition = build_vocabulary_partition(
+            self.model,
+            self.texts,
+            ECCConfig(
+                target_boundary_pool=6,
+                payload_split_strategy="paper_main",
+            ),
+        )
+        self.assertEqual(partition.metadata["payload_split_strategy"], "paper_main")
 
     def test_default_adaptive_generation_closes_feasible_blocks(self) -> None:
         config = ECCConfig(block_len=7, vt_a=6)

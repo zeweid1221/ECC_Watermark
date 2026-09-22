@@ -53,13 +53,25 @@ def parse_args() -> argparse.Namespace:
         "--target-boundary-size",
         type=int,
         default=None,
-        help="Legacy fixed boundary count; overrides the fractional protocol when specified.",
+        help=(
+            "Fixed boundary count used by the compact-anchor paper protocol; "
+            "overrides the fractional protocol when specified."
+        ),
     )
     parser.add_argument("--max-boundary-frequency", type=int, default=50)
     parser.add_argument("--min-surface-len", type=int, default=3)
     parser.add_argument("--block-len", type=int, default=7)
     parser.add_argument("--vt-a", type=int, default=6)
     parser.add_argument("--lsh-bits", type=int, default=12)
+    parser.add_argument(
+        "--payload-split-strategy",
+        choices=("paper_main", "quality_variant_lsh"),
+        default=None,
+        help=(
+            "Payload assignment algorithm. Defaults to paper_main with an explicit fixed "
+            "boundary count and quality_variant_lsh with the fractional boundary protocol."
+        ),
+    )
     parser.add_argument("--allow-hash-fallback", action="store_true")
     return parser.parse_args()
 
@@ -86,12 +98,16 @@ def main() -> None:
         ),
         corpus_texts=prompt_texts,
     )
+    payload_split_strategy = args.payload_split_strategy or (
+        "paper_main" if args.target_boundary_size is not None else "quality_variant_lsh"
+    )
     ecc_config = ECCConfig(
         block_len=args.block_len,
         vt_a=args.vt_a,
         target_boundary_pool=args.target_boundary_size,
         boundary_vocab_fraction=args.boundary_vocab_fraction,
         lsh_bits=args.lsh_bits,
+        payload_split_strategy=payload_split_strategy,
     )
     if args.target_boundary_size is None:
         partition = build_vocabulary_partition(
@@ -137,8 +153,16 @@ def main() -> None:
     )
 
     output_dir = Path(args.output_dir)
+    protocol_name = (
+        "compact150_paper_main"
+        if payload_split_strategy == "paper_main" and len(partition.boundary_ids) == 150
+        else "quality_variant_lsh_boundary_fraction"
+        if payload_split_strategy == "quality_variant_lsh" and args.target_boundary_size is None
+        else payload_split_strategy
+    )
     metadata = {
-        "partition_version": "model_specific_semantic_v2",
+        "partition_protocol": protocol_name,
+        "payload_split_strategy": payload_split_strategy,
         "model_profile": profile.key,
         "model_name": model_name,
         "prompt_file": str(Path(args.prompt_file)),
