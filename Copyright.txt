@@ -1,0 +1,7 @@
+Copyright Notice
+
+© 2026 Regents of the University of Minnesota. All rights reserved.
+
+Portions of the segment-localization baseline implementation are adapted from llm-watermark-location, Copyright (c) 2024 Xuandong Zhao, and are used under the MIT License. See THIRD_PARTY_NOTICES.txt.
+
+Anchor-ECC also depends on third-party software packages that are not redistributed in this repository. Those packages remain subject to their respective licenses.

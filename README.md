@@ -1,12 +1,12 @@
-# ECC-IW
+# Anchor-ECC
 
 **Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes**
 
 Zewei Deng, Muhammad Siddeek, Liyan Xie, Mohamed Seif, Mengdi Wang, H. Vincent Poor, Andrea Goldsmith
 
-ECC-IW is an error-correcting-code-based watermarking framework for detecting and localizing sparse post-generation edits in watermarked LLM outputs. It maps generated tokens to structural symbols, constrains short blocks with joint Varshamov-Tenengolts and Hamming code properties, and uses global dynamic-programming decoding to recover edited block boundaries.
+Anchor-ECC is an error-correcting-code-based watermarking framework for detecting and localizing sparse post-generation edits in watermarked LLM outputs. It maps generated tokens to structural symbols, constrains short blocks with joint Varshamov-Tenengolts and Hamming code properties, and uses global dynamic-programming decoding to recover edited block boundaries.
 
-The repository contains the ECC-IW watermark implementation, its reproducibility utilities, and the companion project website. Paper and public website links will be added when the preprint is released. Separate exploratory projects and generated experiment artifacts are intentionally excluded.
+The repository contains the Anchor-ECC watermark implementation, its reproducibility utilities, and the companion project website. Paper and public website links will be added when the preprint is released. Separate exploratory projects and generated experiment artifacts are intentionally excluded.
 
 ## Evaluation Scope
 
@@ -95,7 +95,7 @@ GPU experiments require a compatible PyTorch/CUDA environment. Model-specific vo
 
 The accepted synchronization-string plus VT comparison is documented in
 `msi/README_SYNC_ECC_LFQA.md`. Its implementation is intentionally separate
-from the current ECC-IW core so that the baseline and proposed method cannot
+from the current Anchor-ECC core so that the baseline and proposed method cannot
 silently share detector state. Saved baseline generations can be reevaluated
 with `scripts/recompute_sync_ecc_lfqa_results.py`; the replay verifies every
 deterministic attack against the original row-level artifacts before emitting
@@ -126,8 +126,8 @@ The deployable website is written to `website/dist/`. The browser walkthrough re
 The canonical arXiv citation will be added when the preprint becomes publicly available. Until then, the provisional project citation is:
 
 ```bibtex
-@misc{deng2026ecciw,
-  title  = {ECC-IW: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes},
+@misc{deng2026anchorecc,
+  title  = {Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes},
   author = {Deng, Zewei and Siddeek, Muhammad and Xie, Liyan and Seif, Mohamed and Wang, Mengdi and Poor, H. Vincent and Goldsmith, Andrea},
   year   = {2026}
 }
