@@ -373,32 +373,9 @@ def calibrate_strict_lower_tail_threshold(
     return max(valid)
 
 
-def calibrate_nontrivial_strict_lower_tail_threshold(
-    clean_scores: Sequence[float],
-    target_far: float,
-) -> Tuple[float, float, bool]:
-    """Calibrate on clean scores while avoiding a zero-alarm operating point.
-
-    The detector uses the strict rule ``score < threshold`` and its scores are
-    nonnegative. If the requested Type-I constraint therefore selects the
-    degenerate threshold zero, use the first positive threshold on the observed
-    score lattice. Selection depends only on clean scores, never on attacked
-    examples.
-    """
-    scores = np.asarray(list(clean_scores), dtype=np.float64)
-    if scores.size == 0:
-        raise ValueError("Cannot calibrate a threshold from no scores.")
-
-    threshold = calibrate_strict_lower_tail_threshold(scores, target_far)
-    alarm_rate = float(np.mean(scores < threshold))
-    if threshold > 0.0:
-        return threshold, alarm_rate, False
-
-    for candidate in np.unique(scores):
-        if float(candidate) > 0.0:
-            candidate_rate = float(np.mean(scores < float(candidate)))
-            return float(candidate), candidate_rate, True
-    raise RuntimeError("Clean scores do not contain a positive strict threshold.")
+def complete_mismatch_threshold(pattern_name: str) -> float:
+    """Threshold that flags a local window only when none of its checks match."""
+    return 1.0 / len(resolve_pattern(pattern_name))
 
 
 def split_scores_by_blocks(
@@ -439,7 +416,12 @@ def evaluate_combinatorial_blocks(
     block_threshold: float | None = None,
     threshold_mode: str = "original_token",
 ) -> Dict[str, Any]:
-    if threshold_mode not in {"original_token", "legacy_separate_block"}:
+    strict_token_modes = {
+        "fixed_complete_mismatch",
+        "clean_type_i_0.1",
+        "original_token",
+    }
+    if threshold_mode not in strict_token_modes | {"legacy_separate_block"}:
         raise ValueError(f"Unknown threshold mode: {threshold_mode!r}.")
     if threshold_mode == "legacy_separate_block" and block_threshold is None:
         raise ValueError("Legacy mode requires a separately calibrated block threshold.")
@@ -458,7 +440,7 @@ def evaluate_combinatorial_blocks(
         gt_events_per_block,
     ):
         block_score = float(np.min(scores)) if scores else 1.0
-        if threshold_mode == "original_token":
+        if threshold_mode in strict_token_modes:
             # The prior detector flags tokens with score < tau_e. The common
             # block-level alarm is the union of those original token alarms.
             pred = int(any(float(score) < float(token_threshold) for score in scores))
@@ -483,7 +465,7 @@ def evaluate_combinatorial_blocks(
             origins,
             events,
             token_threshold,
-            strict=threshold_mode == "original_token",
+            strict=threshold_mode in strict_token_modes,
         )
         token_tp += token_counts["token_tp"]
         token_fp += token_counts["token_fp"]

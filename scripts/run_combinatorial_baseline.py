@@ -25,6 +25,7 @@ from baselines.combinatorial_watermark import (  # noqa: E402
     calibrate_lower_tail_threshold,
     calibrate_strict_lower_tail_threshold,
     clean_block_min_scores,
+    complete_mismatch_threshold,
     evaluate_combinatorial_blocks,
 )
 from watermark_project.config import (  # noqa: E402
@@ -75,11 +76,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--target-clean-far", type=float, default=0.1)
     parser.add_argument(
         "--threshold-mode",
-        choices=["original_token", "legacy_separate_block"],
-        default="original_token",
+        choices=[
+            "fixed_complete_mismatch",
+            "clean_type_i_0.1",
+            "original_token",
+            "legacy_separate_block",
+        ],
+        default="fixed_complete_mismatch",
         help=(
-            "original_token reproduces the prior token threshold and maps token alarms "
-            "to blocks; legacy_separate_block retains the earlier adapted calibration."
+            "fixed_complete_mismatch uses one bias-independent threshold per pattern; "
+            "clean_type_i_0.1 calibrates token Type-I error on clean outputs; "
+            "original_token is retained as an alias for that calibration; "
+            "legacy_separate_block retains the earlier adapted calibration."
         ),
     )
     parser.add_argument("--sampling", choices=["sample", "greedy"], default="sample")
@@ -245,7 +253,19 @@ def main() -> None:
                 for score in clean_scores
                 for value in score["local_scores"]
             ]
-            if args.threshold_mode == "original_token":
+            if args.threshold_mode == "fixed_complete_mismatch":
+                token_threshold = complete_mismatch_threshold(config.pattern_name)
+                block_threshold = token_threshold
+                clean_token_alarm_rate = float(
+                    np.mean(
+                        np.asarray(flattened_clean_scores, dtype=np.float64)
+                        < token_threshold
+                    )
+                )
+                threshold_source = "fixed_complete_local_mismatch"
+                block_decision_rule = "any_original_token_alarm_in_block"
+                separate_block_threshold_calibrated = False
+            elif args.threshold_mode in {"clean_type_i_0.1", "original_token"}:
                 token_threshold = calibrate_strict_lower_tail_threshold(
                     flattened_clean_scores,
                     args.target_clean_far,
@@ -258,7 +278,7 @@ def main() -> None:
                         < token_threshold
                     )
                 )
-                threshold_source = "prior_token_threshold_clean_type_i"
+                threshold_source = "clean_type_i_0.1"
                 block_decision_rule = "any_original_token_alarm_in_block"
                 separate_block_threshold_calibrated = False
             else:
@@ -364,7 +384,7 @@ def main() -> None:
                             "block_threshold": block_threshold,
                             "canonical_original_token_threshold": (
                                 token_threshold
-                                if args.threshold_mode == "original_token"
+                                if args.threshold_mode != "legacy_separate_block"
                                 else None
                             ),
                             "clean_token_alarm_rate": clean_token_alarm_rate,
@@ -425,7 +445,7 @@ def main() -> None:
                             "block_threshold": block_threshold,
                             "canonical_original_token_threshold": (
                                 token_threshold
-                                if args.threshold_mode == "original_token"
+                                if args.threshold_mode != "legacy_separate_block"
                                 else None
                             ),
                             "clean_token_alarm_rate": clean_token_alarm_rate,
@@ -474,12 +494,12 @@ def main() -> None:
                 "pseudorandom bucket using (watermark_key, previous_token_id, token_id)."
             ),
             "calibration_note": (
-                "The default original_token mode calibrates only the prior method's token "
-                "threshold tau_e on clean watermarked token scores using the strict rule "
-                "score < tau_e. A common-protocol block alarm is the union of token alarms "
-                "inside that block; no separate block threshold is calibrated. The optional "
-                "legacy_separate_block mode reproduces the earlier adapted calibration. "
-                "Attack labels are never used in threshold calibration."
+                "The default fixed_complete_mismatch mode uses tau_e = 1/w for every "
+                "logit bias, so a token alarm requires zero matching checks in its local "
+                "window. The clean_type_i_0.1 mode instead calibrates tau_e on clean scores "
+                "to control token-level Type-I error. Both modes map token alarms to blocks "
+                "by union and never use attack labels. The optional legacy_separate_block "
+                "mode reproduces the earlier adapted block calibration."
             ),
         },
     )

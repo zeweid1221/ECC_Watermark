@@ -8,8 +8,8 @@ from baselines.combinatorial_watermark import (
     CombinatorialConfig,
     CombinatorialWatermark,
     calibrate_lower_tail_threshold,
-    calibrate_nontrivial_strict_lower_tail_threshold,
     calibrate_strict_lower_tail_threshold,
+    complete_mismatch_threshold,
     context_color_vector,
     context_token_color,
     cyclic_window_indicators,
@@ -84,51 +84,27 @@ class CombinatorialWatermarkTests(unittest.TestCase):
         self.assertEqual(strict_threshold, 0.5)
 
     def test_original_threshold_maps_strict_token_alarms_to_blocks(self) -> None:
-        evaluation = evaluate_combinatorial_blocks(
-            original_blocks=[[10, 11], [12, 13]],
-            observed_blocks=[[10, 11], [12, 13]],
-            origin_maps_per_block=[[0, 1], [0, 1]],
-            gt_events_per_block=[[], []],
-            local_scores=[0.5, 0.8, 0.49, 0.8],
-            token_threshold=0.5,
-            threshold_mode="original_token",
-        )
-        self.assertEqual(evaluation["pred_blocks"], [0, 1])
-        self.assertEqual(evaluation["FP"], 1)
-        self.assertEqual(evaluation["TN"], 1)
-
-    def test_nontrivial_threshold_uses_first_score_lattice_step(self) -> None:
-        threshold, alarm_rate, relaxed = (
-            calibrate_nontrivial_strict_lower_tail_threshold(
-                [0.0, 0.0, 0.5, 1.0],
-                0.1,
+        for threshold_mode in (
+            "fixed_complete_mismatch",
+            "clean_type_i_0.1",
+            "original_token",
+        ):
+            evaluation = evaluate_combinatorial_blocks(
+                original_blocks=[[10, 11], [12, 13]],
+                observed_blocks=[[10, 11], [12, 13]],
+                origin_maps_per_block=[[0, 1], [0, 1]],
+                gt_events_per_block=[[], []],
+                local_scores=[0.5, 0.8, 0.49, 0.8],
+                token_threshold=0.5,
+                threshold_mode=threshold_mode,
             )
-        )
-        self.assertEqual(threshold, 0.5)
-        self.assertEqual(alarm_rate, 0.5)
-        self.assertTrue(relaxed)
+            self.assertEqual(evaluation["pred_blocks"], [0, 1])
+            self.assertEqual(evaluation["FP"], 1)
+            self.assertEqual(evaluation["TN"], 1)
 
-    def test_nontrivial_threshold_preserves_valid_calibration(self) -> None:
-        threshold, alarm_rate, relaxed = (
-            calibrate_nontrivial_strict_lower_tail_threshold(
-                [0.0, 0.5, 0.5, 1.0],
-                0.3,
-            )
-        )
-        self.assertEqual(threshold, 0.5)
-        self.assertEqual(alarm_rate, 0.25)
-        self.assertFalse(relaxed)
-
-    def test_nontrivial_threshold_preserves_positive_zero_clean_alarm_point(self) -> None:
-        threshold, alarm_rate, relaxed = (
-            calibrate_nontrivial_strict_lower_tail_threshold(
-                [1.0, 1.0, 1.0],
-                0.1,
-            )
-        )
-        self.assertEqual(threshold, 1.0)
-        self.assertEqual(alarm_rate, 0.0)
-        self.assertFalse(relaxed)
+    def test_complete_mismatch_threshold_depends_only_on_pattern_length(self) -> None:
+        self.assertEqual(complete_mismatch_threshold("AB"), 0.5)
+        self.assertEqual(complete_mismatch_threshold("ACADBCBD"), 0.125)
 
     def test_generation_has_exact_evaluation_blocks_for_both_patterns(self) -> None:
         for pattern in ("AB", "ACADBCBD"):

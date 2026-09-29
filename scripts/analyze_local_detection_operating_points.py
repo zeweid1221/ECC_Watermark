@@ -310,7 +310,7 @@ def main() -> None:
         archive
         / "supporting"
         / "comparison_baselines"
-        / "combinatorial_watermark_original_threshold"
+        / "combinatorial_watermark_fixed_complete_mismatch"
         / args.model_profile
         / "details.csv"
     )
@@ -342,7 +342,7 @@ def main() -> None:
     if validation["ecc_total_score_flag_mismatches"] != 0:
         raise RuntimeError("ECC continuous scores do not reproduce tolerance decisions.")
     if validation["cw_total_score_flag_mismatches"] != 0:
-        raise RuntimeError("CW continuous scores do not reproduce original-threshold decisions.")
+        raise RuntimeError("CW continuous scores do not reproduce fixed-threshold decisions.")
 
     records.to_parquet(output / "block_scores.parquet", index=False)
     summary.to_csv(output / "matched_operating_points.csv", index=False)

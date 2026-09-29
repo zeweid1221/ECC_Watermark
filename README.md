@@ -102,11 +102,13 @@ deterministic attack against the original row-level artifacts before emitting
 corrected metrics.
 
 CW operating points can be reproduced with
-`scripts/recompute_combinatorial_original_threshold.py`. Calibration uses the
-original strict token-level decision rule and clean outputs only. If the
-Type-I 0.1 calibration selects the degenerate threshold zero, the script
-selects the first positive value on the discrete CW score lattice and records
-the realized clean-token alarm rate.
+`scripts/recompute_combinatorial_original_threshold.py`. Evaluation uses the
+original strict token-level decision rule. The default fixed-threshold mode
+flags complete local pattern mismatches with the same threshold at every logit
+bias; `--threshold-mode clean_type_i_0.1` reproduces the clean-token Type-I
+calibration reported separately in the appendix. Fresh runs through
+`scripts/run_combinatorial_baseline.py` expose the same two modes and use the
+fixed threshold by default.
 
 ## Website
 
