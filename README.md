@@ -101,6 +101,13 @@ with `scripts/recompute_sync_ecc_lfqa_results.py`; the replay verifies every
 deterministic attack against the original row-level artifacts before emitting
 corrected metrics.
 
+CW operating points can be reproduced with
+`scripts/recompute_combinatorial_original_threshold.py`. Calibration uses the
+original strict token-level decision rule and clean outputs only. If the
+Type-I 0.1 calibration selects the degenerate threshold zero, the script
+selects the first positive value on the discrete CW score lattice and records
+the realized clean-token alarm rate.
+
 ## Website
 
 Run the companion website locally with:

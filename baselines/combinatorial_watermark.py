@@ -373,6 +373,34 @@ def calibrate_strict_lower_tail_threshold(
     return max(valid)
 
 
+def calibrate_nontrivial_strict_lower_tail_threshold(
+    clean_scores: Sequence[float],
+    target_far: float,
+) -> Tuple[float, float, bool]:
+    """Calibrate on clean scores while avoiding a zero-alarm operating point.
+
+    The detector uses the strict rule ``score < threshold`` and its scores are
+    nonnegative. If the requested Type-I constraint therefore selects the
+    degenerate threshold zero, use the first positive threshold on the observed
+    score lattice. Selection depends only on clean scores, never on attacked
+    examples.
+    """
+    scores = np.asarray(list(clean_scores), dtype=np.float64)
+    if scores.size == 0:
+        raise ValueError("Cannot calibrate a threshold from no scores.")
+
+    threshold = calibrate_strict_lower_tail_threshold(scores, target_far)
+    alarm_rate = float(np.mean(scores < threshold))
+    if threshold > 0.0:
+        return threshold, alarm_rate, False
+
+    for candidate in np.unique(scores):
+        if float(candidate) > 0.0:
+            candidate_rate = float(np.mean(scores < float(candidate)))
+            return float(candidate), candidate_rate, True
+    raise RuntimeError("Clean scores do not contain a positive strict threshold.")
+
+
 def split_scores_by_blocks(
     scores: Sequence[float],
     blocks: Sequence[Sequence[int]],

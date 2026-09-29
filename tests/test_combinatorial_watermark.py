@@ -8,6 +8,7 @@ from baselines.combinatorial_watermark import (
     CombinatorialConfig,
     CombinatorialWatermark,
     calibrate_lower_tail_threshold,
+    calibrate_nontrivial_strict_lower_tail_threshold,
     calibrate_strict_lower_tail_threshold,
     context_color_vector,
     context_token_color,
@@ -95,6 +96,39 @@ class CombinatorialWatermarkTests(unittest.TestCase):
         self.assertEqual(evaluation["pred_blocks"], [0, 1])
         self.assertEqual(evaluation["FP"], 1)
         self.assertEqual(evaluation["TN"], 1)
+
+    def test_nontrivial_threshold_uses_first_score_lattice_step(self) -> None:
+        threshold, alarm_rate, relaxed = (
+            calibrate_nontrivial_strict_lower_tail_threshold(
+                [0.0, 0.0, 0.5, 1.0],
+                0.1,
+            )
+        )
+        self.assertEqual(threshold, 0.5)
+        self.assertEqual(alarm_rate, 0.5)
+        self.assertTrue(relaxed)
+
+    def test_nontrivial_threshold_preserves_valid_calibration(self) -> None:
+        threshold, alarm_rate, relaxed = (
+            calibrate_nontrivial_strict_lower_tail_threshold(
+                [0.0, 0.5, 0.5, 1.0],
+                0.3,
+            )
+        )
+        self.assertEqual(threshold, 0.5)
+        self.assertEqual(alarm_rate, 0.25)
+        self.assertFalse(relaxed)
+
+    def test_nontrivial_threshold_preserves_positive_zero_clean_alarm_point(self) -> None:
+        threshold, alarm_rate, relaxed = (
+            calibrate_nontrivial_strict_lower_tail_threshold(
+                [1.0, 1.0, 1.0],
+                0.1,
+            )
+        )
+        self.assertEqual(threshold, 1.0)
+        self.assertEqual(alarm_rate, 0.0)
+        self.assertFalse(relaxed)
 
     def test_generation_has_exact_evaluation_blocks_for_both_patterns(self) -> None:
         for pattern in ("AB", "ACADBCBD"):

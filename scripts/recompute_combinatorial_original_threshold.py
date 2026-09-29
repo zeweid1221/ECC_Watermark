@@ -6,12 +6,19 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+import sys
 from pathlib import Path
 from typing import Dict, List, Sequence, Tuple
 
-import numpy as np
 import pandas as pd
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from baselines.combinatorial_watermark import (
+    calibrate_nontrivial_strict_lower_tail_threshold,
+)
 from build_paper_results_archive_v2 import (
     PROFILES,
     aggregate_comparison,
@@ -31,27 +38,6 @@ def safe_div(numerator: int, denominator: int) -> float:
     return float(numerator / denominator) if denominator else 0.0
 
 
-def canonical_strict_threshold(
-    clean_scores: Sequence[float],
-    target_far: float,
-) -> Tuple[float, float]:
-    """Largest observed score threshold with Pr[score < tau] <= target_far."""
-    scores = np.asarray(clean_scores, dtype=np.float64)
-    if scores.size == 0:
-        raise ValueError("Cannot calibrate from an empty clean score set.")
-    candidates = np.unique(scores)
-    valid = [
-        float(candidate)
-        for candidate in candidates
-        if float(np.mean(scores < candidate)) <= float(target_far) + 1e-12
-    ]
-    if not valid:
-        raise RuntimeError("The minimum observed score must always be a valid threshold.")
-    threshold = max(valid)
-    clean_alarm_rate = float(np.mean(scores < threshold))
-    return threshold, clean_alarm_rate
-
-
 def parse_float_list(value: object) -> List[float]:
     parsed = json.loads(str(value))
     return [float(item) for item in parsed]
@@ -65,7 +51,7 @@ def parse_int_list(value: object) -> List[int]:
 def setting_thresholds(
     generated_records: Sequence[Dict[str, object]],
     target_far: float,
-) -> Dict[str, Tuple[float, float]]:
+) -> Dict[str, Tuple[float, float, bool]]:
     scores: Dict[str, List[float]] = {}
     for record in generated_records:
         key = str(record["setting_key"])
@@ -73,14 +59,14 @@ def setting_thresholds(
             float(value) for value in record["clean_local_scores"]
         )
     return {
-        key: canonical_strict_threshold(values, target_far)
+        key: calibrate_nontrivial_strict_lower_tail_threshold(values, target_far)
         for key, values in scores.items()
     }
 
 
 def recompute_detail_rows(
     details: pd.DataFrame,
-    thresholds: Dict[str, Tuple[float, float]],
+    thresholds: Dict[str, Tuple[float, float, bool]],
 ) -> pd.DataFrame:
     output = details.copy()
     output["legacy_block_threshold"] = output["block_threshold"]
@@ -90,6 +76,7 @@ def recompute_detail_rows(
 
     new_thresholds: List[float] = []
     clean_alarm_rates: List[float] = []
+    relaxed_thresholds: List[bool] = []
     new_predictions: List[str] = []
     counts: Dict[str, List[float]] = {
         "TP": [],
@@ -102,7 +89,7 @@ def recompute_detail_rows(
 
     for _, row in output.iterrows():
         setting_key = str(row["setting_key"])
-        threshold, clean_alarm_rate = thresholds[setting_key]
+        threshold, clean_alarm_rate, relaxed = thresholds[setting_key]
         scores = parse_float_list(row["block_scores"])
         labels = parse_int_list(row["gt_blocks"])
         if len(scores) != len(labels):
@@ -118,6 +105,7 @@ def recompute_detail_rows(
 
         new_thresholds.append(threshold)
         clean_alarm_rates.append(clean_alarm_rate)
+        relaxed_thresholds.append(relaxed)
         new_predictions.append(json.dumps(predictions))
         counts["TP"].append(tp)
         counts["FP"].append(fp)
@@ -129,9 +117,10 @@ def recompute_detail_rows(
     output["block_threshold"] = new_thresholds
     output["canonical_original_token_threshold"] = new_thresholds
     output["clean_token_alarm_rate_original_threshold"] = clean_alarm_rates
+    output["nontrivial_threshold_fallback"] = relaxed_thresholds
     output["pred_blocks"] = new_predictions
     output["block_decision_rule"] = "any_original_token_alarm_in_block"
-    output["threshold_source"] = "prior_token_threshold_clean_type_i_0.1"
+    output["threshold_source"] = "clean_type_i_0.1_with_nontrivial_lattice_fallback"
     for metric, values in counts.items():
         output[metric] = values
     return output
@@ -159,6 +148,7 @@ def recompute_summary(
         "block_threshold": [],
         "canonical_original_token_threshold": [],
         "clean_token_alarm_rate_original_threshold": [],
+        "nontrivial_threshold_fallback": [],
         "TP": [],
         "FP": [],
         "FN": [],
@@ -184,6 +174,9 @@ def recompute_summary(
         values["block_threshold"].append(threshold)
         values["canonical_original_token_threshold"].append(threshold)
         values["clean_token_alarm_rate_original_threshold"].append(clean_alarm_rate)
+        values["nontrivial_threshold_fallback"].append(
+            bool(group["nontrivial_threshold_fallback"].iloc[0])
+        )
         values["TP"].append(tp)
         values["FP"].append(fp)
         values["FN"].append(fn)
@@ -193,7 +186,7 @@ def recompute_summary(
     for column, column_values in values.items():
         output[column] = column_values
     output["block_decision_rule"] = "any_original_token_alarm_in_block"
-    output["threshold_source"] = "prior_token_threshold_clean_type_i_0.1"
+    output["threshold_source"] = "clean_type_i_0.1_with_nontrivial_lattice_fallback"
     return output
 
 
@@ -229,7 +222,7 @@ def main() -> None:
             destination / "summary.csv", index=False
         )
         shutil.copy2(source / "config.json", destination / "source_config.json")
-        for setting_key, (threshold, clean_far) in sorted(thresholds.items()):
+        for setting_key, (threshold, clean_far, relaxed) in sorted(thresholds.items()):
             validation_rows.append(
                 {
                     "model_profile": profile,
@@ -237,61 +230,75 @@ def main() -> None:
                     "canonical_original_token_threshold": threshold,
                     "clean_token_alarm_rate": clean_far,
                     "target_clean_far": target_far,
+                    "nontrivial_threshold_fallback": relaxed,
                 }
             )
 
     validation = pd.DataFrame(validation_rows)
-    if not (validation["clean_token_alarm_rate"] <= 0.1 + 1e-12).all():
-        raise RuntimeError("Original token threshold exceeds the target clean Type-I rate.")
+    valid_rows = (
+        (validation["clean_token_alarm_rate"] <= validation["target_clean_far"] + 1e-12)
+        | validation["nontrivial_threshold_fallback"]
+    )
+    if not valid_rows.all():
+        raise RuntimeError("Invalid clean-score threshold calibration.")
     validation.to_csv(output_root / "threshold_validation.csv", index=False)
 
     original_summary = pd.concat(summary_frames, ignore_index=True)
-    ecc = load_ecc_rows(archive)
-    paired = build_paired_comparison(ecc, original_summary)
-    paired["combinatorial_threshold_source"] = (
-        "prior_token_threshold_clean_type_i_0.1"
-    )
-    paired["combinatorial_block_decision_rule"] = (
-        "any_original_token_alarm_in_block"
-    )
-    aggregate = aggregate_comparison(paired)
-    comparisons = archive / "comparisons"
-    paired.to_csv(
-        comparisons
-        / "ecc_vs_combinatorial_original_threshold_all_settings.csv",
-        index=False,
-    )
-    aggregate.to_csv(
-        comparisons / "ecc_vs_combinatorial_original_threshold_aggregate.csv",
-        index=False,
-    )
-    qwen_paired = paired[paired["model_profile"] == "qwen3-8b"].copy()
-    qwen_aggregate = aggregate[
-        aggregate["model_profile"] == "qwen3-8b"
-    ].copy()
-    qwen_paired.to_csv(
-        comparisons
-        / "ecc_vs_combinatorial_original_threshold_qwen3_all_settings.csv",
-        index=False,
-    )
-    qwen_aggregate.to_csv(
-        comparisons
-        / "ecc_vs_combinatorial_original_threshold_qwen3_aggregate.csv",
-        index=False,
-    )
-    qwen_paired[qwen_paired["logit_bias"].isin([20.0, 50.0])].to_csv(
-        comparisons
-        / "ecc_vs_combinatorial_original_threshold_qwen3_strong_bias_settings.csv",
-        index=False,
-    )
+    paired_counts: Tuple[int, int, int] | None = None
+    if (archive / "local_edit_detection").is_dir():
+        ecc = load_ecc_rows(archive)
+        paired = build_paired_comparison(ecc, original_summary)
+        paired["combinatorial_threshold_source"] = (
+            "clean_type_i_0.1_with_nontrivial_lattice_fallback"
+        )
+        paired["combinatorial_block_decision_rule"] = (
+            "any_original_token_alarm_in_block"
+        )
+        aggregate = aggregate_comparison(paired)
+        comparisons = archive / "comparisons"
+        comparisons.mkdir(parents=True, exist_ok=True)
+        paired.to_csv(
+            comparisons
+            / "ecc_vs_combinatorial_original_threshold_all_settings.csv",
+            index=False,
+        )
+        aggregate.to_csv(
+            comparisons / "ecc_vs_combinatorial_original_threshold_aggregate.csv",
+            index=False,
+        )
+        qwen_paired = paired[paired["model_profile"] == "qwen3-8b"].copy()
+        qwen_aggregate = aggregate[
+            aggregate["model_profile"] == "qwen3-8b"
+        ].copy()
+        qwen_paired.to_csv(
+            comparisons
+            / "ecc_vs_combinatorial_original_threshold_qwen3_all_settings.csv",
+            index=False,
+        )
+        qwen_aggregate.to_csv(
+            comparisons
+            / "ecc_vs_combinatorial_original_threshold_qwen3_aggregate.csv",
+            index=False,
+        )
+        qwen_paired[qwen_paired["logit_bias"].isin([20.0, 50.0])].to_csv(
+            comparisons
+            / "ecc_vs_combinatorial_original_threshold_qwen3_strong_bias_settings.csv",
+            index=False,
+        )
+        paired_counts = (len(paired), len(aggregate), len(qwen_paired))
+    else:
+        print("Skipped paired ECC comparison: local_edit_detection is absent.")
 
     methodology = """# Combinatorial Baseline Re-evaluation
 
 The primary comparison uses the prior method's token-level edit statistic and
 threshold rule. For every model, pattern, and logit bias, tau_e is calibrated
 on clean watermarked token statistics so that the empirical Type-I alarm rate
-Pr[score < tau_e] is at most 0.1. Attacked token positions are flagged exactly
-when their local statistic is below tau_e.
+Pr[score < tau_e] is at most 0.1. If this selects the degenerate threshold
+tau_e = 0, tau_e is moved to the first positive value on the observed
+clean-score lattice. This fallback is determined without attack labels.
+Attacked token positions are flagged exactly when their local statistic is
+below tau_e.
 
 For the common block-level evaluation only, a block is marked suspicious when
 at least one token in that block is flagged by the original detector. This is
@@ -304,15 +311,18 @@ The earlier separately calibrated block-threshold artifacts are retained under
 not the primary prior-work comparison.
 """
     (output_root / "METHODOLOGY.md").write_text(methodology, encoding="utf-8")
+    snapshot_dir = archive / "code_snapshot" / "scripts"
+    snapshot_dir.mkdir(parents=True, exist_ok=True)
     shutil.copy2(
         Path(__file__).resolve(),
-        archive / "code_snapshot" / "scripts" / Path(__file__).name,
+        snapshot_dir / Path(__file__).name,
     )
     write_checksums(archive)
     print(f"Recomputed original-threshold results under {output_root}")
-    print(f"Paired rows: {len(paired)}")
-    print(f"Aggregate rows: {len(aggregate)}")
-    print(f"Qwen3 primary rows: {len(qwen_paired)}")
+    if paired_counts is not None:
+        print(f"Paired rows: {paired_counts[0]}")
+        print(f"Aggregate rows: {paired_counts[1]}")
+        print(f"Qwen3 primary rows: {paired_counts[2]}")
     print(f"Threshold validation rows: {len(validation)}")
 
 
