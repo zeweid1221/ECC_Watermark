@@ -4,9 +4,11 @@
 
 Zewei Deng, Muhammad Siddeek, Liyan Xie, Mohamed Seif, Mengdi Wang, H. Vincent Poor, Andrea Goldsmith
 
+[Paper](https://arxiv.org/abs/2609.38722) | [Project website](https://zeweid1221.github.io/Anchor-ECC-Website/)
+
 Anchor-ECC is an error-correcting-code-based watermarking framework for detecting and localizing sparse post-generation edits in watermarked LLM outputs. It maps generated tokens to structural symbols, constrains short blocks with joint Varshamov-Tenengolts and Hamming code properties, and uses global dynamic-programming decoding to recover edited block boundaries.
 
-The repository contains the Anchor-ECC watermark implementation, its reproducibility utilities, and the companion project website. Paper and public website links will be added when the preprint is released. Separate exploratory projects and generated experiment artifacts are intentionally excluded.
+The repository contains the Anchor-ECC watermark implementation, its reproducibility utilities, and the companion project website. Separate exploratory projects and generated experiment artifacts are intentionally excluded.
 
 ## Evaluation Scope
 
@@ -132,12 +134,18 @@ The deployable website is written to `website/dist/`. The browser walkthrough re
 
 ## Citation
 
-The canonical arXiv citation will be added when the preprint becomes publicly available. Until then, the provisional project citation is:
-
 ```bibtex
 @misc{deng2026anchorecc,
-  title  = {Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes},
-  author = {Deng, Zewei and Siddeek, Muhammad and Xie, Liyan and Seif, Mohamed and Wang, Mengdi and Poor, H. Vincent and Goldsmith, Andrea},
-  year   = {2026}
+  title         = {Anchor-ECC: Local Integrity Checking for Watermarked LLM Outputs via Error-Correcting Codes},
+  author        = {Deng, Zewei and Siddeek, Muhammad and Xie, Liyan and Seif, Mohamed and Wang, Mengdi and Poor, H. Vincent and Goldsmith, Andrea},
+  year          = {2026},
+  eprint        = {2609.38722},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CR},
+  url           = {https://arxiv.org/abs/2609.38722}
 }
 ```
+
+## Copyright and License
+
+Anchor-ECC is released under the University of Minnesota source-available license for software covered by a patent application. See [Copyright.txt](Copyright.txt) and [License.txt](License.txt) for the applicable copyright and use terms. Third-party notices are provided in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt).
